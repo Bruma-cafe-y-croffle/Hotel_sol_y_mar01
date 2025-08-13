@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sol y Mar Hotel | Eco-Friendly Beachfront Retreat</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #0177b7;
+      --primary-dark: #015f91;
+      --secondary: #f8a55f;
+      --accent: #34c7a9;
+      --light: #f5fafc;
+      --dark: #333;
+      --gray: #666;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.7;
+      color: var(--dark);
+      background: var(--light);
+    }
+
+    /* Hero Video (Intro) */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 75vh;
+      overflow: hidden;
+    }
+
+    .hero iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      object-fit: cover;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .hero-overlay h1 {
+      font-size: 3.8rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    }
+
+    .hero-overlay p {
+      font-size: 1.5rem;
+      max-width: 800px;
+      opacity: 0.95;
+      margin-bottom: 2rem;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--secondary);
+      color: white;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 5px 15px rgba(248, 165, 95, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(248, 165, 95, 0.4);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+    }
+
+    section {
+      background: white;
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    section::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      background: var(--primary);
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 1.8rem;
+      position: relative;
+      padding-bottom: 0.8rem;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 70px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    p {
+      color: var(--gray);
+      margin-bottom: 1.2rem;
+      font-size: 1.1rem;
+    }
+
+    .highlight {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 1.8rem;
+      border-radius: 12px;
+      background: #f9fbfd;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border-left: 4px solid var(--accent);
+    }
+
+    .feature-card i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      color: var(--primary-dark);
+      margin-bottom: 0.8rem;
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin-top: 2rem;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Final Video Section */
+    .final-video-section {
+      text-align: center;
+      margin: 4rem auto;
+      padding: 3rem 1.5rem;
+      background: #f0f7fb;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .final-video-section h2 {
+      color: var(--primary);
+    }
+
+    .final-video-container {
+      margin: 2rem auto;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .final-video-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Chatbot Button */
+    .chatbot-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    .chatbot-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Chatbot Modal */
+    .chatbot-modal {
+      display: none;
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 350px;
+      max-height: 500px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      z-index: 999;
+      overflow: hidden;
+    }
+
+    .chatbot-modal.active {
+      display: block;
+    }
+
+    .chatbot-header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .chatbot-body {
+      padding: 1.5rem;
+    }
+
+    .chatbot-options button {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      background: #f0f7ff;
+      border: 1px solid #d0e5ff;
+      border-radius: 10px;
+      text-align: left;
+      cursor: pointer;
+      color: var(--primary-dark);
+    }
+
+    .chatbot-options button:hover {
+      background: #e0f0ff;
+    }
+
+    .chat-response {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .chatbot-footer {
+      padding: 1rem;
+      text-align: right;
+      border-top: 1px solid #eee;
+    }
+
+    .close-chat {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    footer {
+      background: var(--primary-dark);
+      color: white;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      margin-top: 4rem;
+    }
+
+    footer .social-links a {
+      color: white;
+      margin: 0 1rem;
+      font-size: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero-overlay h1 {
+        font-size: 2.8rem;
+      }
+      .hero-overlay p {
+        font-size: 1.2rem;
+      }
+      .btn-primary {
+        font-size: 1.1rem;
+        padding: 0.8rem 1.5rem;
+      }
+      .container {
+        margin: 2rem auto;
+      }
+      section {
+        padding: 2rem;
+      }
+      .chatbot-btn {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+      }
+      .chatbot-modal {
+        width: 300px;
+        bottom: 80px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Video: Intro -->
+  <div class="hero">
+    <iframe 
+      src="https://i.pinimg.com/1200x/86/a9/16/86a91614502cc472be6a8ec623376497.jpg" 
+      frameborder="0" 
+      allow="autoplay; encrypted-media; fullscreen" 
+      allowfullscreen>
+    </iframe>
+    <div class="hero-overlay">
+      <h1>Sol y Mar Hotel</h1>
+      <p>Disconnect. Recharge. Return to Nature.</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSciI1f4k0ZpbUi4Q7FfCOF5tW6aZsWvHWve-NbyIfkzOjN_Vw/viewform" target="_blank" class="btn-primary">
+        Reserve Your Stay
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- About -->
+    <section>
+      <h2>About Us</h2>
+      <p>
+        <span class="highlight">Sol y Mar Hotel</span> is an eco-conscious retreat nestled between the ocean and tropical forest. Designed for travelers who want to <strong>unplug from technology</strong> and reconnect with nature, our hotel offers sustainable luxury in a serene coastal setting.
+      </p>
+      <p>
+        From solar-heated pools to farm-to-table dining, every detail reflects our commitment to sustainability. No Wi-Fi in rooms. No digital distractions. Just peace, sea breeze, and authentic experiences.
+      </p>
+    </section>
+
+    <!-- Features -->
+    <div class="features-grid">
+      <div class="feature-card">
+        <i class="fas fa-leaf"></i>
+        <h3>100% Eco-Friendly</h3>
+        <p>Solar energy, zero waste, natural materials</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-wifi-slash"></i>
+        <h3>No Digital Distractions</h3>
+        <p>Wi-Fi only in common areas</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-utensils"></i>
+        <h3>Organic Kitchen</h3>
+        <p>Locally sourced, seasonal, plant-rich cuisine</p>
+      </div>
+    </div>
+
+    <!-- Gallery -->
+    <section>
+      <h2>Our Spaces</h2>
+      <div class="gallery">
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Lobby" />
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80" alt="Ocean View Room" />
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Infinity Pool" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Dining -->
+    <section>
+      <h2>Restaurant & Dining</h2>
+      <p>
+        Our restaurant <strong>Mar y Tierra</strong> serves creative dishes made from ingredients grown in our garden or sourced from local fishermen and farmers.
+      </p>
+      <ul>
+        <li><strong>Breakfast:</strong> Fresh fruit, house-baked bread, local honey</li>
+        <li><strong>Lunch:</strong> Grilled fish tacos, tropical salads, coconut ceviche</li>
+        <li><strong>Dinner:</strong> Tasting menu with wine pairing under the stars</li>
+        <li><strong>Drinks:</strong> Organic cocktails, herbal infusions, craft beer</li>
+      </ul>
+      <p><strong>Tip:</strong> Ask about our beachfront dinner experience — a romantic setup with candles and ocean sounds.</p>
+    </section>
+
+  </div>
+
+  <!-- Final Video: Hotel Presentation -->
+  <section class="final-video-section">
+    <h2>Welcome to Sol y Mar</h2>
+    <p>Experience the beauty, peace, and sustainability of our coastal retreat.</p>
+    <div class="final-video-container">
+      <iframe 
+        src="https://www.youtube.com/embed/T1Ocb00EoIM?autoplay=0&controls=1&showinfo=0&rel=0" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- Chatbot Button -->
+  <div class="chatbot-btn" id="chatbotBtn">
+    <i class="fas fa-robot"></i>
+  </div>
+
+  <!-- Chatbot Modal -->
+  <div class="chatbot-modal" id="chatbotModal">
+    <div class="chatbot-header">Virtual Assistant</div>
+    <div class="chatbot-body">
+      <div class="chatbot-options">
+        <button onclick="showResponse('booking')">Help with booking</button>
+        <button onclick="showResponse('info')">Tell me about the hotel</button>
+        <button onclick="showResponse('dining')">Recommend a meal</button>
+      </div>
+      <div id="chatResponse" class="chat-response" style="display:none;"></div>
+    </div>
+    <div class="chatbot-footer">
+      <button class="close-chat" onclick="closeChatbot()">Close</button>
+    </div>
+  </div>
+
+  <footer>
+    <p><strong>Sol y Mar Hotel</strong></p>
+    <p>Coastal Paradise, Costa Verde • Since 2010</p>
+    <p>Email: info@solymarhotel.com • Phone: +1 (555) 123-4567</p>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-tripadvisor"></i></a>
+    </div>
+    <p style="margin-top: 1rem; font-size: 0.9rem;">© 2025 Sol y Mar Hotel. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const chatbotBtn = document.getElementById('chatbotBtn');
+    const chatbotModal = document.getElementById('chatbotModal');
+    const chatResponse = document.getElementById('chatResponse');
+
+    chatbotBtn.addEventListener('click', () => {
+      chatbotModal.classList.toggle('active');
+    });
+
+    function closeChatbot() {
+      chatbotModal.classList.remove('active');
+      chatResponse.style.display = 'none';
+    }
+
+    function showResponse(type) {
+      let message = '';
+      if (type === 'booking') {
+        message = "Click the 'Reserve Your Stay' button at the top to fill out your details. Need help choosing dates or room type? Let me know!";
+      } else if (type === 'info') {
+        message = "Sol y Mar is an eco-friendly beachfront hotel focused on sustainability and digital detox. We offer ocean-view rooms, organic dining, yoga, and guided nature walks.";
+      } else if (type === 'dining') {
+        message = "Try our grilled octopus with lemon herb oil, farm salad with edible flowers, or the mango-chili ceviche. For dessert, don’t miss the coconut flan!";
+      }
+      chatResponse.textContent = message;
+      chatResponse.style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
