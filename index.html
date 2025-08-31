@@ -1,903 +1,543 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>BRUMA – Cocina Caribeña Saludable</title>
-  <meta name="description" content="Croffles, bowls y sabores ancestrales saludables. Hecho con intención, fuego y silencio.">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<title>BRUMA – Café & Croffle</title>
+<meta name="description" content="Croffles, bowls y sabores ancestrales saludables. BRUMA - Cocina Caribeña Saludable.">
+<!-- Fonts & icons -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+  /* =============================
+     CONFIG (cambia aquí si quieres)
+     ============================= */
+  :root{
+    --azul-oscuro: #062948;   /* fondo principal (azul profundo) */
+    --azul-media: #0a4b7b;
+    --dorado: #f9a825;        /* acento apetitoso */
+    --blanco: #ffffff;
+    --gris-claro: #dfeaf6;
+    --sombra: 0 8px 30px rgba(2,20,40,0.35);
+    --radius: 12px;
+    --transition: 0.28s cubic-bezier(.2,.9,.2,1);
+  }
 
-  <!-- Google Fonts: Playfair Display + Lato -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Lato',sans-serif;
+    background:var(--azul-oscuro);
+    color:var(--blanco);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
 
-  <!-- Font Awesome (íconos) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  /* ======= SPLASH ======= */
+  .splash {
+    position:fixed; inset:0;
+    display:flex; flex-direction:column; gap:10px;
+    justify-content:center; align-items:center;
+    background: radial-gradient(ellipse at center, rgba(10,75,123,0.15), transparent 40%), var(--azul-oscuro);
+    z-index:9999;
+  }
+  .splash .brand{
+    text-align:center;
+    transform:translateY(0);
+  }
+  .brand h1{ font-family:'Playfair Display',serif; font-size:2.4rem; color:var(--blanco); letter-spacing:1px; text-shadow:0 6px 30px rgba(9,56,90,0.45);}
+  .brand p{ font-style:italic; color:var(--gris-claro); margin-top:6px; font-size:0.95rem; max-width:320px}
+  .bruma-anim {
+    position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.03), transparent 10%),
+      radial-gradient(circle at 80% 70%, rgba(249,168,37,0.02), transparent 10%);
+    animation: drift 10s linear infinite;
+    mix-blend-mode:screen;
+  }
+  @keyframes drift { 0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)} }
 
-  <style>
-    /* ====================
-       VARIABLES Y RESET
-       ==================== */
-    :root {
-      --azul-profundo: #0a2e5c;
-      --blanco: #ffffff;
-      --dorado-sutil: #f9a825;
-      --gris-suave: #f8f9fa;
-      --sombra-suave: 0 4px 20px rgba(10, 46, 92, 0.3);
-      --transicion: all 0.3s ease;
-    }
+  /* ====== APP LAYOUT (mobile-first) ====== */
+  .app{ display:flex; flex-direction:column; min-height:100vh; padding-bottom:80px; }
+  header{ padding:14px 5%; display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  .logo-small{display:flex;flex-direction:column}
+  .logo-small h2{ font-family:'Playfair Display'; color:var(--dorado); font-size:1.1rem; margin-bottom:2px; }
+  .logo-small span{ font-size:0.8rem; color:var(--gris-claro); font-style:italic; }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  /* SEARCH & CATEGORIES */
+  .search-wrap{ padding: 0 5%; margin-bottom:10px; }
+  .search{
+    display:flex; gap:8px; align-items:center;
+    background: rgba(255,255,255,0.03); border-radius:14px;
+    padding:8px;
+  }
+  .search input{
+    background:transparent; border:0; outline:none; color:var(--gris-claro); flex:1; padding:6px; font-size:0.95rem;
+  }
+  .cats{ display:flex; gap:8px; overflow:auto; padding:12px 5% 6px; margin-bottom:8px; }
+  .cat-btn{
+    padding:8px 12px; border-radius:999px; background:rgba(255,255,255,0.03);
+    color:var(--gris-claro); border:1px solid rgba(255,255,255,0.04); font-size:0.9rem; cursor:pointer; transition:var(--transition);
+    white-space:nowrap;
+  }
+  .cat-btn.active{ background:var(--dorado); color:var(--azul-oscuro); transform:scale(1.04); }
 
-    body {
-      font-family: 'Lato', sans-serif;
-      background: var(--azul-profundo);
-      color: var(--blanco);
-      overflow-x: hidden;
-      line-height: 1.6;
-      touch-action: manipulation;
-    }
+  /* MENU GRID (stacked for mobile) */
+  .menu-list{ padding:0 5%; display:flex; flex-direction:column; gap:12px; }
+  .card{
+    display:flex; gap:10px; align-items:center; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius); padding:10px; border:1px solid rgba(255,255,255,0.04);
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-6px); box-shadow:var(--sombra); }
+  .card-img{ width:98px; height:78px; flex:0 0 98px; border-radius:10px; overflow:hidden; border:1px solid rgba(249,168,37,0.08);}
+  .card-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .card-body{ flex:1; min-width:0; }
+  .card-title{ font-family:'Playfair Display'; font-size:1rem; color:var(--dorado); cursor:pointer; text-decoration:underline; text-underline-offset:6px;}
+  .card-desc{ font-size:0.87rem; color:var(--gris-claro); margin:6px 0; white-space:normal; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;}
+  .card-meta{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .price{ color:var(--dorado); font-weight:700; font-size:0.98rem; }
+  .add-btn{
+    background:transparent; border:1px solid var(--dorado); color:var(--dorado); padding:8px 10px; border-radius:10px; cursor:pointer; transition:var(--transition);
+  }
+  .add-btn:hover{ background:var(--dorado); color:var(--azul-oscuro); transform:scale(1.02); }
 
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      color: var(--dorado-sutil);
-    }
+  /* CART DRAWER */
+  .cart-drawer{
+    position:fixed; right:0; top:0; height:100vh; width:92%; max-width:420px;
+    background:linear-gradient(180deg, rgba(6,41,72,0.98), rgba(6,41,72,0.98));
+    box-shadow:-12px 0 40px rgba(2,20,40,0.6); transform:translateX(110%); transition:transform var(--transition);
+    z-index:1500; padding:18px; overflow-y:auto; border-left:1px solid rgba(249,168,37,0.06);
+  }
+  .cart-drawer.open{ transform:translateX(0); }
+  .cart-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .close-cart{ background:transparent; border:0; color:var(--gris-claro); font-size:1.6rem; cursor:pointer; }
+  .cart-list{ display:flex; flex-direction:column; gap:10px; margin-bottom:14px;}
+  .cart-item{ display:flex; justify-content:space-between; gap:8px; align-items:center; padding:8px; border-radius:8px; background:rgba(255,255,255,0.02);}
+  .qty-controls{ display:flex; gap:6px; align-items:center; }
+  .qty-controls button{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--gris-claro); padding:6px 8px; border-radius:6px; cursor:pointer; }
+  .cart-total{ text-align:right; font-weight:700; color:var(--dorado); margin-bottom:10px; }
 
-    /* ====================
-       PANTALLA DE BIENVENIDA
-       ==================== */
-    .splash {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--azul-profundo);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      overflow: hidden;
-    }
+  .cart-actions{ display:flex; flex-direction:column; gap:8px; }
+  .btn-primary{ background:var(--dorado); color:var(--azul-oscuro); border:0; padding:10px; border-radius:10px; font-weight:700; cursor:pointer; }
+  .btn-outline{ background:transparent; color:var(--gris-claro); border:1px solid rgba(255,255,255,0.06); padding:10px; border-radius:10px; cursor:pointer; }
 
-    .splash-content {
-      text-align: center;
-      opacity: 0;
-      transform: translateY(20px);
-    }
+  /* FORM */
+  .form-row{ display:flex; gap:8px; flex-direction:column; margin-bottom:8px;}
+  .form-row input, .form-row textarea, .form-row select{
+    border-radius:8px; padding:10px; border:1px solid rgba(255,255,255,0.06);
+    background:rgba(255,255,255,0.02); color:var(--gris-claro);
+  }
+  .small-note{ font-size:0.8rem; color:var(--gris-claro); margin-top:6px; }
 
-    .logo {
-      font-size: 2.8rem;
-      font-family: 'Playfair Display', serif;
-      color: var(--blanco);
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 10px rgba(249, 168, 37, 0.5);
-    }
+  /* TOASTS */
+  .toast{
+    position:fixed; left:50%; transform:translateX(-50%); top:18px; background: #2e7d32; color:white;
+    padding:10px 14px; border-radius:8px; box-shadow:var(--sombra); z-index:2000; opacity:0; transition:opacity .25s;
+  }
+  .toast.show{ opacity:1; }
 
-    .tagline {
-      font-style: italic;
-      color: var(--gris-suave);
-      font-size: 1rem;
-    }
+  /* MODAL (Imagen grande al hacer clic en nombre) */
+  .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:1600; background:rgba(2,10,20,0.6); padding:20px; }
+  .modal.open{ display:flex; }
+  .modal-card{ width:100%; max-width:720px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border-radius:14px; overflow:hidden; }
+  .modal-img{ width:100%; height:320px; object-fit:cover; display:block; }
+  .modal-body{ padding:12px; color:var(--gris-claro); }
+  .modal-body h3{ color:var(--dorado); margin-bottom:6px; font-family:'Playfair Display'; }
+  .modal-close{ position:absolute; top:18px; right:18px; background:transparent; border:0; color:var(--gris-claro); font-size:1.6rem; cursor:pointer; }
 
-    .bruma {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(249, 168, 37, 0.1) 0%, transparent 70%);
-      opacity: 0.3;
-      animation: pulseBruma 8s ease-in-out infinite;
-      pointer-events: none;
-    }
+  /* FLOAT BUTTONS */
+  .float-ws{ position:fixed; right:16px; bottom:20px; background:#25D366; width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; box-shadow:var(--sombra); z-index:1400; }
+  .float-cart{ position:fixed; right:88px; bottom:20px; background:var(--dorado); width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--azul-oscuro); box-shadow:var(--sombra); z-index:1400; cursor:pointer; }
 
-    @keyframes pulseBruma {
-      0%, 100% { transform: scale(1); opacity: 0.3; }
-      50% { transform: scale(1.05); opacity: 0.5; }
-    }
+  footer{ padding:18px 5%; text-align:center; font-size:0.9rem; color:var(--gris-claro); margin-top:16px; }
 
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ====================
-       APP PRINCIPAL
-       ==================== */
-    .app {
-      display: none;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    main {
-      flex: 1;
-      padding: 1.5rem 5%;
-      overflow-x: hidden;
-    }
-
-    .container {
-      max-width: 100%;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
-
-    .section-title::after {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 2px;
-      background: var(--dorado-sutil);
-      margin: 0.8rem auto;
-      border-radius: 10px;
-    }
-
-    /* ====================
-       CATEGORÍAS
-       ==================== */
-    .menu-categories {
-      display: flex;
-      overflow-x: auto;
-      gap: 0.8rem;
-      padding: 0.5rem 0 1.5rem;
-      margin-bottom: 1rem;
-      scrollbar-width: none;
-    }
-
-    .menu-categories::-webkit-scrollbar {
-      display: none;
-    }
-
-    .category-btn {
-      padding: 0.6rem 1.2rem;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(249, 168, 37, 0.3);
-      color: var(--gris-suave);
-      border-radius: 30px;
-      white-space: nowrap;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: var(--transicion);
-    }
-
-    .category-btn.active, .category-btn:hover {
-      background: var(--dorado-sutil);
-      color: var(--azul-profundo);
-      transform: scale(1.05);
-    }
-
-    /* ====================
-       MENÚ COMPACTO
-       ==================== */
-    .menu-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-
-    .menu-item {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: var(--transicion);
-      opacity: 0;
-      transform: translateY(15px);
-    }
-
-    .menu-item img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-bottom: 1px solid rgba(249, 168, 37, 0.2);
-    }
-
-    .menu-item-content {
-      padding: 1rem;
-    }
-
-    .menu-item h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .menu-item .price {
-      font-weight: 700;
-      color: var(--dorado-sutil);
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .menu-item p {
-      font-size: 0.85rem;
-      color: var(--gris-suave);
-      line-height: 1.4;
-    }
-
-    .add-to-cart {
-      display: block;
-      width: 100%;
-      padding: 0.7rem;
-      background: rgba(249, 168, 37, 0.2);
-      color: var(--dorado-sutil);
-      border: 1px solid var(--dorado-sutil);
-      border-radius: 6px;
-      text-align: center;
-      cursor: pointer;
-      font-size: 0.95rem;
-      margin-top: 0.5rem;
-      transition: var(--transicion);
-    }
-
-    .add-to-cart:hover {
-      background: var(--dorado-sutil);
-      color: var(--azul-profundo);
-      transform: translateY(-2px);
-    }
-
-    /* ====================
-       CARRITO COMPACTO
-       ==================== */
-    .cart {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 90%;
-      max-width: 400px;
-      height: 100vh;
-      background: rgba(10, 46, 92, 0.98);
-      backdrop-filter: blur(10px);
-      border-left: 1px solid rgba(249, 168, 37, 0.3);
-      padding: 1.5rem;
-      z-index: 1000;
-      transition: right 0.4s ease;
-      overflow-y: auto;
-    }
-
-    .cart.open {
-      right: 0;
-    }
-
-    .cart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .close-cart {
-      background: none;
-      border: none;
-      color: var(--gris-suave);
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: var(--transicion);
-    }
-
-    .close-cart:hover {
-      transform: rotate(90deg);
-    }
-
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.8rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 0.9rem;
-    }
-
-    .cart-total {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin: 1rem 0;
-      text-align: right;
-      color: var(--dorado-sutil);
-    }
-
-    .cart-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .cart-btn {
-      padding: 0.9rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: var(--transicion);
-    }
-
-    .btn-pay {
-      background: var(--dorado-sutil);
-      color: var(--azul-profundo);
-    }
-
-    .btn-cash {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--gris-suave);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .cart-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    /* ====================
-       FORMULARIO CONTRA ENTREGA
-       ==================== */
-    .cash-form {
-      margin-top: 1rem;
-      display: none;
-    }
-
-    .cash-form input,
-    .cash-form textarea {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 0.7rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--blanco);
-      font-size: 0.9rem;
-    }
-
-    .cash-form textarea {
-      height: 80px;
-      resize: none;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 0.8rem;
-      background: var(--dorado-sutil);
-      color: var(--azul-profundo);
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-
-    /* ====================
-       NUESTRA ESENCIA
-       ==================== */
-    .essence {
-      padding: 2rem 0;
-      text-align: center;
-      font-style: italic;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: var(--gris-suave);
-    }
-
-    .essence-img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin: 1rem 0;
-      border: 1px solid rgba(249, 168, 37, 0.2);
-    }
-
-    /* ====================
-       REDES Y WHATSAPP
-       ==================== */
-    .social-links {
-      text-align: center;
-      margin: 1.5rem 0;
-    }
-
-    .social-links a {
-      color: var(--dorado-sutil);
-      font-size: 1.5rem;
-      margin: 0 1rem;
-      transition: var(--transicion);
-    }
-
-    .social-links a:hover {
-      transform: scale(1.2) rotate(5deg);
-    }
-
-    .whatsapp-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: #25D366;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1.5rem;
-      box-shadow: var(--sombra-suave);
-      transition: var(--transicion);
-      cursor: pointer;
-      z-index: 999;
-    }
-
-    .whatsapp-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
-    }
-
-    .cart-btn-fixed {
-      position: fixed;
-      bottom: 20px;
-      right: 80px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--dorado-sutil);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--azul-profundo);
-      font-size: 1.3rem;
-      box-shadow: 0 4px 15px rgba(249, 168, 37, 0.4);
-      transition: var(--transicion);
-      cursor: pointer;
-      z-index: 999;
-    }
-
-    .cart-btn-fixed:hover {
-      transform: scale(1.1);
-    }
-
-    /* ====================
-       QR PAGO
-       ==================== */
-    .qr-payment {
-      text-align: center;
-      margin: 1rem 0;
-      display: none;
-    }
-
-    .qr-payment img {
-      width: 150px;
-      height: 150px;
-      margin: 0 auto;
-      border-radius: 12px;
-      background: white;
-      padding: 5px;
-    }
-
-    .qr-payment p {
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-    }
-
-    /* ====================
-       ALERTA DE ÉXITO
-       ==================== */
-    .success-alert {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(46, 125, 50, 0.9);
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      z-index: 2000;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    /* ====================
-       RESPONSIVE
-       ==================== */
-    @media (min-width: 768px) {
-      .cart {
-        width: 350px;
-      }
-      .cart-btn-fixed, .whatsapp-btn {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5rem;
-        bottom: 30px;
-        right: 30px;
-      }
-      .cart-btn-fixed {
-        right: 100px;
-      }
-      .menu-item {
-        border-radius: 15px;
-      }
-      .menu-item img {
-        height: 180px;
-      }
-    }
-  </style>
+  /* DESKTOP */
+  @media(min-width:900px){
+    .menu-list{ padding:0 8%; display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+    .card{ height:120px; align-items:flex-start;}
+    .card-img{ width:140px; height:100%; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- PANTALLA DE BIENVENIDA -->
-  <div class="splash">
-    <div class="bruma"></div>
-    <div class="splash-content">
-      <h1 class="logo">BRUMA</h1>
-      <p class="tagline">Cocina caribeña saludable con alma ancestral</p>
+<!-- SPLASH -->
+<div class="splash" id="splash" role="dialog" aria-modal="true" aria-label="Bienvenida BRUMA">
+  <div class="bruma-anim" aria-hidden="true"></div>
+  <div class="brand">
+    <h1>BRUMA</h1>
+    <p>Café & Croffle — Cocina Caribeña Saludable con alma ancestral</p>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="app" aria-hidden="true">
+  <header>
+    <div class="logo-small">
+      <h2>BRUMA</h2>
+      <span>Café & Croffle</span>
+    </div>
+    <div aria-hidden="true">
+      <small style="color:var(--gris-claro)">Horario: 9:00 – 18:00</small>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search" role="search">
+      <i class="fas fa-search" style="color:var(--gris-claro)"></i>
+      <input id="searchInput" type="search" placeholder="Busca croffles, bowls o productos..." aria-label="Buscar productos" />
+      <button id="clearSearch" title="Limpiar" style="background:transparent;border:none;color:var(--gris-claro)"><i class="fas fa-times"></i></button>
     </div>
   </div>
 
-  <!-- ALERTA DE ÉXITO -->
-  <div class="success-alert" id="successAlert">Pedido enviado con éxito. ¡Gracias por conectar con BRUMA!</div>
-
-  <!-- APP PRINCIPAL -->
-  <div class="app">
-    <main>
-      <!-- MENÚ -->
-      <section id="menu" class="menu-section">
-        <div class="container">
-          <h2 class="section-title">Nuestros Sabores</h2>
-          
-          <div class="menu-categories">
-            <button class="category-btn active" data-category="all">Todos</button>
-            <button class="category-btn" data-category="croffle">Croffles</button>
-            <button class="category-btn" data-category="bowl">Bowls</button>
-            <button class="category-btn" data-category="bebida">Bebidas</button>
-            <button class="category-btn" data-category="postre">Postres</button>
-          </div>
-
-          <div class="menu-grid" id="menuGrid">
-            <!-- Croffles -->
-            <div class="menu-item" data-category="croffle">
-              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Raíz del Sol">
-              <div class="menu-item-content">
-                <h3>Raíz del Sol</h3>
-                <span class="price">$18.000</span>
-                <p>Zucchini, tomate asado, crema de queso, balsámico</p>
-                <button class="add-to-cart" data-name="Raíz del Sol" data-price="18000" data-category="croffle">Añadir</button>
-              </div>
-            </div>
-            <div class="menu-item" data-category="croffle">
-              <img src="https://images.unsplash.com/photo-1604152135889-1d0f18d47d81?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Dulce Niebla">
-              <div class="menu-item-content">
-                <h3>Dulce Niebla</h3>
-                <span class="price">$8.000</span>
-                <p>Miel de la sierra, almendra, azúcar pulverizada</p>
-                <button class="add-to-cart" data-name="Dulce Niebla" data-price="8000" data-category="croffle">Añadir</button>
-              </div>
-            </div>
-            <div class="menu-item" data-category="croffle">
-              <img src="https://images.unsplash.com/photo-1565299507177-b0ac66c7928c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Flor del hongo">
-              <div class="menu-item-content">
-                <h3>Flor del hongo</h3>
-                <span class="price">$15.500</span>
-                <p>Crema de quesos artesanales, rúgula fresca y setas doradas al fuego</p>
-                <button class="add-to-cart" data-name="Flor del hongo" data-price="15500" data-category="croffle">Añadir</button>
-              </div>
-            </div>
-            <div class="menu-item" data-category="croffle">
-              <img src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Brasa Serena">
-              <div class="menu-item-content">
-                <h3>Brasa Serena</h3>
-                <span class="price">$23.900</span>
-                <p>Croffle crujiente con durazno asado, queso cottage, jamón serrano, miel picante de ají dulce y albahaca</p>
-                <button class="add-to-cart" data-name="Brasa Serena" data-price="23900" data-category="croffle">Añadir</button>
-              </div>
-            </div>
-
-            <!-- Bowls -->
-            <div class="menu-item" data-category="bowl">
-              <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Bowl Arhuaka">
-              <div class="menu-item-content">
-                <h3>Bowl Arhuaka</h3>
-                <span class="price">$23.900</span>
-                <p>Lechuga, rúgula, espinaca, manzana, nuez tostada, arándanos, queso feta, miel de la sierra</p>
-                <button class="add-to-cart" data-name="Bowl Arhuaka" data-price="23900" data-category="bowl">Añadir</button>
-              </div>
-            </div>
-            <div class="menu-item" data-category="bowl">
-              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Bowl Kogui">
-              <div class="menu-item-content">
-                <h3>Bowl Kogui</h3>
-                <span class="price">$23.500</span>
-                <p>Arroz de coco, frijol cabecinegro, plátano maduro asado, maíz tostado, guacamole con limón y ají</p>
-                <button class="add-to-cart" data-name="Bowl Kogui" data-price="23500" data-category="bowl">Añadir</button>
-              </div>
-            </div>
-
-            <!-- Bebidas -->
-            <div class="menu-item" data-category="bebida">
-              <img src="https://images.unsplash.com/photo-1626082927389-6cd097cee6a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Energía Ancestral">
-              <div class="menu-item-content">
-                <h3>Energía Ancestral</h3>
-                <span class="price">$9.500</span>
-                <p>Maracuyá, miel, leche vegetal, jengibre</p>
-                <button class="add-to-cart" data-name="Energía Ancestral" data-price="9500" data-category="bebida">Añadir</button>
-              </div>
-            </div>
-            <div class="menu-item" data-category="bebida">
-              <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Limonada de coco">
-              <div class="menu-item-content">
-                <h3>Limonada de coco</h3>
-                <span class="price">$10.000</span>
-                <p>Limonada natural con coco y menta</p>
-                <button class="add-to-cart" data-name="Limonada de coco" data-price="10000" data-category="bebida">Añadir</button>
-              </div>
-            </div>
-
-            <!-- Postres -->
-            <div class="menu-item" data-category="postre">
-              <img src="https://images.unsplash.com/photo-1565299507177-b0ac66c7928c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Brûlée del Sol">
-              <div class="menu-item-content">
-                <h3>Brûlée del Sol</h3>
-                <span class="price">$9.900</span>
-                <p>Crema suave con vainilla y limón de la Sierra, caramelo dorado sellado al fuego</p>
-                <button class="add-to-cart" data-name="Brûlée del Sol" data-price="9900" data-category="postre">Añadir</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- NUESTRA ESENCIA -->
-      <section id="essence" class="essence-section">
-        <div class="container">
-          <h2 class="section-title">Nuestra Esencia</h2>
-          <div class="essence">
-            <p>Somos hijos de la Sierra Nevada, la montaña más alta del mundo que nace desde el mar. Cada ingrediente viene de la tierra que respira, del agua que purifica, del fuego que transforma.</p>
-            <p>BRUMA no es solo comida. Es un ritual. Un puente entre el mundo visible y el invisible. Entre el presente y la memoria de nuestros ancestros. Cocinamos con silencio, con atención, con intención.</p>
-            <p>Desde el primer aliento de bruma matutina hasta el último rayo de sol en el mar, cada bocado es una ofrenda a la vida. Bienvenido a la experiencia BRUMA.</p>
-          </div>
-          <img src="https://images.unsplash.com/photo-1581888227599-7798ed782eec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Sierra Nevada" class="essence-img">
-          
-          <div class="social-links">
-            <a href="https://instagram.com/brumacocinaoculta" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://tiktok.com/@brumacocinaoculta" target="_blank"><i class="fab fa-tiktok"></i></a>
-          </div>
-        </div>
-      </section>
-    </main>
+  <div class="cats" role="tablist" aria-label="Categorías">
+    <button class="cat-btn active" data-cat="all">Todos</button>
+    <button class="cat-btn" data-cat="croffle">Croffles</button>
+    <button class="cat-btn" data-cat="bowl">Bowls</button>
+    <button class="cat-btn" data-cat="bebida">Bebidas</button>
+    <button class="cat-btn" data-cat="postre">Postres</button>
+    <button class="cat-btn" data-cat="tienda">Tienda</button>
   </div>
 
-  <!-- CARRITO DE COMPRAS -->
-  <div class="cart" id="cart">
-    <div class="cart-header">
-      <h3>Tu Pedido</h3>
-      <button class="close-cart">&times;</button>
-    </div>
-    <div class="cart-items" id="cartItems">
-      <!-- Items añadidos -->
-    </div>
-    <div class="cart-total" id="cartTotal">Total: $0</div>
+  <section class="menu-list" id="menuList" aria-live="polite"></section>
 
-    <!-- OPCIÓN DE PAGO CON QR -->
-    <div class="qr-payment" id="qrPayment">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://link-de-pago.com/bruma" alt="QR Pago">
-      <p>Escanea para pagar con Nequi, Daviplata o PayU</p>
-    </div>
+  <footer>
+    © <span id="year"></span> BRUMA • Síguenos en
+    <a href="https://instagram.com/brumacocinaoculta" target="_blank" style="color:var(--dorado); text-decoration:none; margin-left:6px">Instagram</a>
+  </footer>
+</div>
 
-    <!-- BOTONES DE PAGO -->
-    <div class="cart-actions">
-      <button class="cart-btn btn-pay" id="payOnlineBtn">Pagar con QR</button>
-      <div class="cash-form" id="cashForm">
-        <h4 style="margin-bottom: 0.8rem; color: var(--dorado-sutil);">Datos para entrega</h4>
-        <input type="text" placeholder="Tu nombre" id="cashName" required />
-        <input type="text" placeholder="Dirección" id="cashAddress" required />
-        <input type="text" placeholder="Teléfono" id="cashPhone" required />
-        <textarea id="cashNotes" placeholder="Instrucciones (opcional)"></textarea>
-        <button class="submit-btn" id="sendToWhatsApp">Enviar Pedido por WhatsApp</button>
+<!-- CART DRAWER -->
+<aside class="cart-drawer" id="cartDrawer" aria-hidden="true" role="dialog" aria-label="Carrito de compras">
+  <div class="cart-header">
+    <strong style="color:var(--dorado)">Tu Pedido</strong>
+    <button class="close-cart" id="closeCart" aria-label="Cerrar carrito">&times;</button>
+  </div>
+  <div class="cart-list" id="cartList"></div>
+  <div class="cart-total" id="cartTotal">Total: $0</div>
+
+  <div class="cart-actions">
+    <button class="btn-primary" id="checkoutBtn">Ir al Pago</button>
+    <button class="btn-outline" id="clearCartBtn">Vaciar carrito</button>
+  </div>
+
+  <hr style="margin:12px 0; border-color:rgba(255,255,255,0.03)">
+
+  <div class="small-note">Envios: Santa Marta (zona limitada). Para pagos en línea la app simula estado de pago.</div>
+</aside>
+
+<!-- MODAL -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Cerrar">&times;</button>
+    <img src="" alt="" class="modal-img" id="modalImg" loading="lazy">
+    <div class="modal-body">
+      <h3 id="modalTitle"></h3>
+      <div id="modalDesc" style="color:var(--gris-claro)"></div>
+      <div style="margin-top:10px; display:flex; gap:8px;">
+        <div style="font-weight:700; color:var(--dorado);" id="modalPrice"></div>
+        <button class="add-btn" id="modalAdd">Añadir</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- BOTONES FIJOS -->
-  <button class="cart-btn-fixed" id="cartBtnFixed">
-    <i class="fas fa-shopping-cart"></i>
-  </button>
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite">¡Pedido enviado!</div>
 
-  <a href="https://wa.me/573023220396?text=Hola,%20quiero%20más%20info%20de%20BRUMA" target="_blank" class="whatsapp-btn">
-    <i class="fab fa-whatsapp"></i>
-  </a>
+<!-- FLOAT BUTTONS -->
+<button class="float-cart" id="floatCart" aria-label="Abrir carrito"><i class="fas fa-shopping-cart"></i></button>
+<a class="float-ws" id="floatWhatsApp" href="#" aria-label="WhatsApp" title="WhatsApp"><i class="fab fa-whatsapp" style="font-size:18px"></i></a>
 
-  <script>
-    // Mostrar app después del splash
-    document.addEventListener('DOMContentLoaded', () => {
-      const splash = document.querySelector('.splash');
-      const splashContent = document.querySelector('.splash-content');
-      
-      setTimeout(() => {
-        splashContent.style.opacity = 0;
-        splashContent.style.transform = 'translateY(-20px)';
-        splashContent.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        
-        setTimeout(() => {
-          splash.style.display = 'none';
-          document.querySelector('.app').style.display = 'flex';
-        }, 800);
-      }, 2500);
+<script>
+/*
+  BRUMA Web-App (single file)
+  - Cambia estas variables si quieres personalizar:
+*/
+const CONFIG = {
+  WHATSAPP_NUMBER: "573023220396", // cambiar número de la cuenta (sin +)
+  BRAND: "BRUMA - Café & Croffle",
+  CURRENCY_SYMBOL: "$",
+  AUTO_SEND_VIA_SERVER: false // si tienes backend con WhatsApp API, activa y conecta sendOrderServer()
+};
 
-      splashContent.style.opacity = 0;
-      splashContent.style.transform = 'translateY(20px)';
-      setTimeout(() => {
-        splashContent.style.opacity = 1;
-        splashContent.style.transform = 'translateY(0)';
-      }, 300);
-    });
+/* ========= Datos de ejemplo: productos (edítalos) =========
+  Cada producto: id, name, category (croffle|bowl|bebida|postre|tienda), price (int), short, longDesc, img
+*/
+const PRODUCTS = [
+  {id:1,name:"Raíz del Sol",category:"croffle",price:18000,short:"Zucchini, tomate asado y balsámico",long:"Croffle dorado, relleno de zucchini salteado, tomate asado y reducción balsámica.",img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=60"},
+  {id:2,name:"Dulce Niebla",category:"croffle",price:8000,short:"Miel de la sierra y almendra",long:"Croffle con generosa miel de la Sierra, almendras tostadas y azúcar pulverizada.",img:"https://images.unsplash.com/photo-1604152135889-1d0f18d47d81?auto=format&fit=crop&w=800&q=60"},
+  {id:3,name:"Flor del Hongo",category:"croffle",price:15500,short:"Setas doradas y crema de queso",long:"Croffle salado con setas doradas al fuego y crema de quesos artesanales.",img:"https://images.unsplash.com/photo-1565299507177-b0ac66c7928c?auto=format&fit=crop&w=800&q=60"},
+  {id:4,name:"Brasa Serena",category:"croffle",price:23900,short:"Durazno asado y miel picante",long:"Croffle crujiente con durazno asado, queso cottage, jamón serrano y miel picante.",img:"https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=800&q=60"},
+  {id:5,name:"Bowl Arhuaka",category:"bowl",price:23900,short:"Verdes, manzana y miel",long:"Mezcla de hojas verdes, manzana, nuez tostada, arándanos y queso feta, aliñado con miel de la sierra.",img:"https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=60"},
+  {id:6,name:"Bowl Kogui",category:"bowl",price:23500,short:"Arroz de coco y plátano",long:"Arroz cremoso de coco, frijol cabecinegro, plátano maduro asado y guacamole.",img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=60"},
+  {id:7,name:"Energía Ancestral",category:"bebida",price:9500,short:"Maracuyá, miel y jengibre",long:"Smoothie energizante con maracuyá, miel local, jengibre y leche vegetal.",img:"https://images.unsplash.com/photo-1626082927389-6cd097cee6a6?auto=format&fit=crop&w=800&q=60"},
+  {id:8,name:"Limonada de Coco",category:"bebida",price:10000,short:"Coco y menta fresca",long:"Limonada natural con crema de coco y menta fresca.",img:"https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=60"},
+  {id:9,name:"Brûlée del Sol",category:"postre",price:9900,short:"Vainilla y limón de la Sierra",long:"Crema ligera con vainilla y limón de la Sierra, con caramelo dorado sellado al fuego.",img:"https://images.unsplash.com/photo-1565299507177-b0ac66c7928c?auto=format&fit=crop&w=800&q=60"},
+  // Productos de tienda
+  {id:101,name:"Mochila BRUMA",category:"tienda",price:45000,short:"Mochila eco con logo BRUMA",long:"Mochila resistente, tela eco, diseño BRUMA. Ideal para tu día a día.",img:"https://images.unsplash.com/photo-1520975911804-1a7d87a8a6f8?auto=format&fit=crop&w=800&q=60"},
+  {id:102,name:"Totuma artesanal",category:"tienda",price:25000,short:"Totuma para servir",long:"Totuma tallada a mano, perfecta para tu ritual de café.",img:"https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=800&q=60"},
+  {id:103,name:"Set de stickers",category:"tienda",price:8000,short:"Stickers BRUMA",long:"Pack de stickers con diseños caribe-místicos.",img:"https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=60"}
+];
 
-    // Carrito de compras
-    const cartBtnFixed = document.getElementById('cartBtnFixed');
-    const cart = document.getElementById('cart');
-    const closeCart = document.querySelector('.close-cart');
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-    const addToCartButtons = document.querySelectorAll('.add-to-cart');
-    const payOnlineBtn = document.getElementById('payOnlineBtn');
-    const qrPayment = document.getElementById('qrPayment');
-    const cashForm = document.getElementById('cashForm');
-    const sendToWhatsApp = document.getElementById('sendToWhatsApp');
-    const successAlert = document.getElementById('successAlert');
+// ========== Estado local ==========
+let state = {
+  products: PRODUCTS,
+  cart: JSON.parse(localStorage.getItem('bruma_cart')||'[]'),
+  search: '',
+  category: 'all'
+};
 
-    let cartList = [];
-    let total = 0;
+/* ====== Utility helpers ====== */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const priceFmt = n => n.toLocaleString();
 
-    cartBtnFixed.addEventListener('click', () => {
-      cart.classList.add('open');
-    });
+document.getElementById('year').textContent = new Date().getFullYear();
 
-    closeCart.addEventListener('click', () => {
-      cart.classList.remove('open');
-    });
+/* ====== RENDER ====== */
+function renderList(){
+  const list = $('#menuList');
+  list.innerHTML = '';
+  const filtered = state.products.filter(p=>{
+    if(state.category!=='all' && p.category!==state.category) return false;
+    if(state.search && !(p.name.toLowerCase().includes(state.search) || p.short.toLowerCase().includes(state.search))) return false;
+    return true;
+  });
+  if(filtered.length===0){
+    list.innerHTML = `<div style="color:var(--gris-claro);padding:18px 0 60px;text-align:center">No hay productos</div>`;
+    return;
+  }
+  filtered.forEach(p=>{
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.setAttribute('data-id',p.id);
+    card.innerHTML = `
+      <figure class="card-img"><img src="${p.img}" alt="${p.name}" loading="lazy"></figure>
+      <div class="card-body">
+        <div class="card-title" role="button" tabindex="0" data-id="${p.id}">${p.name}</div>
+        <div class="card-desc">${p.short}</div>
+        <div class="card-meta">
+          <div class="price">${CONFIG.CURRENCY_SYMBOL}${priceFmt(p.price)}</div>
+          <button class="add-btn" data-id="${p.id}">Añadir</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+  bindListEvents();
+}
 
-    // Alternar entre QR y formulario
-    payOnlineBtn.addEventListener('click', () => {
-      if (payOnlineBtn.textContent.trim() === 'Pagar con QR') {
-        qrPayment.style.display = 'block';
-        cashForm.style.display = 'none';
-        payOnlineBtn.textContent = 'Pago contra entrega';
+/* ====== BIND EVENTS ====== */
+function bindListEvents(){
+  $$('.add-btn').forEach(btn=> btn.onclick = () => addToCart(parseInt(btn.dataset.id)));
+  $$('.card-title').forEach(t => {
+    t.onclick = () => openModal(parseInt(t.dataset.id));
+    t.onkeyup = (e)=> { if(e.key==='Enter') openModal(parseInt(t.dataset.id)); };
+  });
+}
+
+/* ====== CART FUNCTIONS ====== */
+function addToCart(id, qty=1){
+  const product = state.products.find(p=>p.id===id);
+  if(!product) return;
+  const existing = state.cart.find(i=>i.id===id);
+  if(existing) existing.qty += qty;
+  else state.cart.push({id:product.id, name:product.name, price:product.price, qty});
+  saveCart(); renderCart(); showToast('Producto añadido');
+}
+function saveCart(){ localStorage.setItem('bruma_cart', JSON.stringify(state.cart)); }
+function renderCart(){
+  const list = $('#cartList'); list.innerHTML='';
+  if(state.cart.length===0){ list.innerHTML = '<div style="color:var(--gris-claro)">Tu carrito está vacío</div>'; $('#cartTotal').textContent = 'Total: $0'; return; }
+  state.cart.forEach((item,idx)=>{
+    const row = document.createElement('div'); row.className='cart-item';
+    row.innerHTML = `
+      <div style="flex:1"><strong style="color:var(--dorado)">${item.name}</strong><div style="font-size:0.85rem;color:var(--gris-claro)">${CONFIG.CURRENCY_SYMBOL}${priceFmt(item.price)}</div></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <div class="qty-controls">
+          <button data-idx="${idx}" class="dec">-</button>
+          <div style="padding:6px 8px;border-radius:6px;background:rgba(255,255,255,0.03)">${item.qty}</div>
+          <button data-idx="${idx}" class="inc">+</button>
+        </div>
+        <button data-idx="${idx}" class="btn-remove" style="background:transparent;border:0;color:#ff8a80;cursor:pointer">Eliminar</button>
+      </div>
+    `;
+    list.appendChild(row);
+  });
+  // attach events
+  $$('.inc').forEach(b=> b.onclick = e => { const i= +b.dataset.idx; state.cart[i].qty++; saveCart(); renderCart();});
+  $$('.dec').forEach(b=> b.onclick = e => { const i= +b.dataset.idx; state.cart[i].qty = Math.max(1, state.cart[i].qty-1); saveCart(); renderCart();});
+  $$('.btn-remove').forEach(b=> b.onclick = e => { const i= +b.dataset.idx; state.cart.splice(i,1); saveCart(); renderCart();});
+  const total = state.cart.reduce((s,it)=> s + it.qty*it.price, 0);
+  $('#cartTotal').textContent = `Total: ${CONFIG.CURRENCY_SYMBOL}${priceFmt(total)}`;
+}
+
+/* ====== MODAL ====== */
+function openModal(id){
+  const p = state.products.find(x=>x.id===id);
+  if(!p) return;
+  $('#modalImg').src = p.img;
+  $('#modalImg').alt = p.name;
+  $('#modalTitle').textContent = p.name;
+  $('#modalDesc').textContent = p.long;
+  $('#modalPrice').textContent = `${CONFIG.CURRENCY_SYMBOL}${priceFmt(p.price)}`;
+  $('#modalAdd').onclick = ()=> { addToCart(p.id); closeModal(); };
+  $('#modal').classList.add('open'); $('#modal').setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden'; // trap focus minimal
+}
+function closeModal(){ $('#modal').classList.remove('open'); $('#modal').setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+
+/* ====== TOAST ====== */
+function showToast(msg='Listo', ms=2200){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), ms);
+}
+
+/* ====== CHECKOUT FLOW ====== */
+function openCart(){ $('#cartDrawer').classList.add('open'); $('#cartDrawer').setAttribute('aria-hidden','false'); }
+function closeCart(){ $('#cartDrawer').classList.remove('open'); $('#cartDrawer').setAttribute('aria-hidden','true'); }
+
+function clearCart(){ state.cart = []; saveCart(); renderCart(); showToast('Carrito vacío'); }
+
+/* Simular pago: devuelve Promise que resuelve con {status:'success'|'pending'} */
+function simulatePayment(){
+  return new Promise((res) => {
+    // simulación rápida: 60% exitoso, 40% pendiente
+    setTimeout(()=> {
+      const ok = Math.random() < 0.6;
+      res({ status: ok ? 'success' : 'pending' });
+    }, 900);
+  });
+}
+
+/* Generar texto para WhatsApp */
+function buildWhatsAppMessage(paymentStatus){
+  const total = state.cart.reduce((s,it)=> s + it.qty*it.price,0);
+  let text = `*PEDIDO BRUMA*%0A`;
+  text += `Estado de pago: ${paymentStatus}%0A%0A`;
+  text += `Productos:%0A`;
+  state.cart.forEach(it => { text += `• ${it.qty} x ${it.name} - ${CONFIG.CURRENCY_SYMBOL}${priceFmt(it.price*it.qty)}%0A`; });
+  text += `%0ATotal: ${CONFIG.CURRENCY_SYMBOL}${priceFmt(total)}%0A%0A`;
+  text += `Envío: (dirección proporcionada)%0AGracias por elegir BRUMA.`;
+  return text;
+}
+
+/* Enviar a WhatsApp: abre wa.me con mensaje prellenado (esto requiere interacción) */
+/* Para envío automático SIN abrir WhatsApp, necesitas un backend con WhatsApp Business API.
+   Implementa la función sendOrderServer(payload) en tu servidor y activa CONFIG.AUTO_SEND_VIA_SERVER */
+async function sendToWhatsApp(paymentStatus, details={}) {
+  // details = {name,address,phone,notes} si aplica
+  if(state.cart.length===0){ alert('El carrito está vacío'); return; }
+  const msg = buildWhatsAppMessage(paymentStatus);
+  // Si tienes backend y AUTO_SEND_VIA_SERVER=true, llamamos al hook (placeholder)
+  if(CONFIG.AUTO_SEND_VIA_SERVER){
+    // Ejemplo de payload:
+    const payload = {
+      order: state.cart,
+      total: state.cart.reduce((s,it)=> s + it.qty*it.price,0),
+      paymentStatus, details
+    };
+    // Aquí deberías llamar a tu backend: await fetch('/api/sendOrder', {method:'POST', body: JSON.stringify(payload)});
+    // sendOrderServer(payload) // <-- hook para integrar
+    showToast('Pedido enviado (server)'); // feedback
+    // vaciar carrito
+    state.cart = []; saveCart(); renderCart(); closeCart();
+    return;
+  }
+  // Si no hay backend, abrir wa.me
+  const waUrl = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${msg}`;
+  window.open(waUrl,'_blank');
+  showToast('Redirigiendo a WhatsApp...');
+  // vaciar carrito local
+  state.cart = []; saveCart(); renderCart(); closeCart();
+}
+
+/* ====== EVENTS UI ====== */
+document.addEventListener('DOMContentLoaded', () => {
+  // splash
+  setTimeout(()=> {
+    const splash = document.getElementById('splash');
+    splash.style.transition = 'opacity .7s';
+    splash.style.opacity = 0;
+    setTimeout(()=> splash.remove(), 700);
+    $('#app').removeAttribute('aria-hidden');
+  }, 1400);
+
+  // render initial
+  renderList(); renderCart();
+
+  // search
+  $('#searchInput').addEventListener('input', e=>{ state.search = e.target.value.trim().toLowerCase(); renderList(); });
+  $('#clearSearch').addEventListener('click', ()=>{ $('#searchInput').value=''; state.search=''; renderList(); });
+
+  // category buttons
+  $$('.cat-btn').forEach(b=> b.addEventListener('click', function(){
+    $$('.cat-btn').forEach(x=> x.classList.remove('active'));
+    this.classList.add('active');
+    state.category = this.dataset.cat;
+    renderList();
+  }));
+
+  // modal close
+  $('#modalClose').onclick = closeModal;
+  $('#modal').addEventListener('click', (e)=>{ if(e.target===$('#modal')) closeModal(); });
+  document.addEventListener('keydown', (e)=> { if(e.key==='Escape') { closeModal(); closeCart(); } });
+
+  // float cart
+  $('#floatCart').addEventListener('click', openCart);
+  $('#closeCart').addEventListener('click', closeCart);
+  $('#clearCartBtn').addEventListener('click', clearCart);
+
+  // checkout flow
+  $('#checkoutBtn').addEventListener('click', async ()=>{
+    if(state.cart.length===0){ alert('Carrito vacío'); return; }
+    // Abrir formulario simple (prompt) mobile-first
+    const name = prompt('Nombre para el pedido (obligatorio):');
+    if(!name) { alert('Nombre requerido'); return; }
+    const address = prompt('Dirección de entrega (obligatorio):');
+    if(!address) { alert('Dirección requerida'); return; }
+    const phone = prompt('Teléfono (obligatorio):');
+    if(!phone) { alert('Teléfono requerido'); return; }
+    // Elegir forma de pago
+    const payChoice = confirm('¿Quieres intentar pago en línea ahora? (Aceptar = Pago en línea simulado. Cancelar = Pago contra entrega)');
+    if(payChoice){
+      // Simular pago
+      showToast('Procesando pago...');
+      const result = await simulatePayment();
+      if(result.status === 'success'){
+        // enviar WA con estado exitoso
+        await sendToWhatsApp('Pago exitoso', {name,address,phone});
       } else {
-        qrPayment.style.display = 'none';
-        cashForm.style.display = 'block';
-        payOnlineBtn.textContent = 'Pagar con QR';
+        // pago pendiente -> enviar WA con pendiente
+        await sendToWhatsApp('Pago pendiente', {name,address,phone});
       }
-    });
-
-    // Añadir al carrito
-    addToCartButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const name = button.getAttribute('data-name');
-        const price = parseInt(button.getAttribute('data-price'));
-        
-        cartList.push({ name, price });
-        total += price;
-        
-        updateCart();
-        
-        // Efecto
-        button.style.background = '#f9a825';
-        button.style.color = '#0a2e5c';
-        setTimeout(() => {
-          button.style.background = 'rgba(249, 168, 37, 0.2)';
-          button.style.color = '#f9a825';
-        }, 300);
-      });
-    });
-
-    function updateCart() {
-      cartItems.innerHTML = '';
-      cartList.forEach((item, index) => {
-        const cartItem = document.createElement('div');
-        cartItem.classList.add('cart-item');
-        cartItem.innerHTML = `
-          <div>${item.name}</div>
-          <div>$${item.price.toLocaleString()} <button class="remove-item" data-index="${index}" style="color: #d32f2f; background: none; border: none; cursor: pointer;">×</button></div>
-        `;
-        cartItems.appendChild(cartItem);
-      });
-
-      // Eventos para eliminar
-      document.querySelectorAll('.remove-item').forEach(button => {
-        button.addEventListener('click', (e) => {
-          const index = parseInt(e.target.getAttribute('data-index'));
-          total -= cartList[index].price;
-          cartList.splice(index, 1);
-          updateCart();
-        });
-      });
-
-      cartTotal.textContent = `Total: $${total.toLocaleString()}`;
+    } else {
+      // Pago contra entrega -> enviar WA con contra entrega
+      await sendToWhatsApp('Contra entrega', {name,address,phone});
     }
+  });
 
-    // Enviar pedido por WhatsApp
-    sendToWhatsApp.addEventListener('click', () => {
-      const name = document.getElementById('cashName').value;
-      const address = document.getElementById('cashAddress').value;
-      const phone = document.getElementById('cashPhone').value;
-      const notes = document.getElementById('cashNotes').value;
+  // float WhatsApp direct quick message (info)
+  $('#floatWhatsApp').addEventListener('click', (e)=>{
+    const url = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola! Quiero información de BRUMA')}`;
+    window.open(url,'_blank');
+  });
+});
 
-      if (!name || !address || !phone) {
-        alert('Por favor completa tu nombre, dirección y teléfono');
-        return;
-      }
+/* ====== Placeholder hook for server integration ======
+  Implement on your server:
+  async function sendOrderServer(payload){
+    // call WhatsApp Business Cloud API or provider to send message automatically
+    // return {ok:true}
+  }
+  Then set CONFIG.AUTO_SEND_VIA_SERVER = true
+============================================== */
 
-      let message = `*PEDIDO BRUMA - CONTRA ENTREGA*\n\n`;
-      message += `Cliente: ${name}\n`;
-      message += `Teléfono: ${phone}\n`;
-      message += `Dirección: ${address}\n`;
-      if (notes) message += `Notas: ${notes}\n\n`;
-      else message += '\n';
-
-      cartList.forEach(item => {
-        message += `• ${item.name} - $${item.price.toLocaleString()}\n`;
-      });
-      message += `\n*Total: $${total.toLocaleString()}*\n\nGracias por tu pedido.`;
-
-      const url = `https://wa.me/573023220396?text=${encodeURIComponent(message)}`;
-      window.open(url, '_blank');
-
-      // Mostrar alerta de éxito
-      successAlert.style.opacity = 1;
-      setTimeout(() => {
-        successAlert.style.opacity = 0;
-      }, 3000);
-
-      // Limpiar carrito
-      cartList = [];
-      total = 0;
-      updateCart();
-      cart.classList.remove('open');
-    });
-
-    // Animaciones al hacer scroll
-    const menuItems = document.querySelectorAll('.menu-item');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
-          }, index * 100);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    menuItems.forEach(item => {
-      item.style.opacity = 0;
-      item.style.transform = 'translateY(15px)';
-      item.style.transition = 'all 0.4s ease';
-      observer.observe(item);
-    });
-
-    // Filtros de categoría
-    const categoryButtons = document.querySelectorAll('.category-btn');
-    categoryButtons.forEach(btn => {
-      btn.addEventListener('click', function() {
-        const category = this.getAttribute('data-category');
-        
-        categoryButtons.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-
-        menuItems.forEach(item => {
-          if (category === 'all' || item.getAttribute('data-category') === category) {
-            item.style.display = 'flex';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
-    });
-  </script>
-
+</script>
 </body>
 </html>
