@@ -1,19 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sol y Mar Hotel | Eco-Friendly Beachfront Retreat</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>BRUMA – Cocina Caribeña Saludable</title>
+  <meta name="description" content="Croffles, bowls y sabores ancestrales saludables. Hecho con intención, fuego y silencio.">
+
+  <!-- Google Fonts: Playfair Display + Lato -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (íconos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
   <style>
+    /* ====================
+       VARIABLES Y RESET
+       ==================== */
     :root {
-      --primary: #0177b7;
-      --primary-dark: #015f91;
-      --secondary: #f8a55f;
-      --accent: #34c7a9;
-      --light: #f5fafc;
-      --dark: #333;
-      --gray: #666;
+      --azul-profundo: #0a2e5c;
+      --blanco: #ffffff;
+      --dorado-sutil: #f9a825;
+      --gris-suave: #f8f9fa;
+      --sombra-suave: 0 4px 20px rgba(10, 46, 92, 0.3);
+      --transicion: all 0.3s ease;
     }
 
     * {
@@ -23,502 +32,871 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.7;
-      color: var(--dark);
-      background: var(--light);
+      font-family: 'Lato', sans-serif;
+      background: var(--azul-profundo);
+      color: var(--blanco);
+      overflow-x: hidden;
+      line-height: 1.6;
+      touch-action: manipulation;
     }
 
-    /* Hero Video (Intro) */
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 75vh;
-      overflow: hidden;
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--dorado-sutil);
     }
 
-    .hero iframe {
-      position: absolute;
+    /* ====================
+       PANTALLA DE BIENVENIDA
+       ==================== */
+    .splash {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      border: none;
-      object-fit: cover;
-    }
-
-    .hero-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+      background: var(--azul-profundo);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: white;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .splash-content {
       text-align: center;
-      z-index: 2;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
-    .hero-overlay h1 {
-      font-size: 3.8rem;
+    .logo {
+      font-size: 2.8rem;
+      font-family: 'Playfair Display', serif;
+      color: var(--blanco);
       margin-bottom: 0.5rem;
-      font-weight: 700;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      text-shadow: 0 0 10px rgba(249, 168, 37, 0.5);
     }
 
-    .hero-overlay p {
-      font-size: 1.5rem;
-      max-width: 800px;
-      opacity: 0.95;
-      margin-bottom: 2rem;
+    .tagline {
+      font-style: italic;
+      color: var(--gris-suave);
+      font-size: 1rem;
     }
 
-    .btn-primary {
-      display: inline-block;
-      background: var(--secondary);
-      color: white;
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      font-weight: 600;
-      border-radius: 50px;
-      text-decoration: none;
-      box-shadow: 0 5px 15px rgba(248, 165, 95, 0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .bruma {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(249, 168, 37, 0.1) 0%, transparent 70%);
+      opacity: 0.3;
+      animation: pulseBruma 8s ease-in-out infinite;
+      pointer-events: none;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(248, 165, 95, 0.4);
+    @keyframes pulseBruma {
+      0%, 100% { transform: scale(1); opacity: 0.3; }
+      50% { transform: scale(1.05); opacity: 0.5; }
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ====================
+       APP PRINCIPAL
+       ==================== */
+    .app {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+      padding: 1.5rem 5%;
+      overflow-x: hidden;
     }
 
     .container {
-      max-width: 1100px;
-      margin: 4rem auto;
-      padding: 0 1.5rem;
+      max-width: 100%;
     }
 
-    section {
-      background: white;
-      padding: 3rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      margin-bottom: 3rem;
-      position: relative;
-    }
-
-    section::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 6px;
-      height: 100%;
-      background: var(--primary);
-    }
-
-    h2 {
-      color: var(--primary);
-      font-size: 2rem;
-      margin-bottom: 1.8rem;
-      position: relative;
-      padding-bottom: 0.8rem;
-    }
-
-    h2::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 70px;
-      height: 4px;
-      background: var(--secondary);
-      border-radius: 2px;
-    }
-
-    p {
-      color: var(--gray);
-      margin-bottom: 1.2rem;
-      font-size: 1.1rem;
-    }
-
-    .highlight {
-      color: var(--primary);
-      font-weight: 600;
-    }
-
-    /* Features Grid */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-      margin: 2rem 0;
-    }
-
-    .feature-card {
+    .section-title {
       text-align: center;
-      padding: 1.8rem;
-      border-radius: 12px;
-      background: #f9fbfd;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      border-left: 4px solid var(--accent);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      position: relative;
     }
 
-    .feature-card i {
-      font-size: 2.5rem;
-      color: var(--primary);
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 2px;
+      background: var(--dorado-sutil);
+      margin: 0.8rem auto;
+      border-radius: 10px;
+    }
+
+    /* ====================
+       CATEGORÍAS
+       ==================== */
+    .menu-categories {
+      display: flex;
+      overflow-x: auto;
+      gap: 0.8rem;
+      padding: 0.5rem 0 1.5rem;
       margin-bottom: 1rem;
+      scrollbar-width: none;
     }
 
-    .feature-card h3 {
-      color: var(--primary-dark);
-      margin-bottom: 0.8rem;
+    .menu-categories::-webkit-scrollbar {
+      display: none;
     }
 
-    /* Gallery */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.8rem;
-      margin-top: 2rem;
+    .category-btn {
+      padding: 0.6rem 1.2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(249, 168, 37, 0.3);
+      color: var(--gris-suave);
+      border-radius: 30px;
+      white-space: nowrap;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transicion);
     }
 
-    .gallery-item img {
+    .category-btn.active, .category-btn:hover {
+      background: var(--dorado-sutil);
+      color: var(--azul-profundo);
+      transform: scale(1.05);
+    }
+
+    /* ====================
+       MENÚ COMPACTO
+       ==================== */
+    .menu-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .menu-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: var(--transicion);
+      opacity: 0;
+      transform: translateY(15px);
+    }
+
+    .menu-item img {
       width: 100%;
-      height: 220px;
+      height: 150px;
+      object-fit: cover;
+      border-bottom: 1px solid rgba(249, 168, 37, 0.2);
+    }
+
+    .menu-item-content {
+      padding: 1rem;
+    }
+
+    .menu-item h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .menu-item .price {
+      font-weight: 700;
+      color: var(--dorado-sutil);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-item p {
+      font-size: 0.85rem;
+      color: var(--gris-suave);
+      line-height: 1.4;
+    }
+
+    .add-to-cart {
+      display: block;
+      width: 100%;
+      padding: 0.7rem;
+      background: rgba(249, 168, 37, 0.2);
+      color: var(--dorado-sutil);
+      border: 1px solid var(--dorado-sutil);
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+      transition: var(--transicion);
+    }
+
+    .add-to-cart:hover {
+      background: var(--dorado-sutil);
+      color: var(--azul-profundo);
+      transform: translateY(-2px);
+    }
+
+    /* ====================
+       CARRITO COMPACTO
+       ==================== */
+    .cart {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 90%;
+      max-width: 400px;
+      height: 100vh;
+      background: rgba(10, 46, 92, 0.98);
+      backdrop-filter: blur(10px);
+      border-left: 1px solid rgba(249, 168, 37, 0.3);
+      padding: 1.5rem;
+      z-index: 1000;
+      transition: right 0.4s ease;
+      overflow-y: auto;
+    }
+
+    .cart.open {
+      right: 0;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      color: var(--gris-suave);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transicion);
+    }
+
+    .close-cart:hover {
+      transform: rotate(90deg);
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+    }
+
+    .cart-total {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 1rem 0;
+      text-align: right;
+      color: var(--dorado-sutil);
+    }
+
+    .cart-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .cart-btn {
+      padding: 0.9rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: var(--transicion);
+    }
+
+    .btn-pay {
+      background: var(--dorado-sutil);
+      color: var(--azul-profundo);
+    }
+
+    .btn-cash {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--gris-suave);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .cart-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ====================
+       FORMULARIO CONTRA ENTREGA
+       ==================== */
+    .cash-form {
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .cash-form input,
+    .cash-form textarea {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--blanco);
+      font-size: 0.9rem;
+    }
+
+    .cash-form textarea {
+      height: 80px;
+      resize: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.8rem;
+      background: var(--dorado-sutil);
+      color: var(--azul-profundo);
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    /* ====================
+       NUESTRA ESENCIA
+       ==================== */
+    .essence {
+      padding: 2rem 0;
+      text-align: center;
+      font-style: italic;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--gris-suave);
+    }
+
+    .essence-img {
+      width: 100%;
+      height: 200px;
       object-fit: cover;
       border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      margin: 1rem 0;
+      border: 1px solid rgba(249, 168, 37, 0.2);
     }
 
-    /* Final Video Section */
-    .final-video-section {
+    /* ====================
+       REDES Y WHATSAPP
+       ==================== */
+    .social-links {
       text-align: center;
-      margin: 4rem auto;
-      padding: 3rem 1.5rem;
-      background: #f0f7fb;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin: 1.5rem 0;
     }
 
-    .final-video-section h2 {
-      color: var(--primary);
+    .social-links a {
+      color: var(--dorado-sutil);
+      font-size: 1.5rem;
+      margin: 0 1rem;
+      transition: var(--transicion);
     }
 
-    .final-video-container {
-      margin: 2rem auto;
-      max-width: 800px;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    .social-links a:hover {
+      transform: scale(1.2) rotate(5deg);
     }
 
-    .final-video-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* Chatbot Button */
-    .chatbot-btn {
+    .whatsapp-btn {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      background: var(--primary);
-      color: white;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
+      background: #25D366;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: var(--sombra-suave);
+      transition: var(--transicion);
       cursor: pointer;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-      z-index: 1000;
+      z-index: 999;
     }
 
-    .chatbot-btn:hover {
+    .whatsapp-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+    }
+
+    .cart-btn-fixed {
+      position: fixed;
+      bottom: 20px;
+      right: 80px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--dorado-sutil);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--azul-profundo);
+      font-size: 1.3rem;
+      box-shadow: 0 4px 15px rgba(249, 168, 37, 0.4);
+      transition: var(--transicion);
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    .cart-btn-fixed:hover {
       transform: scale(1.1);
     }
 
-    /* Chatbot Modal */
-    .chatbot-modal {
+    /* ====================
+       QR PAGO
+       ==================== */
+    .qr-payment {
+      text-align: center;
+      margin: 1rem 0;
       display: none;
-      position: fixed;
-      bottom: 100px;
-      right: 30px;
-      width: 350px;
-      max-height: 500px;
+    }
+
+    .qr-payment img {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      border-radius: 12px;
       background: white;
-      border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-      z-index: 999;
-      overflow: hidden;
+      padding: 5px;
     }
 
-    .chatbot-modal.active {
-      display: block;
+    .qr-payment p {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
     }
 
-    .chatbot-header {
-      background: var(--primary);
+    /* ====================
+       ALERTA DE ÉXITO
+       ==================== */
+    .success-alert {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(46, 125, 50, 0.9);
       color: white;
-      padding: 1rem;
-      text-align: center;
-      font-weight: 600;
-    }
-
-    .chatbot-body {
-      padding: 1.5rem;
-    }
-
-    .chatbot-options button {
-      display: block;
-      width: 100%;
-      padding: 1rem;
-      margin-bottom: 0.8rem;
-      background: #f0f7ff;
-      border: 1px solid #d0e5ff;
-      border-radius: 10px;
-      text-align: left;
-      cursor: pointer;
-      color: var(--primary-dark);
-    }
-
-    .chatbot-options button:hover {
-      background: #e0f0ff;
-    }
-
-    .chat-response {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-left: 4px solid var(--accent);
+      padding: 1rem 2rem;
       border-radius: 8px;
-      font-size: 0.95rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    .chatbot-footer {
-      padding: 1rem;
-      text-align: right;
-      border-top: 1px solid #eee;
-    }
-
-    .close-chat {
-      background: #dc3545;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    footer {
-      background: var(--primary-dark);
-      color: white;
-      text-align: center;
-      padding: 3rem 1.5rem;
-      margin-top: 4rem;
-    }
-
-    footer .social-links a {
-      color: white;
-      margin: 0 1rem;
-      font-size: 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-      .hero-overlay h1 {
-        font-size: 2.8rem;
+    /* ====================
+       RESPONSIVE
+       ==================== */
+    @media (min-width: 768px) {
+      .cart {
+        width: 350px;
       }
-      .hero-overlay p {
-        font-size: 1.2rem;
+      .cart-btn-fixed, .whatsapp-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        bottom: 30px;
+        right: 30px;
       }
-      .btn-primary {
-        font-size: 1.1rem;
-        padding: 0.8rem 1.5rem;
+      .cart-btn-fixed {
+        right: 100px;
       }
-      .container {
-        margin: 2rem auto;
+      .menu-item {
+        border-radius: 15px;
       }
-      section {
-        padding: 2rem;
-      }
-      .chatbot-btn {
-        width: 50px;
-        height: 50px;
-        bottom: 20px;
-        right: 20px;
-      }
-      .chatbot-modal {
-        width: 300px;
-        bottom: 80px;
-        right: 20px;
+      .menu-item img {
+        height: 180px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero Video: Intro -->
-  <div class="hero">
-    <iframe 
-      src="https://i.pinimg.com/1200x/86/a9/16/86a91614502cc472be6a8ec623376497.jpg" 
-      frameborder="0" 
-      allow="autoplay; encrypted-media; fullscreen" 
-      allowfullscreen>
-    </iframe>
-    <div class="hero-overlay">
-      <h1>Sol y Mar Hotel</h1>
-      <p>Disconnect. Recharge. Return to Nature.</p>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSciI1f4k0ZpbUi4Q7FfCOF5tW6aZsWvHWve-NbyIfkzOjN_Vw/viewform" target="_blank" class="btn-primary">
-        Reserve Your Stay
-      </a>
+  <!-- PANTALLA DE BIENVENIDA -->
+  <div class="splash">
+    <div class="bruma"></div>
+    <div class="splash-content">
+      <h1 class="logo">BRUMA</h1>
+      <p class="tagline">Cocina caribeña saludable con alma ancestral</p>
     </div>
   </div>
 
-  <div class="container">
+  <!-- ALERTA DE ÉXITO -->
+  <div class="success-alert" id="successAlert">Pedido enviado con éxito. ¡Gracias por conectar con BRUMA!</div>
 
-    <!-- About -->
-    <section>
-      <h2>About Us</h2>
-      <p>
-        <span class="highlight">Sol y Mar Hotel</span> is an eco-conscious retreat nestled between the ocean and tropical forest. Designed for travelers who want to <strong>unplug from technology</strong> and reconnect with nature, our hotel offers sustainable luxury in a serene coastal setting.
-      </p>
-      <p>
-        From solar-heated pools to farm-to-table dining, every detail reflects our commitment to sustainability. No Wi-Fi in rooms. No digital distractions. Just peace, sea breeze, and authentic experiences.
-      </p>
-    </section>
+  <!-- APP PRINCIPAL -->
+  <div class="app">
+    <main>
+      <!-- MENÚ -->
+      <section id="menu" class="menu-section">
+        <div class="container">
+          <h2 class="section-title">Nuestros Sabores</h2>
+          
+          <div class="menu-categories">
+            <button class="category-btn active" data-category="all">Todos</button>
+            <button class="category-btn" data-category="croffle">Croffles</button>
+            <button class="category-btn" data-category="bowl">Bowls</button>
+            <button class="category-btn" data-category="bebida">Bebidas</button>
+            <button class="category-btn" data-category="postre">Postres</button>
+          </div>
 
-    <!-- Features -->
-    <div class="features-grid">
-      <div class="feature-card">
-        <i class="fas fa-leaf"></i>
-        <h3>100% Eco-Friendly</h3>
-        <p>Solar energy, zero waste, natural materials</p>
-      </div>
-      <div class="feature-card">
-        <i class="fas fa-wifi-slash"></i>
-        <h3>No Digital Distractions</h3>
-        <p>Wi-Fi only in common areas</p>
-      </div>
-      <div class="feature-card">
-        <i class="fas fa-utensils"></i>
-        <h3>Organic Kitchen</h3>
-        <p>Locally sourced, seasonal, plant-rich cuisine</p>
-      </div>
-    </div>
+          <div class="menu-grid" id="menuGrid">
+            <!-- Croffles -->
+            <div class="menu-item" data-category="croffle">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Raíz del Sol">
+              <div class="menu-item-content">
+                <h3>Raíz del Sol</h3>
+                <span class="price">$18.000</span>
+                <p>Zucchini, tomate asado, crema de queso, balsámico</p>
+                <button class="add-to-cart" data-name="Raíz del Sol" data-price="18000" data-category="croffle">Añadir</button>
+              </div>
+            </div>
+            <div class="menu-item" data-category="croffle">
+              <img src="https://images.unsplash.com/photo-1604152135889-1d0f18d47d81?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Dulce Niebla">
+              <div class="menu-item-content">
+                <h3>Dulce Niebla</h3>
+                <span class="price">$8.000</span>
+                <p>Miel de la sierra, almendra, azúcar pulverizada</p>
+                <button class="add-to-cart" data-name="Dulce Niebla" data-price="8000" data-category="croffle">Añadir</button>
+              </div>
+            </div>
+            <div class="menu-item" data-category="croffle">
+              <img src="https://images.unsplash.com/photo-1565299507177-b0ac66c7928c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Flor del hongo">
+              <div class="menu-item-content">
+                <h3>Flor del hongo</h3>
+                <span class="price">$15.500</span>
+                <p>Crema de quesos artesanales, rúgula fresca y setas doradas al fuego</p>
+                <button class="add-to-cart" data-name="Flor del hongo" data-price="15500" data-category="croffle">Añadir</button>
+              </div>
+            </div>
+            <div class="menu-item" data-category="croffle">
+              <img src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Brasa Serena">
+              <div class="menu-item-content">
+                <h3>Brasa Serena</h3>
+                <span class="price">$23.900</span>
+                <p>Croffle crujiente con durazno asado, queso cottage, jamón serrano, miel picante de ají dulce y albahaca</p>
+                <button class="add-to-cart" data-name="Brasa Serena" data-price="23900" data-category="croffle">Añadir</button>
+              </div>
+            </div>
 
-    <!-- Gallery -->
-    <section>
-      <h2>Our Spaces</h2>
-      <div class="gallery">
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Lobby" />
+            <!-- Bowls -->
+            <div class="menu-item" data-category="bowl">
+              <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Bowl Arhuaka">
+              <div class="menu-item-content">
+                <h3>Bowl Arhuaka</h3>
+                <span class="price">$23.900</span>
+                <p>Lechuga, rúgula, espinaca, manzana, nuez tostada, arándanos, queso feta, miel de la sierra</p>
+                <button class="add-to-cart" data-name="Bowl Arhuaka" data-price="23900" data-category="bowl">Añadir</button>
+              </div>
+            </div>
+            <div class="menu-item" data-category="bowl">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Bowl Kogui">
+              <div class="menu-item-content">
+                <h3>Bowl Kogui</h3>
+                <span class="price">$23.500</span>
+                <p>Arroz de coco, frijol cabecinegro, plátano maduro asado, maíz tostado, guacamole con limón y ají</p>
+                <button class="add-to-cart" data-name="Bowl Kogui" data-price="23500" data-category="bowl">Añadir</button>
+              </div>
+            </div>
+
+            <!-- Bebidas -->
+            <div class="menu-item" data-category="bebida">
+              <img src="https://images.unsplash.com/photo-1626082927389-6cd097cee6a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Energía Ancestral">
+              <div class="menu-item-content">
+                <h3>Energía Ancestral</h3>
+                <span class="price">$9.500</span>
+                <p>Maracuyá, miel, leche vegetal, jengibre</p>
+                <button class="add-to-cart" data-name="Energía Ancestral" data-price="9500" data-category="bebida">Añadir</button>
+              </div>
+            </div>
+            <div class="menu-item" data-category="bebida">
+              <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Limonada de coco">
+              <div class="menu-item-content">
+                <h3>Limonada de coco</h3>
+                <span class="price">$10.000</span>
+                <p>Limonada natural con coco y menta</p>
+                <button class="add-to-cart" data-name="Limonada de coco" data-price="10000" data-category="bebida">Añadir</button>
+              </div>
+            </div>
+
+            <!-- Postres -->
+            <div class="menu-item" data-category="postre">
+              <img src="https://images.unsplash.com/photo-1565299507177-b0ac66c7928c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Brûlée del Sol">
+              <div class="menu-item-content">
+                <h3>Brûlée del Sol</h3>
+                <span class="price">$9.900</span>
+                <p>Crema suave con vainilla y limón de la Sierra, caramelo dorado sellado al fuego</p>
+                <button class="add-to-cart" data-name="Brûlée del Sol" data-price="9900" data-category="postre">Añadir</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80" alt="Ocean View Room" />
+      </section>
+
+      <!-- NUESTRA ESENCIA -->
+      <section id="essence" class="essence-section">
+        <div class="container">
+          <h2 class="section-title">Nuestra Esencia</h2>
+          <div class="essence">
+            <p>Somos hijos de la Sierra Nevada, la montaña más alta del mundo que nace desde el mar. Cada ingrediente viene de la tierra que respira, del agua que purifica, del fuego que transforma.</p>
+            <p>BRUMA no es solo comida. Es un ritual. Un puente entre el mundo visible y el invisible. Entre el presente y la memoria de nuestros ancestros. Cocinamos con silencio, con atención, con intención.</p>
+            <p>Desde el primer aliento de bruma matutina hasta el último rayo de sol en el mar, cada bocado es una ofrenda a la vida. Bienvenido a la experiencia BRUMA.</p>
+          </div>
+          <img src="https://images.unsplash.com/photo-1581888227599-7798ed782eec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Sierra Nevada" class="essence-img">
+          
+          <div class="social-links">
+            <a href="https://instagram.com/brumacocinaoculta" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://tiktok.com/@brumacocinaoculta" target="_blank"><i class="fab fa-tiktok"></i></a>
+          </div>
         </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Infinity Pool" />
-        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- CARRITO DE COMPRAS -->
+  <div class="cart" id="cart">
+    <div class="cart-header">
+      <h3>Tu Pedido</h3>
+      <button class="close-cart">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <!-- Items añadidos -->
+    </div>
+    <div class="cart-total" id="cartTotal">Total: $0</div>
+
+    <!-- OPCIÓN DE PAGO CON QR -->
+    <div class="qr-payment" id="qrPayment">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://link-de-pago.com/bruma" alt="QR Pago">
+      <p>Escanea para pagar con Nequi, Daviplata o PayU</p>
+    </div>
+
+    <!-- BOTONES DE PAGO -->
+    <div class="cart-actions">
+      <button class="cart-btn btn-pay" id="payOnlineBtn">Pagar con QR</button>
+      <div class="cash-form" id="cashForm">
+        <h4 style="margin-bottom: 0.8rem; color: var(--dorado-sutil);">Datos para entrega</h4>
+        <input type="text" placeholder="Tu nombre" id="cashName" required />
+        <input type="text" placeholder="Dirección" id="cashAddress" required />
+        <input type="text" placeholder="Teléfono" id="cashPhone" required />
+        <textarea id="cashNotes" placeholder="Instrucciones (opcional)"></textarea>
+        <button class="submit-btn" id="sendToWhatsApp">Enviar Pedido por WhatsApp</button>
       </div>
-    </section>
-
-    <!-- Dining -->
-    <section>
-      <h2>Restaurant & Dining</h2>
-      <p>
-        Our restaurant <strong>Mar y Tierra</strong> serves creative dishes made from ingredients grown in our garden or sourced from local fishermen and farmers.
-      </p>
-      <ul>
-        <li><strong>Breakfast:</strong> Fresh fruit, house-baked bread, local honey</li>
-        <li><strong>Lunch:</strong> Grilled fish tacos, tropical salads, coconut ceviche</li>
-        <li><strong>Dinner:</strong> Tasting menu with wine pairing under the stars</li>
-        <li><strong>Drinks:</strong> Organic cocktails, herbal infusions, craft beer</li>
-      </ul>
-      <p><strong>Tip:</strong> Ask about our beachfront dinner experience — a romantic setup with candles and ocean sounds.</p>
-    </section>
-
-  </div>
-
-  <!-- Final Video: Hotel Presentation -->
-  <section class="final-video-section">
-    <h2>Welcome to Sol y Mar</h2>
-    <p>Experience the beauty, peace, and sustainability of our coastal retreat.</p>
-    <div class="final-video-container">
-      <iframe 
-        src="https://www.youtube.com/embed/T1Ocb00EoIM?autoplay=0&controls=1&showinfo=0&rel=0" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-      </iframe>
-    </div>
-  </section>
-
-  <!-- Chatbot Button -->
-  <div class="chatbot-btn" id="chatbotBtn">
-    <i class="fas fa-robot"></i>
-  </div>
-
-  <!-- Chatbot Modal -->
-  <div class="chatbot-modal" id="chatbotModal">
-    <div class="chatbot-header">Virtual Assistant</div>
-    <div class="chatbot-body">
-      <div class="chatbot-options">
-        <button onclick="showResponse('booking')">Help with booking</button>
-        <button onclick="showResponse('info')">Tell me about the hotel</button>
-        <button onclick="showResponse('dining')">Recommend a meal</button>
-      </div>
-      <div id="chatResponse" class="chat-response" style="display:none;"></div>
-    </div>
-    <div class="chatbot-footer">
-      <button class="close-chat" onclick="closeChatbot()">Close</button>
     </div>
   </div>
 
-  <footer>
-    <p><strong>Sol y Mar Hotel</strong></p>
-    <p>Coastal Paradise, Costa Verde • Since 2010</p>
-    <p>Email: info@solymarhotel.com • Phone: +1 (555) 123-4567</p>
-    <div class="social-links">
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-facebook"></i></a>
-      <a href="#"><i class="fab fa-tripadvisor"></i></a>
-    </div>
-    <p style="margin-top: 1rem; font-size: 0.9rem;">© 2025 Sol y Mar Hotel. All rights reserved.</p>
-  </footer>
+  <!-- BOTONES FIJOS -->
+  <button class="cart-btn-fixed" id="cartBtnFixed">
+    <i class="fas fa-shopping-cart"></i>
+  </button>
+
+  <a href="https://wa.me/573023220396?text=Hola,%20quiero%20más%20info%20de%20BRUMA" target="_blank" class="whatsapp-btn">
+    <i class="fab fa-whatsapp"></i>
+  </a>
 
   <script>
-    const chatbotBtn = document.getElementById('chatbotBtn');
-    const chatbotModal = document.getElementById('chatbotModal');
-    const chatResponse = document.getElementById('chatResponse');
+    // Mostrar app después del splash
+    document.addEventListener('DOMContentLoaded', () => {
+      const splash = document.querySelector('.splash');
+      const splashContent = document.querySelector('.splash-content');
+      
+      setTimeout(() => {
+        splashContent.style.opacity = 0;
+        splashContent.style.transform = 'translateY(-20px)';
+        splashContent.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        
+        setTimeout(() => {
+          splash.style.display = 'none';
+          document.querySelector('.app').style.display = 'flex';
+        }, 800);
+      }, 2500);
 
-    chatbotBtn.addEventListener('click', () => {
-      chatbotModal.classList.toggle('active');
+      splashContent.style.opacity = 0;
+      splashContent.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        splashContent.style.opacity = 1;
+        splashContent.style.transform = 'translateY(0)';
+      }, 300);
     });
 
-    function closeChatbot() {
-      chatbotModal.classList.remove('active');
-      chatResponse.style.display = 'none';
+    // Carrito de compras
+    const cartBtnFixed = document.getElementById('cartBtnFixed');
+    const cart = document.getElementById('cart');
+    const closeCart = document.querySelector('.close-cart');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    const payOnlineBtn = document.getElementById('payOnlineBtn');
+    const qrPayment = document.getElementById('qrPayment');
+    const cashForm = document.getElementById('cashForm');
+    const sendToWhatsApp = document.getElementById('sendToWhatsApp');
+    const successAlert = document.getElementById('successAlert');
+
+    let cartList = [];
+    let total = 0;
+
+    cartBtnFixed.addEventListener('click', () => {
+      cart.classList.add('open');
+    });
+
+    closeCart.addEventListener('click', () => {
+      cart.classList.remove('open');
+    });
+
+    // Alternar entre QR y formulario
+    payOnlineBtn.addEventListener('click', () => {
+      if (payOnlineBtn.textContent.trim() === 'Pagar con QR') {
+        qrPayment.style.display = 'block';
+        cashForm.style.display = 'none';
+        payOnlineBtn.textContent = 'Pago contra entrega';
+      } else {
+        qrPayment.style.display = 'none';
+        cashForm.style.display = 'block';
+        payOnlineBtn.textContent = 'Pagar con QR';
+      }
+    });
+
+    // Añadir al carrito
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const name = button.getAttribute('data-name');
+        const price = parseInt(button.getAttribute('data-price'));
+        
+        cartList.push({ name, price });
+        total += price;
+        
+        updateCart();
+        
+        // Efecto
+        button.style.background = '#f9a825';
+        button.style.color = '#0a2e5c';
+        setTimeout(() => {
+          button.style.background = 'rgba(249, 168, 37, 0.2)';
+          button.style.color = '#f9a825';
+        }, 300);
+      });
+    });
+
+    function updateCart() {
+      cartItems.innerHTML = '';
+      cartList.forEach((item, index) => {
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('cart-item');
+        cartItem.innerHTML = `
+          <div>${item.name}</div>
+          <div>$${item.price.toLocaleString()} <button class="remove-item" data-index="${index}" style="color: #d32f2f; background: none; border: none; cursor: pointer;">×</button></div>
+        `;
+        cartItems.appendChild(cartItem);
+      });
+
+      // Eventos para eliminar
+      document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const index = parseInt(e.target.getAttribute('data-index'));
+          total -= cartList[index].price;
+          cartList.splice(index, 1);
+          updateCart();
+        });
+      });
+
+      cartTotal.textContent = `Total: $${total.toLocaleString()}`;
     }
 
-    function showResponse(type) {
-      let message = '';
-      if (type === 'booking') {
-        message = "Click the 'Reserve Your Stay' button at the top to fill out your details. Need help choosing dates or room type? Let me know!";
-      } else if (type === 'info') {
-        message = "Sol y Mar is an eco-friendly beachfront hotel focused on sustainability and digital detox. We offer ocean-view rooms, organic dining, yoga, and guided nature walks.";
-      } else if (type === 'dining') {
-        message = "Try our grilled octopus with lemon herb oil, farm salad with edible flowers, or the mango-chili ceviche. For dessert, don’t miss the coconut flan!";
+    // Enviar pedido por WhatsApp
+    sendToWhatsApp.addEventListener('click', () => {
+      const name = document.getElementById('cashName').value;
+      const address = document.getElementById('cashAddress').value;
+      const phone = document.getElementById('cashPhone').value;
+      const notes = document.getElementById('cashNotes').value;
+
+      if (!name || !address || !phone) {
+        alert('Por favor completa tu nombre, dirección y teléfono');
+        return;
       }
-      chatResponse.textContent = message;
-      chatResponse.style.display = 'block';
-    }
+
+      let message = `*PEDIDO BRUMA - CONTRA ENTREGA*\n\n`;
+      message += `Cliente: ${name}\n`;
+      message += `Teléfono: ${phone}\n`;
+      message += `Dirección: ${address}\n`;
+      if (notes) message += `Notas: ${notes}\n\n`;
+      else message += '\n';
+
+      cartList.forEach(item => {
+        message += `• ${item.name} - $${item.price.toLocaleString()}\n`;
+      });
+      message += `\n*Total: $${total.toLocaleString()}*\n\nGracias por tu pedido.`;
+
+      const url = `https://wa.me/573023220396?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+
+      // Mostrar alerta de éxito
+      successAlert.style.opacity = 1;
+      setTimeout(() => {
+        successAlert.style.opacity = 0;
+      }, 3000);
+
+      // Limpiar carrito
+      cartList = [];
+      total = 0;
+      updateCart();
+      cart.classList.remove('open');
+    });
+
+    // Animaciones al hacer scroll
+    const menuItems = document.querySelectorAll('.menu-item');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+          }, index * 100);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    menuItems.forEach(item => {
+      item.style.opacity = 0;
+      item.style.transform = 'translateY(15px)';
+      item.style.transition = 'all 0.4s ease';
+      observer.observe(item);
+    });
+
+    // Filtros de categoría
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const category = this.getAttribute('data-category');
+        
+        categoryButtons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        menuItems.forEach(item => {
+          if (category === 'all' || item.getAttribute('data-category') === category) {
+            item.style.display = 'flex';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
   </script>
 
 </body>
