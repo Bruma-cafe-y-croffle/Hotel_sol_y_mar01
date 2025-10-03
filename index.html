@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="content="width=device-width, initial-scale=1.0, viewport-fit=cover"">
-    <title>CIELITO LINDO - Menú Digital Ultra Gigante</title>
+    <title>CIELITO LINDO - Menú Digital con Ruleta de Premios</title>
     <!-- Incluye Tailwind CSS para un diseño 100% responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Bebas+Neue&family=Merriweather:ital@1&display=swap" rel="stylesheet">
@@ -51,16 +51,16 @@
     </script>
 
     <style>
-        /* Estilos generales para el ambiente oscuro */
+        /* Estilos generales y tipografía uniforme */
         body { 
             background-color: #0A0A0A; 
             color: var(--light-text); 
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
-            font-size: 1rem; /* Base uniforme */
+            font-size: 1rem; /* Base uniforme para todo el cuerpo */
         }
 
-        /* Títulos principales con la fuente Bebas Neue */
+        /* Títulos principales */
         .title-font {
             font-family: 'Bebas Neue', sans-serif;
             letter-spacing: 0.1em;
@@ -73,61 +73,41 @@
             background-position: center;
         }
 
-        /* Barra de Búsqueda con estilo destacado */
+        /* Barra de Búsqueda */
         #search-input {
-            border: 2px solid #3d3d3d;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            font-size: 1.125rem; /* Base size */
-        }
-        #search-input:focus {
-            border-color: #FFC000;
-            box-shadow: 0 0 10px rgba(255, 192, 0, 0.5);
-            background-color: #121212;
+            font-size: 1rem; /* Uniforme */
         }
         
-        /* Contenedor del menú para el efecto de sombra */
-        .menu-container {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-        }
-
-        /* Estilo para los precios (Uniforme y legible) */
+        /* Precios */
         .price-tag {
             background-color: #262626;
             color: #E63946;
             border: 1px solid #E63946;
-            font-size: 1.25rem; /* Tamaño uniforme para precio */
+            font-size: 1.1rem; /* Uniforme y legible */
             line-height: 1; 
         }
         
-        /* Estilos de la lista de proteínas */
-        .proteins-list {
-            border-left: 3px solid var(--brand-gold);
-            padding-left: 0.75rem;
-            margin-top: 0.5rem;
-        }
+        /* Lista de proteínas */
         .proteins-list .label {
-            font-size: 1rem; 
+            font-size: 0.95rem; 
             font-weight: 700; 
-            margin-bottom: 0.25rem;
         }
         .proteins-list .protein-text {
-             font-size: 0.95rem; 
-             line-height: 1.3;
+             font-size: 0.9rem; 
              color: #9ca3af; 
         }
 
         /* TAMAÑOS DE TEXTO UNIFORMES PARA LOS ITEMS DEL MENÚ */
         .item-name {
-            font-size: 1.5rem; /* Título de plato */
+            font-size: 1.4rem; /* Título de plato (ligeramente más grande para destaque) */
             line-height: 1.2; 
             font-weight: 900; 
             color: #F5F5F5; 
         }
         
-        /* Descripción del plato: Tamaño estándar (1.125rem) */
+        /* Descripción del plato: Tamaño estándar (1rem) */
         .item-desc {
-            font-size: 1.125rem; 
+            font-size: 1rem; 
             line-height: 1.4;
             font-style: italic;
             color: #9ca3af; 
@@ -143,38 +123,48 @@
             display: none; /* Chrome, Safari and Opera */
         }
 
-        /* Ruleta Canvas Style (Centering) */
-        #wheel-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
+        /* --- Estilos Ruleta --- */
+        .roulette-wrapper {
+            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1); 
         }
-        #wheel {
-            transition: transform 6s cubic-bezier(0.25, 0.1, 0.25, 1);
-            max-width: 100%; 
-            height: auto;
+        .indicator {
+            position: absolute;
+            top: 0; 
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px); 
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 25px solid #ff4500; 
+            z-index: 20;
         }
-        #pin {
+        #spinButton {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -130%); 
+            transform: translate(-50%, -50%);
             z-index: 10;
-            color: #E63946;
-            text-shadow: 0 0 10px rgba(0,0,0,0.8);
-            font-size: 4rem; 
+            transition: all 0.3s ease;
         }
-        
+        #spinButton:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        /* Asegurar que el contenedor de la ruleta sea un cuadrado para que la ruleta no se deforme */
+        .ruleta-square-container {
+             /* truco para hacer un div cuadrado basado en el ancho */
+            padding-top: 100%; 
+            position: relative;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- DATA DEL RESTAURANTE CON URLS DE IMAGEN -->
     <script>
+        // --- DATA DEL RESTAURANTE (MANTENIDA) ---
         const proteinsES = "Tinga, Chicharrón, Pastor, Lengua, Camarón, Cerdo Desmechado, Chorizo Vegano, Champiñón, Pollo, Chorizo";
         const proteinsEN = "Tinga, Pork Rind, Pastor, Tongue, Shrimp, Shredded Pork, Vegan Sausage, Mushroom, Chicken, Sausage";
         
@@ -255,104 +245,77 @@
             }
         };
         
-        // --- PREMIOS DE LA RULETA (NUEVA LÓGICA) ---
-        const prizes = {
-            es: [
-                { name: "BEBIDA GRATIS", color: '#5D9A58', prize: true },
-                { name: "20% DE DESCUENTO", color: '#E63946', prize: true },
-                { name: "POSTRE CORTESÍA", color: '#FFC000', prize: true },
-                { name: "PRUEBA SUERTE", color: '#F5F5F5', prize: false },
-                { name: "50% EN TACO TRIO", color: '#E63946', prize: true },
-                { name: "LIMONADA GRATIS", color: '#5D9A58', prize: true },
-                { name: "PRUEBA SUERTE", color: '#F5F5F5', prize: false },
-                { name: "$5.000 COP OFF", color: '#FFC000', prize: true }
-            ],
-            en: [
-                { name: "FREE DRINK", color: '#5D9A58', prize: true },
-                { name: "20% DISCOUNT", color: '#E63946', prize: true },
-                { name: "COMPLIMENTARY DESSERT", color: '#FFC000', prize: true },
-                { name: "TRY AGAIN", color: '#F5F5F5', prize: false },
-                { name: "50% OFF TACO TRIO", color: '#E63946', prize: true },
-                { name: "FREE LEMONADE", color: '#5D9A58', prize: true },
-                { name: "TRY AGAIN", color: '#F5F5F5', prize: false },
-                { name: "$5,000 COP OFF", color: '#FFC000', prize: true }
-            ]
-        };
+        // --- PREMIOS DE LA RULETA (NUEVA LÓGICA ECONÓMICA) ---
+        const prizes = [
+            { text: 'Agua Fresca Gratis', color: '#5D9A58' },      // Verde (Bebida Económica)
+            { text: 'Entremés de Totopos', color: '#FFC000' },    // Dorado (Entremés Económico)
+            { text: '10% de Descuento', color: '#E63946' },      // Rojo (Descuento)
+            { text: 'Mejor Suerte', color: '#4299E1' },           // Azul (Sin premio)
+            { text: '2x1 en Cócteles', color: '#F687B3' },        // Rosado (Promoción Coctelería)
+            { text: 'Postre de la Casa', color: '#9F7AEA' },       // Púrpura (Postre Económico)
+            { text: 'Entremés de Totopos', color: '#F6AD55' },    // Naranja (Entremés repetido)
+            { text: 'Agua Fresca Gratis', color: '#68D391' }       // Verde claro (Bebida repetida)
+        ];
 
         let currentLang = 'es'; 
         let currentFilter = 'all'; 
-        
-        let wheelItems = []; // Se llena con los premios del idioma actual
+
+        // --- VARIABLES DE RULETA ---
+        const numSegments = prizes.length;
+        const arc = (2 * Math.PI) / numSegments;
         let rotation = 0;
         let isSpinning = false;
-        let finalRotation = 0;
-        let spinDuration = 6000; // 6 segundos de transición CSS
-
-        // --- RUEDA DE LA SUERTE JAVASCRIPT ---
         
-        function drawWheel() {
-            const canvas = document.getElementById('wheel');
+        // --- RULETA JAVASCRIPT ---
+        
+        function drawRoulette() {
+            const canvas = document.getElementById('rouletteCanvas');
             const ctx = canvas.getContext('2d');
-            const size = Math.min(canvas.width, canvas.height);
-            const centerX = size / 2;
-            const centerY = size / 2;
-            const radius = size / 2 * 0.9;
-            const totalItems = wheelItems.length;
-            const arcSize = 2 * Math.PI / totalItems;
+            const radius = canvas.width / 2;
             
-            ctx.clearRect(0, 0, size, size);
-
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.rotate(rotation * Math.PI / 180); 
+            ctx.translate(radius, radius);
+            ctx.rotate(rotation);
 
-            // Dibujar cada segmento
-            for (let i = 0; i < totalItems; i++) {
-                const item = wheelItems[i];
-                const startAngle = i * arcSize;
-                const endAngle = (i + 1) * arcSize;
+            for (let i = 0; i < numSegments; i++) {
+                const angle = i * arc;
+                const prize = prizes[i];
 
-                // 1. Dibujar el segmento (color)
+                // Dibujar segmento
                 ctx.beginPath();
+                ctx.fillStyle = prize.color;
                 ctx.moveTo(0, 0);
-                ctx.arc(0, 0, radius, startAngle, endAngle);
-                ctx.closePath();
-                ctx.fillStyle = item.color;
+                ctx.arc(0, 0, radius, angle, angle + arc);
                 ctx.fill();
-                ctx.strokeStyle = '#0A0A0A'; // Borde oscuro
+
+                // Dibujar borde
+                ctx.strokeStyle = '#0A0A0A';
                 ctx.lineWidth = 4;
                 ctx.stroke();
 
-                // 2. Dibujar el texto del premio
+                // Dibujar texto del premio
                 ctx.save();
-                ctx.rotate(startAngle + arcSize / 2); // Rotar al centro del segmento
-                ctx.fillStyle = item.color === '#F5F5F5' ? '#0A0A0A' : '#F5F5F5'; // Texto contrastante
-                ctx.font = '700 16px Inter, sans-serif'; 
+                ctx.rotate(angle + arc / 2);
                 ctx.textAlign = 'right';
-                ctx.textBaseline = 'middle';
+                ctx.fillStyle = (prize.text.includes('Suerte')) ? '#0A0A0A' : '#F5F5F5'; 
+                ctx.font = 'bold 14px Inter, sans-serif'; // Fuente pequeña para que quepa
                 
-                // Texto en mayúsculas y corto
-                const text = item.name.toUpperCase().replace(/ /g, '\n');
-                const lines = text.split('\n');
-                const lineSpacing = 18; 
-                let currentY = 0; 
-                if (lines.length > 1) {
-                    currentY = (lines.length - 1) * lineSpacing / 2 * -1;
-                } else {
-                    currentY = 0;
-                }
-                
-                lines.forEach((line, index) => {
-                    ctx.fillText(line, radius * 0.90, currentY + index * lineSpacing);
+                // Dividir el texto largo
+                const lines = prize.text.split(' ');
+                const textLines = lines.length > 2 ? [lines[0] + ' ' + lines[1], lines.slice(2).join(' ')] : [prize.text];
+
+                textLines.forEach((line, index) => {
+                    ctx.fillText(line.toUpperCase(), radius * 0.9, -10 + index * 18);
                 });
                 
                 ctx.restore();
             }
 
-            // 3. Dibujar el círculo central 
+            // Dibujar círculo central
             ctx.beginPath();
+            ctx.fillStyle = '#0A0A0A';
             ctx.arc(0, 0, radius * 0.15, 0, 2 * Math.PI);
-            ctx.fillStyle = '#0A0A0A'; 
             ctx.fill();
             ctx.strokeStyle = '#F5F5F5'; 
             ctx.lineWidth = 5;
@@ -364,67 +327,66 @@
         function spinWheel() {
             if (isSpinning) return;
             isSpinning = true;
-
-            const totalItems = wheelItems.length;
-            const arcSizeDeg = 360 / totalItems;
+            const spinButton = document.getElementById('spinButton');
+            spinButton.disabled = true;
             
-            // 1. Elegir un índice ganador al azar
-            const winningIndex = Math.floor(Math.random() * totalItems);
+            // 1. Elegir un segmento aleatorio
+            const randomStopSegment = Math.floor(Math.random() * numSegments);
+            const randomOffset = Math.random() * (arc * 0.8) - (arc * 0.4); // Offset para que no caiga justo en la línea
+            const targetAngle = randomStopSegment * arc + randomOffset;
             
-            // 2. Calcular el ángulo para el centro del segmento ganador
-            const angleToCenter = 270 - (winningIndex * arcSizeDeg + arcSizeDeg / 2);
-
-            // 3. Añadir vueltas completas (mínimo 5) 
-            const extraSpins = 5 * 360; 
-            
-            // 4. Calcular la rotación final
-            finalRotation = extraSpins + angleToCenter;
+            // 2. Calcular rotación total (mínimo 5 vueltas)
+            // El indicador está arriba (0 grados). El ángulo debe apuntar a 270 grados (90 grados de giro).
+            const totalRotation = 5 * 360 + (360 - (targetAngle * (180 / Math.PI)) - 90); 
             
             // Aplicar rotación con CSS transition
-            const wheelElement = document.getElementById('wheel');
-            wheelElement.style.transition = `transform ${spinDuration / 1000}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
-            wheelElement.style.transform = `rotate(${finalRotation}deg)`;
+            const canvas = document.getElementById('rouletteCanvas');
+            canvas.style.transition = 'transform 5s cubic-bezier(0.25, 0.1, 0.25, 1)';
+            canvas.style.transform = `rotate(${totalRotation}deg)`;
 
             // Mostrar estado de carga
             const messageElement = document.getElementById('spin-message');
             messageElement.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> ${currentLang === 'es' ? 'Girando la suerte...' : 'Spinning the luck...'}`;
-            messageElement.classList.remove('hidden', 'text-brand-gold', 'text-brand-green');
-            messageElement.classList.add('text-brand-red');
+            messageElement.classList.remove('text-brand-green', 'text-brand-red');
+            messageElement.classList.add('text-brand-gold');
             
-            // 5. Determinar el ganador después de que termine la animación
+            // 3. Determinar el ganador después de que termine la animación
             setTimeout(() => {
                 isSpinning = false;
-                rotation = finalRotation % 360; 
+                spinButton.disabled = false;
                 
-                const winner = wheelItems[winningIndex];
+                // Calcular el índice ganador
+                let finalDegrees = totalRotation % 360; 
+                finalDegrees = (finalDegrees < 0) ? finalDegrees + 360 : finalDegrees;
                 
-                if (winner.prize) {
-                    messageElement.innerHTML = `
-                        <div class="p-4 rounded-xl shadow-xl border-2 border-brand-green bg-gray-900/50">
-                            <i class="fas fa-trophy text-brand-gold mr-2 text-2xl"></i> 
-                            <span class="font-black text-xl">${currentLang === 'es' ? '¡FELICIDADES! Ganaste:' : 'CONGRATULATIONS! You won:'}</span>
-                            <p class="text-3xl title-font text-brand-green mt-2">${winner.name}</p>
-                            <p class="text-lg italic text-gray-400 mt-1" data-es="Muestra esto a nuestro personal para reclamar tu premio." data-en="Show this to our staff to claim your prize.">${currentLang === 'es' ? 'Muestra esto a nuestro personal para reclamar tu premio.' : 'Show this to our staff to claim your prize.'}</p>
-                        </div>
-                    `;
-                    messageElement.classList.remove('text-brand-red');
-                    messageElement.classList.add('text-brand-green');
-                } else {
-                     messageElement.innerHTML = `
-                        <div class="p-4 rounded-xl shadow-xl border-2 border-brand-red bg-gray-900/50">
-                            <i class="fas fa-hand-lizard text-brand-gold mr-2 text-2xl"></i> 
-                            <span class="font-black text-xl">${currentLang === 'es' ? '¡CASI! Intenta de Nuevo.' : 'ALMOST! Try Again.'}</span>
-                            <p class="text-lg italic text-gray-400 mt-1" data-es="La ruleta es solo para diversión y no afecta tu orden final." data-en="The wheel is for fun only and does not affect your final order.">${currentLang === 'es' ? 'La ruleta es solo para diversión y no afecta tu orden final.' : 'The wheel is for fun only and does not affect your final order.'}</p>
-                        </div>
-                    `;
-                    messageElement.classList.remove('text-brand-green');
-                    messageElement.classList.add('text-brand-red');
-                }
+                // Rotación del canvas (0° arriba). El indicador está arriba.
+                // Necesitamos el ángulo inverso para saber qué segmento apunta hacia arriba.
+                let degreesPerSegment = 360 / numSegments;
+                let segmentIndex = Math.floor(finalDegrees / degreesPerSegment);
                 
-            }, spinDuration);
+                // Ajuste para el orden del array
+                segmentIndex = numSegments - 1 - segmentIndex;
+                if (segmentIndex < 0) segmentIndex = 0;
+
+                const winner = prizes[segmentIndex];
+                
+                // Mostrar modal de resultado
+                document.getElementById('prizeResult').textContent = winner.text;
+                document.getElementById('resultTitle').textContent = (winner.text.includes('Suerte')) 
+                    ? (currentLang === 'es' ? '¡Mala Suerte! :(' : 'Bad Luck! :(') 
+                    : (currentLang === 'es' ? '¡Felicidades! Ganaste:' : 'Congratulations! You won:');
+                
+                document.getElementById('resultTitle').classList.toggle('text-red-500', winner.text.includes('Suerte'));
+                document.getElementById('resultTitle').classList.toggle('text-brand-green', !winner.text.includes('Suerte'));
+
+                toggleModal('modalResult', true);
+
+                messageElement.innerHTML = currentLang === 'es' ? '¡Gira de Nuevo!' : 'Spin Again!';
+                messageElement.classList.remove('text-brand-gold');
+            }, 5000);
         }
 
-        // --- FUNCIONES COMUNES ---
+        // --- FUNCIONES COMUNES Y DE MENÚ (MANTENIDAS) ---
 
         function formatCOP(price) {
             return new Intl.NumberFormat('es-CO', { 
@@ -449,7 +411,7 @@
             const priceCOP = formatCOP(item.price);
             
             const proteinsHtml = item.customizable ? `
-                <div class="proteins-list bg-dark-bg/50 p-3 rounded-md transition duration-300 mt-2 hover:bg-dark-bg">
+                <div class="proteins-list bg-dark-bg/50 p-3 rounded-md transition duration-300 mt-2">
                     <p class="label font-semibold text-brand-gold">${proteinsLabel}</p>
                     <p class="protein-text">${proteinsList}</p>
                 </div>
@@ -472,9 +434,7 @@
                 </div>
             `;
         }
-
-        // --- FUNCIONES DE FILTRO Y BÚSQUEDA (MANTENIDAS) ---
-
+        
         function filterMenuByCategory(categoryKey) {
             currentFilter = categoryKey;
             const allItems = getAllMenuItems(currentLang);
@@ -514,7 +474,7 @@
             if (query.length === 0) {
                 searchResultsSection.classList.add('hidden');
                 menuSection.classList.remove('hidden');
-                filterMenuByCategory(currentFilter); // Vuelve al filtro de categoría anterior o 'all'
+                filterMenuByCategory(currentFilter); 
                 return; 
             }
 
@@ -543,9 +503,29 @@
             }
         }
 
+        // --- FUNCIONES DE MODAL ---
 
-        // --- FUNCIONES DE MODAL DE IMAGEN (MANTENIDAS) ---
+        function toggleModal(modalId, show) {
+            const modal = document.getElementById(modalId);
+            const content = document.getElementById(modalId + 'Content');
 
+            if (show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    content.classList.remove('opacity-0', 'scale-95');
+                    content.classList.add('animate-modal-open');
+                }, 10);
+            } else {
+                content.classList.add('opacity-0', 'scale-95');
+                content.classList.remove('animate-modal-open');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }, 300); // Esperar la transición antes de ocultar
+            }
+        }
+        
         function openImageModal(name, desc, imgUrl) {
             const modal = document.getElementById('image-modal');
             document.getElementById('modal-image').src = imgUrl;
@@ -563,14 +543,13 @@
         }
 
 
-        // --- FUNCIONES DE INICIALIZACIÓN Y CAMBIO DE IDIOMA ---
+        // --- FUNCIONES DE INICIALIZACIÓN ---
 
         function setLanguage(lang) {
             currentLang = lang;
             
-            // 1. Llenar la ruleta con los premios del idioma actual
-            wheelItems = prizes[lang];
-            drawWheel();
+            // 1. Dibujar la ruleta (los premios están fijos en español para el contexto del problema)
+            drawRoulette();
 
             // 2. Traducir elementos con data-es/data-en
             document.querySelectorAll('[data-es]').forEach(el => {
@@ -580,7 +559,7 @@
                 }
             });
 
-            // 2.1 Traducir placeholder de la barra de búsqueda
+            // 2.1 Traducir placeholder
             const searchInput = document.getElementById('search-input');
             if (searchInput) {
                 searchInput.placeholder = searchInput.getAttribute(`data-${lang}-placeholder`);
@@ -611,7 +590,7 @@
             const allLabel = lang === 'es' ? 'TODO' : 'ALL';
             buttonsHtml += `
                 <button id="filter-all" onclick="filterMenuByCategory('all')" 
-                        class="filter-btn bg-gray-700 text-light-text font-semibold py-2 px-4 rounded-full shadow-lg hover:bg-gray-600 transition text-sm">
+                        class="filter-btn bg-gray-700 text-light-text font-semibold py-2 px-4 rounded-full shadow-lg hover:bg-gray-600 transition text-sm flex-shrink-0">
                     <i class="fas fa-list mr-1"></i> ${allLabel}
                 </button>
             `;
@@ -621,14 +600,13 @@
                 const cat = categories[key];
                 buttonsHtml += `
                     <button id="filter-${key}" onclick="filterMenuByCategory('${key}')" 
-                            class="filter-btn bg-gray-700 text-light-text font-semibold py-2 px-4 rounded-full shadow-lg hover:bg-gray-600 transition text-sm">
+                            class="filter-btn bg-gray-700 text-light-text font-semibold py-2 px-4 rounded-full shadow-lg hover:bg-gray-600 transition text-sm flex-shrink-0">
                         <i class="fas ${cat.icon} mr-1"></i> ${cat.label}
                     </button>
                 `;
             }
 
             container.innerHTML = buttonsHtml;
-            // Asegurar que el filtro actual tenga la clase activa
             const currentFilterButton = document.getElementById(`filter-${currentFilter}`);
             if(currentFilterButton) {
                 currentFilterButton.classList.add('active', 'bg-brand-red');
@@ -641,10 +619,10 @@
         // Inicialización
         document.addEventListener('DOMContentLoaded', () => {
             // Establecer el tamaño del canvas (Cuadrado para móvil y desktop)
-            const canvas = document.getElementById('wheel');
+            const canvas = document.getElementById('rouletteCanvas');
             const containerWidth = document.getElementById('wheel-container').clientWidth;
-            // Usamos un tamaño fijo que sea responsive
-            const wheelSize = Math.min(containerWidth * 0.9, 400); 
+            // Usamos un tamaño que sea el 90% del contenedor, máximo 350px
+            const wheelSize = Math.min(containerWidth * 0.9, 350); 
             canvas.width = wheelSize;
             canvas.height = wheelSize;
 
@@ -652,18 +630,10 @@
             
             document.getElementById('lang-toggle').addEventListener('click', () => {
                 setLanguage(currentLang === 'es' ? 'en' : 'es');
-                // Al cambiar el idioma, reiniciar el mensaje de la ruleta
                 document.getElementById('spin-message').innerHTML = currentLang === 'es' ? '¡Gira y gana un premio por tu consumo!' : 'Spin and win a prize for your order!';
             });
 
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
+            document.getElementById('spinButton').addEventListener('click', spinWheel);
             document.getElementById('search-input').addEventListener('input', filterMenuBySearch);
         });
     </script>
@@ -679,7 +649,7 @@
             <!-- Logo CIELITO LINDO con icono -->
             <div class="flex items-center space-x-2">
                 <img src="uploaded:image_df3e40.png-c8ee46d9-b29c-46ea-a300-6f30e6cf150d" alt="Logo Cielito Lindo" class="h-8 w-8 rounded-full border-2 border-brand-gold shadow-md">
-                <span class="text-2xl font-black title-font text-brand-gold">CIELITO LINDO</span>
+                <span class="text-xl md:text-2xl font-black title-font text-brand-gold">CIELITO LINDO</span>
             </div>
             
             <!-- Botón de Idioma -->
@@ -691,17 +661,17 @@
 
     <main class="min-h-screen">
         
-        <!-- 2. Sección Principal (Hero) - Impacto y Emoción -->
-        <section id="inicio" class="hero-background py-16 md:py-20 px-4 text-center">
+        <!-- 2. Sección Principal (Hero) - Organizada y con Título Único -->
+        <section id="inicio" class="hero-background py-12 md:py-16 px-4 text-center">
             <div class="max-w-xl mx-auto animate-hero-appear">
-                <h1 class="text-4xl md:text-6xl font-black text-brand-gold leading-snug mb-3 title-font" data-es="¡FIESTA Y SABOR SIN LÍMITES!" data-en="FIESTA AND UNLIMITED FLAVOR!">
+                <h1 class="text-3xl md:text-5xl font-black text-brand-gold leading-snug mb-3 title-font" data-es="¡FIESTA Y SABOR SIN LÍMITES!" data-en="FIESTA AND UNLIMITED FLAVOR!">
                     ¡FIESTA Y SABOR SIN LÍMITES!
                 </h1>
                 <p class="text-lg text-light-text/80 mb-6 font-quote italic" data-es="El menú que te hará decir '¡Ay, qué lindo es comer en México!'" data-en="The menu that will make you say 'Oh, how beautiful it is to eat in Mexico!'">
                     El menú que te hará decir "¡Ay, qué lindo es comer en México!".
                 </p>
                 <!-- Llamada a la acción principal -->
-                <a href="#menu" class="cta-button inline-block px-8 py-3 bg-brand-gold text-dark-bg font-extrabold text-lg rounded-full shadow-xl hover:bg-yellow-500 transition">
+                <a href="#menu" class="cta-button inline-block px-6 py-2 bg-brand-gold text-dark-bg font-extrabold text-base rounded-full shadow-xl hover:bg-yellow-500 transition">
                     <span data-es="VER EL MENÚ AHORA" data-en="VIEW MENU NOW">VER EL MENÚ AHORA</span>
                 </a>
             </div>
@@ -714,7 +684,7 @@
                 <!-- Búsqueda General -->
                 <div class="relative">
                     <input type="text" id="search-input" 
-                           class="w-full py-3 pl-12 pr-3 rounded-xl bg-gray-800 text-light-text focus:outline-none"
+                           class="w-full py-2 pl-12 pr-3 rounded-xl bg-gray-800 text-light-text focus:outline-none focus:ring-2 focus:ring-brand-gold"
                            placeholder="Buscar un plato, bebida o proteína (Tinga, Pastor...)"
                            data-es-placeholder="Buscar un plato, bebida o proteína (Tinga, Pastor...)"
                            data-en-placeholder="Search for a dish, drink, or protein (Tinga, Pastor...)">
@@ -746,7 +716,7 @@
         <section id="menu" class="py-8 px-4 bg-dark-bg">
             <div class="max-w-4xl mx-auto menu-container">
                 
-                <h2 class="section-title text-4xl font-black title-font text-brand-green text-center mb-6 border-b-4 border-brand-gold pb-2" data-es="MENÚ - EXPLOSIÓN DE SABOR" data-en="MENU - FLAVOR EXPLOSION">MENÚ - EXPLOSIÓN DE SABOR</h2>
+                <h2 class="section-title text-3xl font-black title-font text-brand-green text-center mb-6 border-b-4 border-brand-gold pb-2" data-es="MENÚ - EXPLOSIÓN DE SABOR" data-en="MENU - FLAVOR EXPLOSION">MENÚ - EXPLOSIÓN DE SABOR</h2>
 
                 <!-- Contenedor Único para el Menú Filtrado -->
                 <div id="menu-content" class="space-y-2 bg-[#1f1f1f] p-4 rounded-xl shadow-inner border-t-4 border-brand-red">
@@ -759,94 +729,105 @@
         <!-- 6. RUEDA DE LA SUERTE - PREMIO POR CONSUMO -->
         <section id="ruleta" class="py-12 px-4 bg-[#121212] border-y-4 border-brand-red">
             <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-black title-font text-brand-gold mb-3" data-es="PREMIO POR CONSUMO" data-en="PRIZE PER ORDER">PREMIO POR CONSUMO</h2>
-                <p class="text-lg text-light-text/80 mb-6" data-es="¡Gira y gana un premio adicional por tu orden! ¿Postre, bebida o descuento?" data-en="Spin and win an extra prize for your order! Dessert, drink, or discount?"></p>
+                <h2 class="text-3xl md:text-4xl font-black title-font text-brand-gold mb-3" data-es="PREMIO POR CONSUMO" data-en="PRIZE PER ORDER">PREMIO POR CONSUMO</h2>
+                <p class="text-base text-light-text/80 mb-6" data-es="¡Gira y gana un premio adicional por tu orden!" data-en="Spin and win an extra prize for your order!"></p>
 
                 <!-- Contenedor de la Ruleta -->
-                <div id="wheel-container" class="relative mx-auto">
-                    <!-- Pin/Flecha indicadora -->
-                    <i id="pin" class="fas fa-hand-point-up text-brand-red"></i> 
-                    <!-- Canvas para la Ruleta -->
-                    <canvas id="wheel" width="400" height="400" class="rounded-full shadow-2xl border-4 border-brand-gold"></canvas>
+                <div id="wheel-container" class="relative mx-auto max-w-xs md:max-w-sm">
+                    <div class="ruleta-square-container">
+                        <div class="absolute inset-0 flex justify-center items-center">
+                            <!-- Pin/Flecha indicadora -->
+                            <div class="indicator"></div> 
+                            <!-- Canvas para la Ruleta -->
+                            <canvas id="rouletteCanvas" class="roulette-wrapper rounded-full border-4 border-brand-gold shadow-2xl absolute top-0 left-0" width="350" height="350"></canvas>
+                            
+                            <button id="spinButton" class="px-6 py-3 bg-brand-red text-light-text font-extrabold text-lg rounded-full shadow-lg ring-4 ring-brand-gold focus:outline-none hover:bg-red-700">
+                                <span data-es="¡GIRAR!" data-en="SPIN!">¡GIRAR!</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Botón y Mensaje -->
-                <button id="spin-button" onclick="spinWheel()" 
-                        class="mt-6 px-10 py-3 bg-brand-red text-light-text font-extrabold text-xl rounded-full shadow-xl hover:bg-red-700 transition duration-300 transform hover:scale-105">
-                    <span data-es="¡GIRAR AHORA!" data-en="SPIN NOW!">¡GIRAR AHORA!</span>
-                </button>
-                
-                <p id="spin-message" class="mt-4 text-lg font-bold text-brand-gold">
+                <!-- Enlace a Términos y Condiciones -->
+                <div class="text-center my-4">
+                    <button onclick="toggleModal('modalTerms', true)" class="text-sm text-gray-400 hover:text-brand-gold transition duration-150 underline" data-es="Ver Términos y Condiciones" data-en="View Terms and Conditions">
+                        Ver Términos y Condiciones
+                    </button>
+                </div>
+
+                <p id="spin-message" class="mt-4 text-base font-bold text-light-text/70">
                     <span data-es="¡Gira y gana un premio por tu consumo!" data-en="Spin and win a prize for your order!">¡Gira y gana un premio por tu consumo!</span>
                 </p>
                 
             </div>
         </section>
 
-        <!-- 7. TÉRMINOS Y CONDICIONES (nueva sección) -->
-        <section id="terminos" class="py-10 px-4 bg-dark-bg">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="section-title text-3xl font-black title-font text-brand-red mb-5 border-b-4 border-brand-red pb-2" data-es="Términos y Condiciones del Servicio" data-en="Terms and Conditions of Service">Términos y Condiciones del Servicio</h2>
-                
-                <div class="space-y-4 text-gray-400 text-base">
-                    
-                    <p data-es="**1. Aceptación de los Términos.** Al acceder o usar los servicios de menú digital de CIELITO LINDO, usted acepta estar sujeto a estos Términos y Condiciones. Si no está de acuerdo, le pedimos amablemente no usar esta aplicación." data-en="**1. Acceptance of Terms.** By accessing or using CIELITO LINDO's digital menu services, you agree to be bound by these Terms and Conditions. If you do not agree, we kindly ask you not to use this application."></p>
 
-                    <p data-es="**2. Precios y Disponibilidad.** Todos los precios están expresados en pesos colombianos (COP) e incluyen impuestos. La disponibilidad de los platos está sujeta a existencias en cocina al momento de realizar el pedido." data-en="**2. Prices and Availability.** All prices are expressed in Colombian Pesos (COP) and include taxes. The availability of dishes is subject to kitchen stock at the time of placing the order."></p>
-
-                    <p data-es="**3. Ruleta 'Premio por Consumo'.** La ruleta es un elemento recreativo. Los premios están sujetos a un consumo mínimo y solo puede girarse una vez por mesa/orden. Los premios no son acumulables ni canjeables por dinero en efectivo. La gerencia se reserva el derecho de modificar o anular los premios sin previo aviso." data-en="**3. 'Prize per Order' Wheel.** The wheel is a recreational element. Prizes are subject to a minimum consumption and can only be spun once per table/order. Prizes cannot be combined or redeemed for cash. Management reserves the right to modify or cancel prizes without prior notice."></p>
-
-                    <p data-es="**4. Alérgenos y Restricciones.** Es responsabilidad del cliente informar al personal sobre cualquier alergia o restricción alimentaria antes de confirmar su pedido." data-en="**4. Allergens and Restrictions.** It is the customer's responsibility to inform staff of any allergies or dietary restrictions before confirming their order."></p>
-                    
-                    <p data-es="**5. Propiedad Intelectual.** El diseño, las fotografías y el contenido de este menú digital son propiedad de CIELITO LINDO y están protegidos por derechos de autor." data-en="**5. Intellectual Property.** The design, photographs, and content of this digital menu are the property of CIELITO LINDO and are protected by copyright."></p>
-                </div>
+        <!-- 7. Modal de Resultado del Premio -->
+        <div id="modalResult" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-[100] hidden flex items-center justify-center p-4">
+            <div class="bg-dark-bg p-6 rounded-xl shadow-2xl max-w-sm w-full transform opacity-0 scale-95 border-2 border-brand-gold" id="modalResultContent">
+                <h3 id="resultTitle" class="text-2xl font-extrabold mb-4 text-center text-brand-green">¡Felicidades!</h3>
+                <p class="text-center text-gray-400 mb-4 text-base" data-es="Has ganado:" data-en="You have won:">Has ganado:</p>
+                <div id="prizeResult" class="text-center text-3xl font-bold title-font text-brand-gold p-3 bg-gray-800 rounded-lg border border-brand-red"></div>
+                <p class="text-sm text-center text-gray-500 mt-4" data-es="Muestra esto y cumple los T&C para canjear tu premio." data-en="Show this and meet T&C to redeem your prize.">Presenta este código al personal para validar tu premio (sujeto a T&C).</p>
+                <button onclick="toggleModal('modalResult', false)" class="mt-4 w-full bg-brand-red text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition text-base">Cerrar</button>
             </div>
-        </section>
+        </div>
 
-        <!-- 8. Modal para Visualización de Imagen del Plato -->
-        <div id="image-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4" onclick="closeImageModal()">
-            <!-- Fondo oscuro con alta opacidad para foco -->
-            <div id="image-modal-backdrop" class="absolute inset-0 bg-dark-bg/95"></div>
-
-            <!-- Contenido del Modal (Mobile-First: ancho completo) -->
-            <div class="modal-content relative w-full max-w-sm md:max-w-md bg-dark-bg rounded-2xl shadow-2xl overflow-hidden border-2 border-brand-gold transform scale-100" onclick="event.stopPropagation()">
+        <!-- 8. Modal de Términos y Condiciones (T&C) -->
+        <div id="modalTerms" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-[100] hidden flex items-center justify-center p-4">
+            <div class="bg-dark-bg p-6 rounded-xl shadow-2xl max-w-md w-full transform opacity-0 scale-95 border-2 border-brand-red" id="modalTermsContent">
+                <h3 class="text-2xl font-bold mb-4 text-brand-gold title-font" data-es="TÉRMINOS Y CONDICIONES" data-en="TERMS AND CONDITIONS">TÉRMINOS Y CONDICIONES</h3>
                 
-                <!-- Botón de Cierre -->
+                <p class="mb-4 text-brand-red font-semibold text-base" data-es="**Requisitos Obligatorios para Canje:**" data-en="**Mandatory Requirements for Redemption:**">
+                    **Requisitos Obligatorios para Canje:**
+                </p>
+
+                <ul class="list-disc list-inside space-y-2 text-gray-300 text-sm ml-4">
+                    <li data-es="**Seguir** nuestra página oficial en la red social de su elección." data-en="**Follow** our official page on the social network of your choice."></li>
+                    <li data-es="Dar **'Me Gusta'** a nuestra última publicación." data-en="Give **'Like'** to our latest post."></li>
+                    <li data-es="Subir una **Historia** a Instagram o Facebook, mencionando nuestra cuenta oficial **(@TuNombreDeNegocio)**." data-en="Upload a **Story** to Instagram or Facebook, mentioning our official account **(@YourBusinessName)**."></li>
+                </ul>
+
+                <h4 class="text-lg font-bold mt-6 mb-2 text-brand-green" data-es="Restricciones Adicionales:" data-en="Additional Restrictions:">Restricciones Adicionales:</h4>
+                <ul class="list-disc list-inside space-y-1 text-xs text-gray-400 ml-4">
+                    <li data-es="El premio es **personal** (uno por mesa/orden) y no es canjeable por dinero." data-en="Prize is **personal** (one per table/order) and not redeemable for cash."></li>
+                    <li data-es="Válido únicamente para consumo en el local. No aplica para domicilio." data-en="Valid only for on-site consumption. Does not apply to delivery."></li>
+                    <li data-es="Sujeto a la disponibilidad de inventario." data-en="Subject to inventory availability."></li>
+                </ul>
+
+                <button onclick="toggleModal('modalTerms', false)" class="mt-6 w-full bg-brand-red text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition text-base" data-es="Entendido" data-en="Understood">Entendido</button>
+            </div>
+        </div>
+
+        <!-- 9. Modal para Visualización de Imagen del Plato -->
+        <div id="image-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4" onclick="closeImageModal()">
+            <div id="image-modal-backdrop" class="absolute inset-0 bg-dark-bg/95"></div>
+            <div class="modal-content relative w-full max-w-sm md:max-w-md bg-dark-bg rounded-2xl shadow-2xl overflow-hidden border-2 border-brand-gold transform scale-100" onclick="event.stopPropagation()">
                 <button onclick="closeImageModal()" class="absolute top-3 right-3 z-10 bg-brand-red p-2 rounded-full text-white hover:bg-red-700 transition duration-200">
                     <i class="fas fa-times"></i>
                 </button>
-
-                <!-- Imagen del Plato -->
                 <img id="modal-image" src="" alt="Imagen del Plato" class="w-full h-56 object-cover">
-                
-                <!-- Detalles del Plato -->
                 <div class="p-5 text-center">
-                    <h3 id="modal-title" class="text-2xl font-black title-font text-brand-gold mb-1"></h3>
+                    <h3 id="modal-title" class="text-xl font-black title-font text-brand-gold mb-1"></h3>
                     <p id="modal-description" class="text-base text-gray-400 italic mb-0"></p>
                 </div>
             </div>
         </div>
 
-
-        <!-- 9. Pie de Página con Contacto y Enlaces -->
+        <!-- 10. Pie de Página con Contacto y Enlaces -->
         <footer class="bg-dark-bg border-t-4 border-brand-gold mt-8 py-6">
             <div class="max-w-7xl mx-auto px-4 text-center">
                 <h3 class="text-xl font-black title-font text-brand-red mb-3" data-es="¡HAZ TU PEDIDO YA!" data-en="ORDER NOW!">¡HAZ TU PEDIDO YA!</h3>
-                
-                <!-- Botón de WhatsApp centralizado -->
                 <a href="https://wa.me/message/KNZ4SJGC4PUPJ" target="_blank" 
-                   class="inline-flex items-center justify-center space-x-2 bg-brand-green text-white font-extrabold py-2 px-6 rounded-full shadow-lg hover:bg-green-700 cta-button mb-4 text-lg">
+                   class="inline-flex items-center justify-center space-x-2 bg-brand-green text-white font-extrabold py-2 px-6 rounded-full shadow-lg hover:bg-green-700 cta-button mb-4 text-base">
                     <i class="fab fa-whatsapp text-xl"></i>
                     <span data-es="CHATEA CON NOSOTROS" data-en="CHAT WITH US">CHATEA CON NOSOTROS</span>
                 </a>
-
-                <!-- Enlaces Adicionales -->
                 <div class="flex justify-center space-x-6 mb-4 text-sm">
-                    <a href="#ruleta" class="text-light-text/70 hover:text-brand-gold transition duration-300 transform hover:scale-105" data-es="RULETA DE PREMIOS" data-en="PRIZE WHEEL">RULETA DE PREMIOS</a>
-                    <a href="#terminos" class="text-light-text/70 hover:text-brand-gold transition duration-300 transform hover:scale-105" data-es="TÉRMINOS" data-en="TERMS">TÉRMINOS</a>
+                    <a href="#ruleta" class="text-light-text/70 hover:text-brand-gold transition duration-300" data-es="RULETA DE PREMIOS" data-en="PRIZE WHEEL">RULETA DE PREMIOS</a>
+                    <button onclick="toggleModal('modalTerms', true)" class="text-light-text/70 hover:text-brand-gold transition duration-300" data-es="TÉRMINOS" data-en="TERMS">TÉRMINOS</button>
                 </div>
-
-                <!-- Redes Sociales -->
                 <div class="flex justify-center space-x-6 mb-4">
                     <a href="https://www.instagram.com/cielito_lindo_sm/" target="_blank" class="text-light-text hover:text-brand-gold transition duration-300 transform hover:scale-110">
                         <i class="fab fa-instagram text-2xl"></i>
@@ -858,7 +839,6 @@
                         <i class="fab fa-tiktok text-2xl"></i>
                     </a>
                 </div>
-                
                 <p class="text-xs text-gray-500 mt-4">&copy; 2024 CIELITO LINDO. Sabor y Fiesta.</p>
             </div>
         </footer>
