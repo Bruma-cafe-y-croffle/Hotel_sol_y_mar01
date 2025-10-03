@@ -77,8 +77,8 @@
             border: 2px solid #3d3d3d;
             transition: all 0.3s;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            /* Aumentar el tamaño del texto de la búsqueda */
-            font-size: 1rem; 
+            /* Tamaño de texto de la búsqueda - MANTENEMOS ESTE LIGERAMENTE PEQUEÑO */
+            font-size: 1.1rem; 
         }
         #search-input:focus {
             border-color: #FFC000;
@@ -114,22 +114,17 @@
             padding-left: 0.75rem;
             margin-top: 0.5rem;
         }
-        /* Ajuste de tamaño de texto para la lista de proteínas para mayor legibilidad */
-        .proteins-list p {
-            font-size: 0.875rem; /* text-sm */
-        }
+        /* Etiqueta de proteína */
         .proteins-list .label {
-            font-size: 0.75rem; /* text-xs */
+            font-size: 1rem; /* text-base */
+            line-height: 1.5rem;
+        }
+        /* Lista de proteínas AUMENTADA a text-lg */
+        .proteins-list .text-lg-xl {
+             font-size: 1.125rem; /* text-lg */
+             line-height: 1.75rem;
         }
 
-        /* Animación para el botón CTA */
-        .cta-button {
-            transition: all 0.3s;
-        }
-        .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px -5px rgba(255, 192, 0, 0.6);
-        }
 
         /* Estilo para el modal de imagen */
         #image-modal-backdrop {
@@ -138,10 +133,10 @@
 
         /* Estilo para los botones de filtro */
         .filter-btn {
-            white-space: nowrap; /* Evita que el texto del botón se rompa */
+            white-space: nowrap; 
             transition: all 0.3s;
-            /* Aumentar el tamaño del texto de los filtros */
-            font-size: 0.875rem; /* text-sm */
+            /* Tamaño de texto de los filtros - MANTENEMOS ESTE PEQUEÑO */
+            font-size: 0.9rem; 
         }
         .filter-btn.active {
             background-color: #E63946;
@@ -277,16 +272,17 @@
             
             // Si el plato es personalizable, agrega el listado de proteínas
             const proteinsHtml = item.customizable ? `
-                <div class="proteins-list bg-dark-bg/50 p-2 rounded-md transition duration-300 mt-2 hover:bg-dark-bg">
-                    <p class="label text-xs font-semibold text-brand-gold mb-1">${proteinsLabel}</p>
-                    <p class="text-sm text-gray-400">${proteinsList}</p>
+                <div class="proteins-list bg-dark-bg/50 p-3 rounded-md transition duration-300 mt-2 hover:bg-dark-bg">
+                    <!-- Etiqueta de proteína aumentada a text-base -->
+                    <p class="label text-base font-semibold text-brand-gold mb-1">${proteinsLabel}</p>
+                    <!-- Lista de proteínas AUMENTADA a text-lg -->
+                    <p class="text-lg-xl text-gray-400">${proteinsList}</p>
                 </div>
             ` : '';
 
-            // Importante: Agregar el listener para abrir el modal
-            // Ajustes en las clases de tamaño de texto: text-lg -> text-xl, text-sm -> text-base
+            // Ajustes en las clases de tamaño de texto: text-2xl -> text-3xl, text-lg -> text-xl, text-xl(precio) -> text-2xl
             return `
-                <div class="menu-item-card py-4 border-b border-gray-700/50 transition duration-300 hover:bg-dark-bg/30 px-2 rounded-lg cursor-pointer" 
+                <div class="menu-item-card py-5 border-b border-gray-700/50 transition duration-300 hover:bg-dark-bg/30 px-2 rounded-lg cursor-pointer" 
                      data-name="${item.name.toLowerCase()}" 
                      data-desc="${item.desc.toLowerCase()}"
                      data-customizable="${item.customizable}"
@@ -297,13 +293,13 @@
                     
                     <div class="flex justify-between items-start">
                         <div class="mr-4">
-                            <!-- Nombre del plato AUMENTADO a text-xl -->
-                            <p class="font-bold text-light-text text-xl">${item.name}</p>
-                            <!-- Descripción AUMENTADA a text-base -->
-                            <p class="text-base text-gray-400 italic">${item.desc}</p>
+                            <!-- Nombre del plato AUMENTADO a text-3xl -->
+                            <p class="font-black text-light-text text-3xl mb-1">${item.name}</p>
+                            <!-- Descripción AUMENTADA a text-xl -->
+                            <p class="text-xl text-gray-400 italic">${item.desc}</p>
                         </div>
-                        <!-- Precio con tamaño text-lg y buen contraste -->
-                        <span class="price-tag px-3 py-1 font-black text-lg rounded-full">${priceCOP}</span>
+                        <!-- Precio AUMENTADO a text-2xl -->
+                        <span class="price-tag px-5 py-2.5 font-black text-2xl rounded-full flex-shrink-0 ml-2">${priceCOP}</span>
                     </div>
                     ${proteinsHtml}
                 </div>
@@ -522,7 +518,7 @@
                 <h1 class="text-5xl md:text-7xl font-black text-brand-gold leading-tight mb-4 title-font" data-es="¡FIESTA Y SABOR SIN LÍMITES!" data-en="FIESTA AND UNLIMITED FLAVOR!">
                     ¡FIESTA Y SABOR SIN LÍMITES!
                 </h1>
-                <p class="text-lg text-light-text/80 mb-8 font-quote italic" data-es="El menú que te hará decir '¡Ay, qué lindo es comer en México!'" data-en="The menu that will make you say 'Oh, how beautiful it is to eat in Mexico!'">
+                <p class="text-xl text-light-text/80 mb-8 font-quote italic" data-es="El menú que te hará decir '¡Ay, qué lindo es comer en México!'" data-en="The menu that will make you say 'Oh, how beautiful it is to eat in Mexico!'">
                     El menú que te hará decir "¡Ay, qué lindo es comer en México!".
                 </p>
                 <!-- Llamada a la acción principal -->
@@ -600,7 +596,7 @@
                 <!-- Detalles del Plato -->
                 <div class="p-6 text-center">
                     <h3 id="modal-title" class="text-3xl font-black title-font text-brand-gold mb-2"></h3>
-                    <p id="modal-description" class="text-base text-gray-400 italic mb-0"></p>
+                    <p id="modal-description" class="text-lg text-gray-400 italic mb-0"></p>
                 </div>
             </div>
         </div>
