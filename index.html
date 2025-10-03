@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="content="width=device-width, initial-scale=1.0, viewport-fit=cover"">
-    <title>CIELITO LINDO - Menú Digital Premium</title>
+    <title>CIELITO LINDO - Menú Digital Ultra Gigante</title>
     <!-- Incluye Tailwind CSS para un diseño 100% responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Bebas+Neue&family=Merriweather:ital@1&display=swap" rel="stylesheet">
@@ -106,6 +106,9 @@
             background-color: #262626;
             color: #E63946;
             border: 1px solid #E63946;
+            /* PRECIO: ULTRA GRANDE (35px) */
+            font-size: 35px; 
+            line-height: 1.1; 
         }
         
         /* Estilos de la lista de proteínas */
@@ -116,15 +119,33 @@
         }
         /* Etiqueta de proteína */
         .proteins-list .label {
-            font-size: 1rem; /* text-base */
-            line-height: 1.5rem;
+            font-size: 1.25rem; /* text-xl */
+            line-height: 1.75rem;
+            font-weight: 700; /* bold */
         }
-        /* Lista de proteínas AUMENTADA a text-lg */
-        .proteins-list .text-lg-xl {
-             font-size: 1.125rem; /* text-lg */
-             line-height: 1.75rem;
+        /* Lista de proteínas: GIGANTE (25px) */
+        .proteins-list .protein-text {
+             font-size: 25px; 
+             line-height: 1.4;
+             color: #9ca3af; /* gray-400 */
         }
 
+        /* TAMAÑOS DE TEXTO COLOSALES PARA LOS ITEMS DEL MENÚ */
+        /* Nombre del plato: ULTRA GIGANTE (40px) */
+        .item-name {
+            font-size: 40px; 
+            line-height: 1.1; 
+            font-weight: 900; /* black */
+            color: #F5F5F5; /* light-text */
+        }
+        
+        /* Descripción del plato: EXTRA GIGANTE (30px) */
+        .item-desc {
+            font-size: 30px; 
+            line-height: 1.3;
+            font-style: italic;
+            color: #9ca3af; /* gray-400 */
+        }
 
         /* Estilo para el modal de imagen */
         #image-modal-backdrop {
@@ -153,6 +174,11 @@
         }
         .horizontal-scroll::-webkit-scrollbar {
             display: none; /* Chrome, Safari and Opera */
+        }
+
+        /* Títulos de sección grandes */
+        .section-title {
+            font-size: 2.25rem; /* text-4xl */
         }
     </style>
 </head>
@@ -273,14 +299,14 @@
             // Si el plato es personalizable, agrega el listado de proteínas
             const proteinsHtml = item.customizable ? `
                 <div class="proteins-list bg-dark-bg/50 p-3 rounded-md transition duration-300 mt-2 hover:bg-dark-bg">
-                    <!-- Etiqueta de proteína aumentada a text-base -->
-                    <p class="label text-base font-semibold text-brand-gold mb-1">${proteinsLabel}</p>
-                    <!-- Lista de proteínas AUMENTADA a text-lg -->
-                    <p class="text-lg-xl text-gray-400">${proteinsList}</p>
+                    <!-- Etiqueta de proteína aumentada a text-xl -->
+                    <p class="label text-xl font-semibold text-brand-gold mb-1">${proteinsLabel}</p>
+                    <!-- Lista de proteínas: GIGANTE (25px) -->
+                    <p class="protein-text">${proteinsList}</p>
                 </div>
             ` : '';
 
-            // Ajustes en las clases de tamaño de texto: text-2xl -> text-3xl, text-lg -> text-xl, text-xl(precio) -> text-2xl
+            // Usamos las clases CSS personalizadas para los tamaños colosales
             return `
                 <div class="menu-item-card py-5 border-b border-gray-700/50 transition duration-300 hover:bg-dark-bg/30 px-2 rounded-lg cursor-pointer" 
                      data-name="${item.name.toLowerCase()}" 
@@ -293,13 +319,13 @@
                     
                     <div class="flex justify-between items-start">
                         <div class="mr-4">
-                            <!-- Nombre del plato AUMENTADO a text-3xl -->
-                            <p class="font-black text-light-text text-3xl mb-1">${item.name}</p>
-                            <!-- Descripción AUMENTADA a text-xl -->
-                            <p class="text-xl text-gray-400 italic">${item.desc}</p>
+                            <!-- Nombre del plato: ULTRA GIGANTE (40px) -->
+                            <p class="item-name mb-1">${item.name}</p>
+                            <!-- Descripción: EXTRA GIGANTE (30px) -->
+                            <p class="item-desc">${item.desc}</p>
                         </div>
-                        <!-- Precio AUMENTADO a text-2xl -->
-                        <span class="price-tag px-5 py-2.5 font-black text-2xl rounded-full flex-shrink-0 ml-2">${priceCOP}</span>
+                        <!-- Precio: ULTRA GRANDE (35px) -->
+                        <span class="price-tag px-5 py-2.5 rounded-full flex-shrink-0 ml-2">${priceCOP}</span>
                     </div>
                     ${proteinsHtml}
                 </div>
@@ -552,7 +578,7 @@
         <!-- 4. Sección de Resultados de Búsqueda (Oculta al buscar) -->
         <section id="search-results" class="py-10 px-4 hidden">
             <div class="max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold title-font text-brand-red mb-6" data-es="Resultados de Búsqueda" data-en="Search Results">Resultados de Búsqueda</h2>
+                <h2 class="section-title font-bold title-font text-brand-red mb-6" data-es="Resultados de Búsqueda" data-en="Search Results">Resultados de Búsqueda</h2>
                 <div id="results-container" class="space-y-4 bg-[#1f1f1f] p-6 rounded-xl">
                     <!-- Los resultados de la búsqueda se renderizarán aquí -->
                 </div>
@@ -567,7 +593,7 @@
         <section id="menu" class="py-10 px-4 bg-dark-bg">
             <div class="max-w-4xl mx-auto menu-container">
                 
-                <h2 class="text-4xl font-black title-font text-brand-green text-center mb-8 border-b-4 border-brand-gold pb-3" data-es="MENÚ - EXPLOSIÓN DE SABOR" data-en="MENU - FLAVOR EXPLOSION">MENÚ - EXPLOSIÓN DE SABOR</h2>
+                <h2 class="section-title font-black title-font text-brand-green text-center mb-8 border-b-4 border-brand-gold pb-3" data-es="MENÚ - EXPLOSIÓN DE SABOR" data-en="MENU - FLAVOR EXPLOSION">MENÚ - EXPLOSIÓN DE SABOR</h2>
 
                 <!-- Contenedor Único para el Menú Filtrado -->
                 <div id="menu-content" class="space-y-2 bg-[#1f1f1f] p-6 rounded-xl shadow-inner border-t-4 border-brand-red">
