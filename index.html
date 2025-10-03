@@ -77,6 +77,8 @@
             border: 2px solid #3d3d3d;
             transition: all 0.3s;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            /* Aumentar el tamaño del texto de la búsqueda */
+            font-size: 1rem; 
         }
         #search-input:focus {
             border-color: #FFC000;
@@ -112,6 +114,13 @@
             padding-left: 0.75rem;
             margin-top: 0.5rem;
         }
+        /* Ajuste de tamaño de texto para la lista de proteínas para mayor legibilidad */
+        .proteins-list p {
+            font-size: 0.875rem; /* text-sm */
+        }
+        .proteins-list .label {
+            font-size: 0.75rem; /* text-xs */
+        }
 
         /* Animación para el botón CTA */
         .cta-button {
@@ -131,6 +140,8 @@
         .filter-btn {
             white-space: nowrap; /* Evita que el texto del botón se rompa */
             transition: all 0.3s;
+            /* Aumentar el tamaño del texto de los filtros */
+            font-size: 0.875rem; /* text-sm */
         }
         .filter-btn.active {
             background-color: #E63946;
@@ -267,12 +278,13 @@
             // Si el plato es personalizable, agrega el listado de proteínas
             const proteinsHtml = item.customizable ? `
                 <div class="proteins-list bg-dark-bg/50 p-2 rounded-md transition duration-300 mt-2 hover:bg-dark-bg">
-                    <p class="text-xs font-semibold text-brand-gold mb-1">${proteinsLabel}</p>
-                    <p class="text-[11px] text-gray-400">${proteinsList}</p>
+                    <p class="label text-xs font-semibold text-brand-gold mb-1">${proteinsLabel}</p>
+                    <p class="text-sm text-gray-400">${proteinsList}</p>
                 </div>
             ` : '';
 
             // Importante: Agregar el listener para abrir el modal
+            // Ajustes en las clases de tamaño de texto: text-lg -> text-xl, text-sm -> text-base
             return `
                 <div class="menu-item-card py-4 border-b border-gray-700/50 transition duration-300 hover:bg-dark-bg/30 px-2 rounded-lg cursor-pointer" 
                      data-name="${item.name.toLowerCase()}" 
@@ -285,9 +297,12 @@
                     
                     <div class="flex justify-between items-start">
                         <div class="mr-4">
-                            <p class="font-bold text-light-text text-lg">${item.name}</p>
-                            <p class="text-sm text-gray-400 italic">${item.desc}</p>
+                            <!-- Nombre del plato AUMENTADO a text-xl -->
+                            <p class="font-bold text-light-text text-xl">${item.name}</p>
+                            <!-- Descripción AUMENTADA a text-base -->
+                            <p class="text-base text-gray-400 italic">${item.desc}</p>
                         </div>
+                        <!-- Precio con tamaño text-lg y buen contraste -->
                         <span class="price-tag px-3 py-1 font-black text-lg rounded-full">${priceCOP}</span>
                     </div>
                     ${proteinsHtml}
@@ -433,9 +448,10 @@
 
             // Botón 'Todos'
             const allLabel = lang === 'es' ? 'TODO' : 'ALL';
+            // Clases de tamaño de texto ajustadas en CSS global, aquí usamos `text-sm` para los botones
             buttonsHtml += `
                 <button id="filter-all" onclick="filterMenuByCategory('all')" 
-                        class="filter-btn active bg-brand-red text-light-text text-xs font-semibold py-1.5 px-3 rounded-full shadow-lg">
+                        class="filter-btn active bg-brand-red text-light-text font-semibold py-1.5 px-3 rounded-full shadow-lg">
                     <i class="fas fa-list mr-1"></i> ${allLabel}
                 </button>
             `;
@@ -447,7 +463,7 @@
                 const activeClass = isActive ? 'active bg-brand-red' : 'bg-gray-700 hover:bg-gray-600';
                 buttonsHtml += `
                     <button id="filter-${key}" onclick="filterMenuByCategory('${key}')" 
-                            class="filter-btn ${activeClass} text-light-text text-xs font-semibold py-1.5 px-3 rounded-full shadow-lg">
+                            class="filter-btn ${activeClass} text-light-text font-semibold py-1.5 px-3 rounded-full shadow-lg">
                         <i class="fas ${cat.icon} mr-1"></i> ${cat.label}
                     </button>
                 `;
@@ -506,7 +522,7 @@
                 <h1 class="text-5xl md:text-7xl font-black text-brand-gold leading-tight mb-4 title-font" data-es="¡FIESTA Y SABOR SIN LÍMITES!" data-en="FIESTA AND UNLIMITED FLAVOR!">
                     ¡FIESTA Y SABOR SIN LÍMITES!
                 </h1>
-                <p class="text-lg text-light-text/80 mb-8 font-quote italic" data-es="El menú que te hará decir '¡Ay, qué lindo es comer en México!'." data-en="The menu that will make you say 'Oh, how beautiful it is to eat in Mexico!'">
+                <p class="text-lg text-light-text/80 mb-8 font-quote italic" data-es="El menú que te hará decir '¡Ay, qué lindo es comer en México!'" data-en="The menu that will make you say 'Oh, how beautiful it is to eat in Mexico!'">
                     El menú que te hará decir "¡Ay, qué lindo es comer en México!".
                 </p>
                 <!-- Llamada a la acción principal -->
@@ -520,17 +536,17 @@
         <section class="sticky top-16 z-40 bg-dark-bg p-4 shadow-2xl border-b border-brand-gold/50">
             <div class="max-w-4xl mx-auto space-y-4">
                 
-                <!-- Búsqueda General (TEXTO REDUCIDO: text-lg -> text-base, py-3 -> py-2.5) -->
+                <!-- Búsqueda General -->
                 <div class="relative">
                     <input type="text" id="search-input" 
-                           class="w-full py-2.5 pl-12 pr-4 text-base rounded-xl bg-gray-800 text-light-text focus:outline-none"
+                           class="w-full py-3 pl-12 pr-4 rounded-xl bg-gray-800 text-light-text focus:outline-none"
                            placeholder="Buscar un plato, bebida o proteína (Tinga, Pastor...)"
                            data-es-placeholder="Buscar un plato, bebida o proteína (Tinga, Pastor...)"
                            data-en-placeholder="Search for a dish, drink, or protein (Tinga, Pastor...)">
                     <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-brand-gold text-xl"></i>
                 </div>
 
-                <!-- Filtros de Categoría (SCROLL HORIZONTAL Y TEXTO REDUCIDO: text-sm -> text-xs, py-2 px-4 -> py-1.5 px-3) -->
+                <!-- Filtros de Categoría (SCROLL HORIZONTAL) -->
                 <div id="filter-buttons-container" class="horizontal-scroll flex space-x-3 pb-2">
                     <!-- Los botones de filtro se renderizan aquí por JS -->
                 </div>
@@ -544,7 +560,7 @@
                 <div id="results-container" class="space-y-4 bg-[#1f1f1f] p-6 rounded-xl">
                     <!-- Los resultados de la búsqueda se renderizarán aquí -->
                 </div>
-                <p id="no-results" class="text-center text-xl text-gray-400 mt-10 hidden" data-es="¡Oops! No encontramos lo que buscas. Intenta con otra palabra." data-en="Oops! We couldn't find what you're looking for. Try another word.">
+                <p id="no-results" class="text-center text-xl text-gray-400 mt-10" data-es="¡Oops! No encontramos lo que buscas. Intenta con otra palabra." data-en="Oops! We couldn't find what you're looking for. Try another word.">
                     ¡Oops! No encontramos lo que buscas. Intenta con otra palabra.
                 </p>
             </div>
@@ -584,15 +600,7 @@
                 <!-- Detalles del Plato -->
                 <div class="p-6 text-center">
                     <h3 id="modal-title" class="text-3xl font-black title-font text-brand-gold mb-2"></h3>
-                    <p id="modal-description" class="text-sm text-gray-400 italic mb-0"></p>
-                    
-                    <!-- 
-                        Sección de PEDIDO ELIMINADA:
-                        <a href="https://wa.me/message/KNZ4SJGC4PUPJ" target="_blank" class="inline-block w-full py-3 bg-brand-green text-white font-bold rounded-lg hover:bg-green-700 transition duration-200">
-                            <i class="fas fa-shopping-cart mr-2"></i> 
-                            <span data-es="PEDIR ESTE PLATO" data-en="ORDER THIS DISH">PEDIR ESTE PLATO</span>
-                        </a>
-                    -->
+                    <p id="modal-description" class="text-base text-gray-400 italic mb-0"></p>
                 </div>
             </div>
         </div>
