@@ -77,8 +77,8 @@
             border: 2px solid #3d3d3d;
             transition: all 0.3s;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            /* Tamaño de texto de la búsqueda - MANTENEMOS ESTE LIGERAMENTE PEQUEÑO */
-            font-size: 1.1rem; 
+            /* TAMAÑO DE TEXTO DE LA BÚSQUEDA: GIGANTE (30px) */
+            font-size: 30px; 
         }
         #search-input:focus {
             border-color: #FFC000;
@@ -117,9 +117,9 @@
             padding-left: 0.75rem;
             margin-top: 0.5rem;
         }
-        /* Etiqueta de proteína */
+        /* Etiqueta de proteína aumentada */
         .proteins-list .label {
-            font-size: 1.25rem; /* text-xl */
+            font-size: 1.75rem; /* Aumentamos el label de proteína */
             line-height: 1.75rem;
             font-weight: 700; /* bold */
         }
@@ -156,8 +156,13 @@
         .filter-btn {
             white-space: nowrap; 
             transition: all 0.3s;
-            /* Tamaño de texto de los filtros - MANTENEMOS ESTE PEQUEÑO */
-            font-size: 0.9rem; 
+            /* TAMAÑO DE TEXTO DE LOS FILTROS: GIGANTE (20px) */
+            font-size: 20px; 
+            /* Aumentamos el padding para que sean más grandes */
+            padding-top: 0.5rem; /* py-2 */
+            padding-bottom: 0.5rem; /* py-2 */
+            padding-left: 1rem; /* px-4 */
+            padding-right: 1rem; /* px-4 */
         }
         .filter-btn.active {
             background-color: #E63946;
@@ -299,8 +304,8 @@
             // Si el plato es personalizable, agrega el listado de proteínas
             const proteinsHtml = item.customizable ? `
                 <div class="proteins-list bg-dark-bg/50 p-3 rounded-md transition duration-300 mt-2 hover:bg-dark-bg">
-                    <!-- Etiqueta de proteína aumentada a text-xl -->
-                    <p class="label text-xl font-semibold text-brand-gold mb-1">${proteinsLabel}</p>
+                    <!-- Etiqueta de proteína aumentada a 1.75rem -->
+                    <p class="label font-semibold text-brand-gold mb-1">${proteinsLabel}</p>
                     <!-- Lista de proteínas: GIGANTE (25px) -->
                     <p class="protein-text">${proteinsList}</p>
                 </div>
@@ -470,10 +475,10 @@
 
             // Botón 'Todos'
             const allLabel = lang === 'es' ? 'TODO' : 'ALL';
-            // Clases de tamaño de texto ajustadas en CSS global, aquí usamos `text-sm` para los botones
             buttonsHtml += `
+                <!-- Agregamos py-2 px-4 en las clases de Tailwind aquí para aplicar el padding grande -->
                 <button id="filter-all" onclick="filterMenuByCategory('all')" 
-                        class="filter-btn active bg-brand-red text-light-text font-semibold py-1.5 px-3 rounded-full shadow-lg">
+                        class="filter-btn active bg-brand-red text-light-text font-semibold py-2 px-4 rounded-full shadow-lg">
                     <i class="fas fa-list mr-1"></i> ${allLabel}
                 </button>
             `;
@@ -484,8 +489,9 @@
                 const isActive = key === currentFilter && currentFilter !== 'all';
                 const activeClass = isActive ? 'active bg-brand-red' : 'bg-gray-700 hover:bg-gray-600';
                 buttonsHtml += `
+                    <!-- Agregamos py-2 px-4 en las clases de Tailwind aquí para aplicar el padding grande -->
                     <button id="filter-${key}" onclick="filterMenuByCategory('${key}')" 
-                            class="filter-btn ${activeClass} text-light-text font-semibold py-1.5 px-3 rounded-full shadow-lg">
+                            class="filter-btn ${activeClass} text-light-text font-semibold py-2 px-4 rounded-full shadow-lg">
                         <i class="fas ${cat.icon} mr-1"></i> ${cat.label}
                     </button>
                 `;
@@ -560,12 +566,14 @@
                 
                 <!-- Búsqueda General -->
                 <div class="relative">
+                    <!-- Aumentamos el padding vertical a py-4 para más altura -->
                     <input type="text" id="search-input" 
-                           class="w-full py-3 pl-12 pr-4 rounded-xl bg-gray-800 text-light-text focus:outline-none"
+                           class="w-full py-4 pl-14 pr-4 rounded-xl bg-gray-800 text-light-text focus:outline-none"
                            placeholder="Buscar un plato, bebida o proteína (Tinga, Pastor...)"
                            data-es-placeholder="Buscar un plato, bebida o proteína (Tinga, Pastor...)"
                            data-en-placeholder="Search for a dish, drink, or protein (Tinga, Pastor...)">
-                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-brand-gold text-xl"></i>
+                    <!-- Icono de búsqueda con tamaño text-3xl (grande) y ajustamos left-4 a left-5 para centrarlo con el padding -->
+                    <i class="fas fa-search absolute left-5 top-1/2 transform -translate-y-1/2 text-brand-gold text-3xl"></i>
                 </div>
 
                 <!-- Filtros de Categoría (SCROLL HORIZONTAL) -->
