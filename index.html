@@ -1,958 +1,632 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Cielito Lindo — Auténtica comida mexicana… y rápida pa’ tus antojos</title>
-  <meta name="description" content="Cielito Lindo | Auténtica comida mexicana… y rápida pa' tus antojos. Menú digital elegante y juvenil. Rodadero, Santa Marta." />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#070707;
-      --card:#0e0d0f;
-      --lila:#b78bff;
-      --lila-2:#8c5cff;
-      --text:#ffffff;
-      --muted:rgba(255,255,255,.74);
-      --line:rgba(255,255,255,.07);
-      --accent-1:#ffcc3a;
-      --accent-2:#ff6fb2;
-      --accent-3:#25e8a5;
-      --radius:16px;
-      --shadow:0 18px 60px rgba(0,0,0,.55);
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-family:"Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-    }
-    *{
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    html,body{
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    a{
-      color: inherit;
-      text-decoration: none;
-    }
-    img{
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="content="width=device-width, initial-scale=1.0, viewport-fit=cover"">
+    <title>CIELITO LINDO - Menú Digital Premium</title>
+    <!-- Incluye Tailwind CSS para un diseño 100% responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Bebas+Neue&family=Merriweather:ital@1&display=swap" rel="stylesheet">
+    <!-- Iconos de Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': '#E63946',    // Rojo Vibrante (Chile)
+                        'brand-gold': '#FFC000',   // Dorado Brillante
+                        'brand-green': '#5D9A58',  // Verde Lima/Bandera
+                        'dark-bg': '#181818',      // Negro Profundo
+                        'light-text': '#F5F5F5',   // Blanco Suave
+                    },
+                    fontFamily: {
+                        'header': ['Bebas Neue', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                        'quote': ['Merriweather', 'serif'],
+                    },
+                    keyframes: {
+                        'fadeInUp': {
+                            '0%': { opacity: '0', transform: 'translateY(15px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        },
+                        'modal-in': {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    },
+                    animation: {
+                        'hero-appear': 'fadeInUp 1s ease-out',
+                        'float-effect': 'float 3s ease-in-out infinite',
+                        'modal-open': 'modal-in 0.3s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
 
-    /* Splash / Intro elegant */
-    #splash{
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(1200px 600px at 50% -10%, rgba(140,92,255,.25), transparent 60%), linear-gradient(180deg,#0a0612, #08070a 60%);
-      z-index: 9999;
-      backdrop-filter: blur(4px);
-    }
-    .splash-logo{
-      width: 140px;
-      height: 140px;
-      object-fit: cover;
-      margin-bottom: 20px;
-      border-radius: 50%;
-      box-shadow: 0 24px 80px rgba(140,92,255,.28);
-      border: 3px solid var(--lila);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    #splash h1{
-      margin: 0 0 8px 0;
-      font-size: 28px;
-      letter-spacing: .8px;
-      font-weight: 800;
-      text-align: center;
-      color: var(--text);
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    #splash p{
-      margin: 0;
-      color: var(--lila);
-      font-weight: 600;
-      font-size: 1rem;
-      text-align: center;
-      max-width: 80%;
-    }
+    <style>
+        /* Estilos generales para el ambiente oscuro */
+        body { 
+            background-color: #0A0A0A; 
+            color: var(--light-text); 
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
 
-    .app{
-      display: none;
-      max-width: 100%;
-      margin: 0 auto;
-      padding: 16px;
-      width: 100vw;
-      min-height: 100vh;
-      box-sizing: border-box;
-    }
+        /* Títulos principales con la fuente Bebas Neue */
+        .title-font {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.1em;
+        }
 
-    header{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      padding: 12px 0;
-      position: sticky;
-      top: 0;
-      background: rgba(7,7,7,0.9);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-      border-bottom: 1px solid var(--line);
-    }
-    .brand{
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex: 1;
-    }
-    .brand .logo{
-      width: 56px;
-      height: 56px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 2px solid var(--lila);
-      box-shadow: 0 4px 12px rgba(140,92,255,0.2);
-    }
-    .brand h2{
-      margin: 0;
-      color: var(--lila);
-      font-size: 1.3rem;
-      font-weight: 800;
-      line-height: 1.2;
-    }
-    .brand p{
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-    .nav-container{
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    .lang-switcher{
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      border-radius: 12px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.05);
-    }
-    .lang-btn{
-      padding: 6px 12px;
-      border: none;
-      border-radius: 0;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.85rem;
-      transition: var(--transition);
-    }
-    .lang-btn.active{
-      background: var(--lila);
-      color: #0c0011;
-      font-weight: 700;
-    }
-    .lang-btn:first-child{
-      border-top-left-radius: 12px;
-      border-bottom-left-radius: 12px;
-    }
-    .lang-btn:last-child{
-      border-top-right-radius: 12px;
-      border-bottom-right-radius: 12px;
-    }
+        /* Estilo para el Hero Section con patrón sutil (Para admirar la página) */
+        .hero-background {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('uploaded:image_dec9c6.jpg-b5a13fb1-becf-40b4-86f6-5d78d42789f6');
+            background-size: cover;
+            background-position: center;
+        }
 
-    /* Hero */
-    .hero{
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-    .hero h3{
-      margin: 0;
-      color: var(--lila);
-      font-weight: 800;
-      font-size: 1.4rem;
-      line-height: 1.3;
-    }
-    .hero p{
-      margin: 4px 0 0 0;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-    .hero-img{
-      width: 100%;
-      height: 200px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      margin-top: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    }
-    .hero-img img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-    .hero-img:hover img{
-      transform: scale(1.05);
-    }
+        /* Barra de Búsqueda con estilo destacado */
+        #search-input {
+            border: 2px solid #3d3d3d;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        #search-input:focus {
+            border-color: #FFC000;
+            box-shadow: 0 0 15px rgba(255, 192, 0, 0.5);
+            background-color: #121212;
+        }
+        
+        /* Contenedor del menú para el efecto de sombra */
+        .menu-container {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        }
 
-    /* Controls */
-    .controls{
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    #search{
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 2px solid rgba(183,139,255,0.15);
-      background: rgba(255,255,255,0.03);
-      color: var(--text);
-      font-size: 0.95rem;
-      backdrop-filter: blur(4px);
-      transition: var(--transition);
-    }
-    #search:focus{
-      outline: none;
-      border-color: var(--lila);
-      box-shadow: 0 0 0 3px rgba(140,92,255,0.1);
-      background: rgba(255,255,255,0.05);
-    }
+        /* Estilo para el botón de WhatsApp (Flotante) */
+        .whatsapp-float {
+            background-color: #5D9A58; /* Verde Lima */
+            box-shadow: 0 0 15px rgba(93, 154, 88, 0.8);
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
 
-    /* Categories */
-    .cats{
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      margin: 12px 0 0 0;
-      padding-bottom: 8px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    .cats::-webkit-scrollbar{
-      display: none;
-    }
-    .cat{
-      flex: 0 0 auto;
-      padding: 10px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: var(--transition);
-      backdrop-filter: blur(4px);
-    }
-    .cat:hover{
-      background: rgba(140,92,255,0.1);
-      border-color: rgba(140,92,255,0.3);
-    }
-    .cat.active{
-      background: linear-gradient(90deg,var(--lila),var(--lila-2));
-      color: #0c0011;
-      box-shadow: 0 14px 34px rgba(140,92,255,.18);
-      transform: translateY(-2px);
-      border-color: transparent;
-    }
+        /* Estilo para los precios */
+        .price-tag {
+            background-color: #262626;
+            color: #E63946;
+            border: 1px solid #E63946;
+        }
+        
+        /* Estilos de la lista de proteínas */
+        .proteins-list {
+            border-left: 3px solid var(--brand-gold);
+            padding-left: 0.75rem;
+            margin-top: 0.5rem;
+        }
 
-    /* Menu grid */
-    .grid{
-      display: grid;
-      gap: 16px;
-      margin-top: 16px;
-    }
-    .menu-grid{
-      grid-template-columns: 1fr;
-    }
-    .card{
-      position: relative;
-      background: linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
-      backdrop-filter: blur(4px);
-    }
-    .card:hover{
-      transform: translateY(-6px);
-      box-shadow: 0 24px 60px rgba(0,0,0,.6);
-    }
-    .media{
-      height: 180px;
-      overflow: hidden;
-      position: relative;
-    }
-    .media::after{
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 40px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.6));
-      z-index: 1;
-    }
-    .media img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-    .card:hover .media img{
-      transform: scale(1.1);
-    }
-    .body{
-      padding: 16px;
-      position: relative;
-    }
-    .body h4{
-      margin: 0 0 8px 0;
-      color: var(--accent-1);
-      font-weight: 900;
-      font-size: 1.2rem;
-      line-height: 1.3;
-    }
-    .body p{
-      margin: 0 0 12px 0;
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-    .price{
-      position: absolute;
-      right: 14px;
-      top: 14px;
-      background: linear-gradient(90deg,var(--accent-2),var(--accent-1));
-      padding: 8px 12px;
-      border-radius: 14px;
-      color: #17000d;
-      font-weight: 900;
-      font-size: 1rem;
-      box-shadow: 0 4px 12px rgba(255,111,178,0.3);
-      z-index: 2;
-    }
+        /* Animación para el botón CTA */
+        .cta-button {
+            transition: all 0.3s;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px -5px rgba(255, 192, 0, 0.6);
+        }
 
-    /* Promo carousel */
-    .promo-hero{
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .carousel{
-      position: relative;
-      flex: 1;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      height: 220px;
-    }
-    .carousel-track{
-      display: flex;
-      transition: transform 600ms cubic-bezier(.2,.9,.3,1);
-      height: 100%;
-    }
-    .carousel-item{
-      flex: 0 0 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px;
-      text-align: center;
-    }
-    .carousel-item img{
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      border: 1px solid var(--line);
-    }
-    .carousel-item h3{
-      margin: 0 0 6px 0;
-      color: var(--accent-1);
-      font-size: 1.2rem;
-      font-weight: 800;
-    }
-    .carousel-item p{
-      margin: 4px 0 0 0;
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-    .carousel-controls{
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 12px;
-    }
-    .dot{
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.12);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .dot.active{
-      background: var(--lila);
-      transform: scale(1.3);
-      box-shadow: 0 4px 10px rgba(140,92,255,0.14);
-    }
+        /* Estilo para el modal de imagen */
+        #image-modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.95);
+        }
 
-    /* About */
-    #about{
-      margin-top: 20px;
-    }
-    #about h3{
-      color: var(--lila);
-      margin: 0 0 14px 0;
-      font-size: 1.4rem;
-      font-weight: 800;
-    }
-    #about .card{
-      padding: 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-      border: 1px solid var(--line);
-      border-radius: 16px;
-    }
-    #about p{
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin: 0;
-    }
+        /* Estilo para los botones de filtro */
+        .filter-btn {
+            white-space: nowrap; /* Evita que el texto del botón se rompa */
+            transition: all 0.3s;
+        }
+        .filter-btn.active {
+            background-color: #E63946;
+            color: #F5F5F5;
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.5);
+        }
 
-    /* Location */
-    #location{
-      margin-top: 20px;
-    }
-    #location h3{
-      color: var(--lila);
-      margin: 0 0 14px 0;
-      font-size: 1.4rem;
-      font-weight: 800;
-    }
-    .loc{
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .loc .card{
-      padding: 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-      border: 1px solid var(--line);
-      border-radius: 16px;
-    }
-    .map{
-      width: 100%;
-      height: 200px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    }
-    .map img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-    .map:hover img{
-      transform: scale(1.05);
-    }
-
-    footer{
-      text-align: center;
-      margin-top: 30px;
-      color: rgba(255,255,255,.6);
-      padding: 20px 0;
-      font-size: 0.9rem;
-      border-top: 1px solid var(--line);
-    }
-    footer a{
-      color: var(--lila);
-      font-weight: 600;
-      transition: var(--transition);
-    }
-    footer a:hover{
-      color: var(--lila-2);
-      text-decoration: underline;
-    }
-
-    /* WhatsApp button */
-    .wa{
-      position: fixed;
-      right: 16px;
-      bottom: 20px;
-      width: 64px;
-      height: 64px;
-      background: #128c7e;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      z-index: 9999;
-      box-shadow: 0 6px 20px rgba(0,0,0,.3);
-      transition: var(--transition);
-      border: 3px solid var(--bg);
-    }
-    .wa img{
-      width: 44px;
-      height: 44px;
-      object-fit: contain;
-      filter: brightness(0) invert(1);
-    }
-    .wa:hover{
-      transform: scale(1.1) rotate(10deg);
-      box-shadow: 0 8px 28px rgba(0,0,0,.4);
-    }
-
-    /* Responsive adjustments */
-    @media (min-width: 480px) {
-      .menu-grid{
-        grid-template-columns: repeat(2,1fr);
-      }
-      .hero{
-        flex-direction: row;
-        align-items: center;
-        gap: 20px;
-      }
-      .hero-img{
-        width: 160px;
-        height: 160px;
-        margin: 0;
-      }
-      .hero h3{
-        font-size: 1.5rem;
-      }
-      .hero p{
-        font-size: 1.05rem;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .app{
-        max-width: 1200px;
-        padding: 20px;
-      }
-      .menu-grid{
-        grid-template-columns: repeat(3,1fr);
-      }
-      .hero-img{
-        width: 200px;
-        height: 200px;
-      }
-      .hero h3{
-        font-size: 1.6rem;
-      }
-    }
-  </style>
+        /* Estilo para el contenedor de filtros que permite scroll horizontal sin scrollbar */
+        .horizontal-scroll {
+            overflow-x: auto;
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .horizontal-scroll::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
+        }
+    </style>
 </head>
-<body>
-  <!-- SPLASH / INTRO -->
-  <div id="splash" role="status">
-    <img src="https://raw.githubusercontent.com/Bruma-cafe-y-croffle/bruma-asses/refs/heads/main/Logo%20cielito%20lindo.jfif" alt="Logo Cielito Lindo" class="splash-logo">
-    <h1>Cielito Lindo</h1>
-    <p>Auténtica comida mexicana… y rápida pa' tus antojos</p>
-  </div>
 
-  <!-- APP -->
-  <div class="app" id="app">
-    <header>
-      <div class="brand">
-        <img src="https://raw.githubusercontent.com/Bruma-cafe-y-croffle/bruma-asses/refs/heads/main/Logo%20cielito%20lindo.jfif" alt="Logo Cielito Lindo" class="logo">
-        <div>
-          <h2 data-t="brand.name">Cielito Lindo</h2>
-          <p data-t="brand.tagline">Auténtica comida mexicana.</p>
+<body>
+
+    <!-- DATA DEL RESTAURANTE CON URLS DE IMAGEN -->
+    <script>
+        const proteinsES = "Tinga, Chicharrón, Pastor, Lengua, Camarón, Cerdo Desmechado, Chorizo Vegano, Champiñón, Pollo, Chorizo";
+        const proteinsEN = "Tinga, Pork Rind, Pastor, Tongue, Shrimp, Shredded Pork, Vegan Sausage, Mushroom, Chicken, Sausage";
+        
+        const content = {
+            es: {
+                proteinsLabel: "Proteínas a Elegir:",
+                proteins: proteinsES,
+                allProteinsList: proteinsES.split(', ').map(p => p.trim()),
+                categories: {
+                    starters: { label: "Entradas", icon: "fa-seedling" },
+                    main: { label: "Platos Fuertes", icon: "fa-hotdog" },
+                    fastFood: { label: "Comida Rápida", icon: "fa-burger" },
+                    drinks: { label: "Bebidas", icon: "fa-mug-hot" }
+                },
+                menuItems: {
+                    starters: [ 
+                        // Imágenes proporcionadas por el usuario
+                        { name: "ELOTES", desc: "Cubiertas de Doritos, mayonesa, queso y tajín.", price: "18000", customizable: false, category: "Entradas", imgUrl: 'uploaded:image_55b70d.jpg-8b4a9646-29f0-45a5-a605-f55aee275329' },
+                        { name: "SOPA MEXICANA", desc: "Sopa de tomate, con trocitos de aguacate, pollo, queso, maíz, totopo y cilantro.", price: "15000", customizable: false, category: "Entradas", imgUrl: 'uploaded:image_df450c.jpg-71a49222-c77a-4e4c-99ba-60a3338e5869' },
+                        { name: "TRIO DE TACOS", desc: "Tortilla de maíz artesanal acompañado de la carne de su elección con cebolla, cilantro y guacamole.", price: "23000", customizable: true, category: "Entradas", imgUrl: 'uploaded:image_df4566.jpg-954d874b-b76c-460d-86df-73562b5769ef' },
+                        { name: "FLAUTAS AHOGADAS", desc: "Tortillas de maíz rellenas de pollo, sumergida en guacamole, crema agria y frijol. (3 und)", price: "20000", customizable: false, category: "Entradas", imgUrl: 'uploaded:image_df5105.jpg-cefef5cf-4dfc-4547-99b5-03859145e196' },
+                    ],
+                    main: [ 
+                        { name: "BURRITO BÁSICO", desc: "Tortilla grande rellena de carne, arroz, frijoles, queso, aguacate, pepinillos y guacamole.", price: "28000", customizable: true, category: "Fuertes", imgUrl: 'uploaded:image_570c86.jpg-d7316e9f-d402-4a55-9c24-80c4da0e726f' },
+                        { name: "BURRITO CLÁSICO", desc: "Tortilla grande, arroz, frijoles, queso, aguacate, pepinillos, carne de la selección, guacamole y ají de la casa.", price: "32000", customizable: true, category: "Fuertes", imgUrl: 'uploaded:image_570c86.jpg-d7316e9f-d402-4a55-9c24-80c4da0e726f' },
+                        { name: "QUESADILLAS", desc: "Tortilla de harina y queso, carne de su elección, guacamole.", price: "20000", customizable: true, category: "Fuertes", imgUrl: 'uploaded:image_de7769.jpg-092f3ba2-49d7-4338-ba55-6a0e38f1d347' },
+                        { name: "GRINGAS", desc: "Dos tortillas de harina, carne, piña asada, cebolla, cilantro, queso peruano y frijol.", price: "22000", customizable: true, category: "Fuertes", imgUrl: 'uploaded:image_de778d.jpg-b089eb52-fc4d-4864-ba56-6b0bb82eb5c4' },
+                        { name: "BOWL MEXICANO", desc: "Arroz, frijol refrito, aguacate, pepinillos, carne de la selección, guacamole, crema agria y salsa roja.", price: "25000", customizable: true, category: "Fuertes", imgUrl: 'https://placehold.co/800x600/181818/FFC000?text=BOWL+MEXICANO' },
+                        { name: "CHILAQUILES", desc: "Totopos de maíz bañados en salsa verde o roja, carne de su elección, crema agria y queso.", price: "28000", customizable: true, category: "Fuertes", imgUrl: 'https://placehold.co/800x600/181818/FFC000?text=CHILAQUILES' },
+                    ],
+                    fastFood: [ 
+                        { name: "SALCHIPAPAS RÍO GRANDE", desc: "Salchipapas con pollo desmechado, queso fundido, cebolla, cilantro y pico de gallo.", price: "25000", customizable: false, category: "Comida Rápida", imgUrl: 'uploaded:image_dee0a2.jpg-d563bab4-9d6b-4a84-b080-3d9f5240845b' },
+                        { name: "HAMBURGUESA CLÁSICA", desc: "Carne, queso, tomate, cebolla, lechuga y salsa de la casa.", price: "22000", customizable: false, category: "Comida Rápida", imgUrl: 'https://placehold.co/800x600/181818/E63946?text=HAMBURGUESA+CLASICA' },
+                        { name: "HAMBURGUESA MEXICANA", desc: "Carne, queso, tomate, cebolla, lechuga, salsa de la casa, jalapeños, guacamole y totopos.", price: "25000", customizable: false, category: "Comida Rápida", imgUrl: 'https://placehold.co/800x600/181818/E63946?text=HAMBURGUESA+MEXICANA' },
+                    ],
+                    drinks: [ 
+                        { name: "CHAMOYADA DE MANGO", desc: "Nuestra bebida refrescante y picantita.", price: "14000", customizable: false, category: "Bebidas", imgUrl: 'uploaded:image_df45a7.jpg-2e8a4e6e-6c95-4681-9f1e-90d1d2b60d87' },
+                        { name: "LIMONADAS", desc: "Natural, Coco, Hierbabuena, Cereza.", price: "12000", customizable: false, category: "Bebidas", imgUrl: 'https://placehold.co/800x600/181818/5D9A58?text=LIMONADAS' },
+                        { name: "GASEOSA PERSONAL", desc: "Coca Cola, Quatro, Sprite.", price: "6000", customizable: false, category: "Bebidas", imgUrl: 'https://placehold.co/800x600/181818/5D9A58?text=GASEOSA' },
+                    ],
+                }
+            },
+            en: {
+                proteinsLabel: "Available Proteins:",
+                proteins: proteinsEN,
+                allProteinsList: proteinsEN.split(', ').map(p => p.trim()),
+                categories: {
+                    starters: { label: "Starters", icon: "fa-seedling" },
+                    main: { label: "Main Dishes", icon: "fa-hotdog" },
+                    fastFood: { label: "Fast Food", icon: "fa-burger" },
+                    drinks: { label: "Drinks", icon: "fa-mug-hot" }
+                },
+                menuItems: {
+                     starters: [ 
+                        { name: "ELOTES", desc: "Covered with Doritos, mayonnaise, cheese, and tajín.", price: "18000", customizable: false, category: "Starters", imgUrl: 'uploaded:image_55b70d.jpg-8b4a9646-29f0-45a5-a605-f55aee275329' },
+                        { name: "MEXICAN SOUP", desc: "Tomato soup with avocado chunks, chicken, cheese, corn, totopo, and cilantro.", price: "15000", customizable: false, category: "Starters", imgUrl: 'uploaded:image_df450c.jpg-71a49222-c77a-4e4c-99ba-60a3338e5869' },
+                        { name: "TACO TRIO", desc: "Artisanal corn tortilla with meat of your choice, onion, cilantro, and guacamole.", price: "23000", customizable: true, category: "Starters", imgUrl: 'uploaded:image_df4566.jpg-954d874b-b76c-460d-86df-73562b5769ef' },
+                        { name: "DROWNED FLAUTAS", desc: "Corn tortillas filled with shredded chicken, submerged in guacamole, sour cream and beans. (3 units)", price: "20000", customizable: false, category: "Starters", imgUrl: 'uploaded:image_df5105.jpg-cefef5cf-4dfc-4547-99b5-03859145e196' },
+                    ],
+                    main: [ 
+                        { name: "BASIC BURRITO", desc: "Large tortilla filled with meat, rice, beans, cheese, avocado, pickles, and guacamole.", price: "28000", customizable: true, category: "Main Dishes", imgUrl: 'uploaded:image_570c86.jpg-d7316e9f-d402-4a55-9c24-80c4da0e726f' },
+                        { name: "CLASSIC BURRITO", desc: "Large tortilla, rice, beans, cheese, avocado, pickles, meat of choice, guacamole, and house chili.", price: "32000", customizable: true, category: "Main Dishes", imgUrl: 'uploaded:image_570c86.jpg-d7316e9f-d402-4a55-9c24-80c4da0e726f' },
+                        { name: "QUESADILLAS", desc: "Flour tortilla and cheese, meat of your choice, guacamole.", price: "20000", customizable: true, category: "Main Dishes", imgUrl: 'uploaded:image_de7769.jpg-092f3ba2-49d7-4338-ba55-6a0e38f1d347' },
+                        { name: "GRINGAS", desc: "Two flour tortillas, meat, grilled pineapple, onion, cilantro, Peruvian cheese, and beans.", price: "22000", customizable: true, category: "Main Dishes", imgUrl: 'uploaded:image_de778d.jpg-b089eb52-fc4d-4864-ba56-6b0bb82eb5c4' },
+                        { name: "MEXICAN BOWL", desc: "Rice, refried beans, avocado, pickles, meat of choice, guacamole, sour cream, and red sauce.", price: "25000", customizable: true, category: "Main Dishes", imgUrl: 'https://placehold.co/800x600/181818/FFC000?text=MEXICAN+BOWL' },
+                        { name: "CHILAQUILES", desc: "Corn chips bathed in green or red sauce, meat of your choice, sour cream, and cheese.", price: "28000", customizable: true, category: "Main Dishes", imgUrl: 'https://placehold.co/800x600/181818/FFC000?text=CHILAQUILES' },
+                    ],
+                    fastFood: [ 
+                        { name: "RIO GRANDE SALCHIPAPAS", desc: "Salchipapas with shredded chicken, melted cheese, onion, cilantro, and pico de gallo.", price: "25000", customizable: false, category: "Fast Food", imgUrl: 'uploaded:image_dee0a2.jpg-d563bab4-9d6b-4a84-b080-3d9f5240845b' },
+                        { name: "CLASSIC BURGER", desc: "Meat, cheese, tomato, onion, lettuce, and house sauce.", price: "22000", customizable: false, category: "Fast Food", imgUrl: 'https://placehold.co/800x600/181818/E63946?text=CLASSIC+BURGER' },
+                        { name: "MEXICAN BURGER", desc: "Meat, cheese, tomato, onion, lettuce, house sauce, jalapeños, guacamole, and totopos.", price: "25000", customizable: false, category: "Fast Food", imgUrl: 'https://placehold.co/800x600/181818/E63946?text=MEXICAN+BURGER' },
+                    ],
+                    drinks: [ 
+                        { name: "MANGO CHAMOYADA", desc: "Our refreshing and spicy drink.", price: "14000", customizable: false, category: "Drinks", imgUrl: 'uploaded:image_df45a7.jpg-2e8a4e6e-6c95-4681-9f1e-90d1d2b60d87' },
+                        { name: "LIMONADAS", desc: "Natural, Coco, Hierbabuena, Cereza.", price: "12000", customizable: false, category: "Drinks", imgUrl: 'https://placehold.co/800x600/181818/5D9A58?text=LEMONADES' },
+                        { name: "GASEOSA PERSONAL", desc: "Coca Cola, Quatro, Sprite.", price: "6000", customizable: false, category: "Drinks", imgUrl: 'https://placehold.co/800x600/181818/5D9A58?text=SODA' },
+                    ],
+                }
+            }
+        };
+
+        let currentLang = 'es'; 
+        let currentFilter = 'all'; // 'all', 'starters', 'main', 'fastFood', 'drinks'
+
+        // Función para formatear el precio a COP (Colombian Pesos)
+        function formatCOP(price) {
+            return new Intl.NumberFormat('es-CO', { 
+                style: 'currency', 
+                currency: 'COP', 
+                minimumFractionDigits: 0 
+            }).format(price);
+        }
+
+        // Función para obtener todos los items de menú
+        function getAllMenuItems(lang) {
+            const items = [];
+            const menuData = content[lang].menuItems;
+            for (const category in menuData) {
+                items.push(...menuData[category].map(item => ({ ...item, section: category })));
+            }
+            return items;
+        }
+
+        // Función para renderizar un item del menú
+        function renderMenuItem(item, lang) {
+            const proteinsList = content[lang].proteins;
+            const proteinsLabel = content[lang].proteinsLabel;
+            const priceCOP = formatCOP(item.price);
+            
+            // Si el plato es personalizable, agrega el listado de proteínas
+            const proteinsHtml = item.customizable ? `
+                <div class="proteins-list bg-dark-bg/50 p-2 rounded-md transition duration-300 mt-2 hover:bg-dark-bg">
+                    <p class="text-xs font-semibold text-brand-gold mb-1">${proteinsLabel}</p>
+                    <p class="text-[11px] text-gray-400">${proteinsList}</p>
+                </div>
+            ` : '';
+
+            // Importante: Agregar el listener para abrir el modal
+            return `
+                <div class="menu-item-card py-4 border-b border-gray-700/50 transition duration-300 hover:bg-dark-bg/30 px-2 rounded-lg cursor-pointer" 
+                     data-name="${item.name.toLowerCase()}" 
+                     data-desc="${item.desc.toLowerCase()}"
+                     data-customizable="${item.customizable}"
+                     data-item-name="${item.name}"
+                     data-item-desc="${item.desc}"
+                     data-item-img="${item.imgUrl}"
+                     onclick="openImageModal('${item.name}', '${item.desc.replace(/'/g, "\\'")}', '${item.imgUrl}')">
+                    
+                    <div class="flex justify-between items-start">
+                        <div class="mr-4">
+                            <p class="font-bold text-light-text text-lg">${item.name}</p>
+                            <p class="text-sm text-gray-400 italic">${item.desc}</p>
+                        </div>
+                        <span class="price-tag px-3 py-1 font-black text-lg rounded-full">${priceCOP}</span>
+                    </div>
+                    ${proteinsHtml}
+                </div>
+            `;
+        }
+
+        // --- FUNCIONES DE FILTRO Y BÚSQUEDA ---
+
+        function filterMenuByCategory(categoryKey) {
+            currentFilter = categoryKey;
+            const allItems = getAllMenuItems(currentLang);
+            const menuContent = document.getElementById('menu-content');
+            
+            // 1. Manejar el estado activo de los botones de filtro
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active', 'bg-brand-red'));
+            document.getElementById(`filter-${categoryKey}`).classList.add('active', 'bg-brand-red');
+
+            // 2. Filtrar elementos
+            const filteredItems = allItems.filter(item => 
+                categoryKey === 'all' || item.section === categoryKey
+            );
+
+            // 3. Renderizar resultados
+            const resultsHtml = filteredItems.map(item => renderMenuItem(item, currentLang)).join('');
+            menuContent.innerHTML = resultsHtml;
+
+            // 4. Ocultar el campo de búsqueda cuando se filtra por categoría
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results').classList.add('hidden');
+            document.getElementById('menu').classList.remove('hidden');
+
+            // 5. Scroll al inicio del menú
+            document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function filterMenuBySearch() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const searchResultsSection = document.getElementById('search-results');
+            const resultsContainer = document.getElementById('results-container');
+            const noResultsMessage = document.getElementById('no-results');
+            const menuSection = document.getElementById('menu');
+            
+            // Si la búsqueda está activa, desactiva el filtro de categoría visualmente
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active', 'bg-brand-red'));
+            
+            if (query.length === 0) {
+                // Si la búsqueda está vacía, volvemos a mostrar el menú completo
+                searchResultsSection.classList.add('hidden');
+                menuSection.classList.remove('hidden');
+                filterMenuByCategory('all');
+                return; 
+            }
+
+            menuSection.classList.add('hidden');
+            searchResultsSection.classList.remove('hidden');
+            
+            const allItems = getAllMenuItems(currentLang);
+            const proteinsList = content[currentLang].allProteinsList;
+
+            const filteredItems = allItems.filter(item => {
+                const nameMatch = item.name.toLowerCase().includes(query);
+                const descMatch = item.desc.toLowerCase().includes(query);
+                const categoryMatch = item.category.toLowerCase().includes(query);
+                
+                // Búsqueda en el listado de proteínas para platos personalizables
+                const proteinMatch = item.customizable && proteinsList.some(p => p.toLowerCase().includes(query));
+
+                return nameMatch || descMatch || categoryMatch || proteinMatch;
+            });
+
+            // Renderizar resultados
+            if (filteredItems.length > 0) {
+                const resultsHtml = filteredItems.map(item => renderMenuItem(item, currentLang)).join('');
+                resultsContainer.innerHTML = resultsHtml;
+                noResultsMessage.classList.add('hidden');
+            } else {
+                resultsContainer.innerHTML = '';
+                noResultsMessage.classList.remove('hidden');
+            }
+        }
+
+
+        // --- FUNCIONES DE MODAL DE IMAGEN ---
+
+        function openImageModal(name, desc, imgUrl) {
+            const modal = document.getElementById('image-modal');
+            document.getElementById('modal-image').src = imgUrl;
+            document.getElementById('modal-title').textContent = name;
+            document.getElementById('modal-description').textContent = desc;
+            
+            modal.classList.remove('hidden');
+            modal.querySelector('.modal-content').classList.add('animate-modal-open');
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.add('hidden');
+            modal.querySelector('.modal-content').classList.remove('animate-modal-open');
+        }
+
+
+        // --- FUNCIONES DE INICIALIZACIÓN ---
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const data = content[lang];
+
+            // 1. Traducir elementos con data-es/data-en
+            document.querySelectorAll('[data-es]').forEach(el => {
+                const text = el.getAttribute(`data-${lang}`);
+                if (text) {
+                    el.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                }
+            });
+
+            // 1.1 Traducir placeholder de la barra de búsqueda
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.placeholder = searchInput.getAttribute(`data-${lang}-placeholder`);
+            }
+            
+            // 2. Renderizar y traducir botones de filtro
+            renderFilterButtons(lang);
+            
+            // 3. Re-aplicar filtro actual con el nuevo idioma
+            if (document.getElementById('search-input').value.trim().length > 0) {
+                 filterMenuBySearch();
+            } else {
+                 filterMenuByCategory(currentFilter);
+            }
+
+            // 4. Actualizar botón de idioma
+            const toggleButton = document.getElementById('lang-toggle');
+            toggleButton.textContent = lang === 'es' ? 'EN' : 'ES';
+            document.documentElement.lang = lang; 
+        }
+
+        function renderFilterButtons(lang) {
+            const categories = content[lang].categories;
+            const container = document.getElementById('filter-buttons-container');
+            let buttonsHtml = '';
+
+            // Botón 'Todos'
+            const allLabel = lang === 'es' ? 'TODO' : 'ALL';
+            buttonsHtml += `
+                <button id="filter-all" onclick="filterMenuByCategory('all')" 
+                        class="filter-btn active bg-brand-red text-light-text text-xs font-semibold py-1.5 px-3 rounded-full shadow-lg">
+                    <i class="fas fa-list mr-1"></i> ${allLabel}
+                </button>
+            `;
+
+            // Botones de Categorías
+            for (const key in categories) {
+                const cat = categories[key];
+                const isActive = key === currentFilter && currentFilter !== 'all';
+                const activeClass = isActive ? 'active bg-brand-red' : 'bg-gray-700 hover:bg-gray-600';
+                buttonsHtml += `
+                    <button id="filter-${key}" onclick="filterMenuByCategory('${key}')" 
+                            class="filter-btn ${activeClass} text-light-text text-xs font-semibold py-1.5 px-3 rounded-full shadow-lg">
+                        <i class="fas ${cat.icon} mr-1"></i> ${cat.label}
+                    </button>
+                `;
+            }
+
+            container.innerHTML = buttonsHtml;
+            // Asegurar que el filtro actual tenga la clase activa
+            document.getElementById(`filter-${currentFilter}`).classList.add('active', 'bg-brand-red');
+        }
+
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            setLanguage('es'); 
+            document.getElementById('lang-toggle').addEventListener('click', () => {
+                setLanguage(currentLang === 'es' ? 'en' : 'es');
+            });
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            document.getElementById('search-input').addEventListener('input', filterMenuBySearch);
+        });
+    </script>
+    
+    <!-- WhatsApp Flotante -->
+    <a href="https://wa.me/message/KNZ4SJGC4PUPJ" target="_blank" class="whatsapp-float fixed bottom-6 right-6 p-4 rounded-full shadow-lg z-50 transition duration-300 animate-float-effect">
+        <i class="fab fa-whatsapp text-3xl text-white"></i>
+    </a>
+
+    <!-- 1. Encabezado Fijo y Logo -->
+    <header class="sticky top-0 z-50 bg-dark-bg/90 backdrop-blur-sm shadow-xl border-b border-brand-red">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center h-16">
+            <!-- Logo CIELITO LINDO con icono -->
+            <div class="flex items-center space-x-2">
+                <img src="uploaded:image_df3e40.png-c8ee46d9-b29c-46ea-a300-6f30e6cf150d" alt="Logo Cielito Lindo" class="h-10 w-10 rounded-full border-2 border-brand-gold shadow-md">
+                <span class="text-3xl font-black title-font text-brand-gold">CIELITO LINDO</span>
+            </div>
+            
+            <!-- Botón de Idioma -->
+            <button id="lang-toggle" class="bg-brand-red text-light-text font-black py-2 px-4 rounded-full text-sm shadow-lg hover:bg-red-700 transition duration-200 transform hover:scale-105">
+                EN
+            </button>
         </div>
-      </div>
-      <div class="nav-container">
-        <div class="lang-switcher">
-          <button class="lang-btn active" data-lang="es" onclick="switchLang('es')">ES</button>
-          <button class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
-        </div>
-      </div>
     </header>
 
-    <section class="hero" aria-labelledby="heroTitle">
-      <div>
-        <h3 id="heroTitle" data-t="hero.title">Un rincon de mexico</h3>
-        <p data-t="hero.desc">Taquitos, burritos, salchipapas, burgers y cocteles en el Rodadero.</p>
+    <main class="min-h-screen">
+        
+        <!-- 2. Sección Principal (Hero) - Impacto y Emoción -->
+        <section id="inicio" class="hero-background py-20 px-4 text-center">
+            <div class="max-w-xl mx-auto animate-hero-appear">
+                <h1 class="text-5xl md:text-7xl font-black text-brand-gold leading-tight mb-4 title-font" data-es="¡FIESTA Y SABOR SIN LÍMITES!" data-en="FIESTA AND UNLIMITED FLAVOR!">
+                    ¡FIESTA Y SABOR SIN LÍMITES!
+                </h1>
+                <p class="text-lg text-light-text/80 mb-8 font-quote italic" data-es="El menú que te hará decir '¡Ay, qué lindo es comer en México!'." data-en="The menu that will make you say 'Oh, how beautiful it is to eat in Mexico!'">
+                    El menú que te hará decir "¡Ay, qué lindo es comer en México!".
+                </p>
+                <!-- Llamada a la acción principal -->
+                <a href="#menu" class="cta-button inline-block px-10 py-4 bg-brand-gold text-dark-bg font-extrabold text-xl rounded-full shadow-xl">
+                    <span data-es="VER EL MENÚ AHORA" data-en="VIEW MENU NOW">VER EL MENÚ AHORA</span>
+                </a>
+            </div>
+        </section>
 
-        <div class="controls">
-          <input id="search" placeholder="Buscar en el menú..." data-t="search.placeholder" />
-          <div class="cats" id="cats" aria-label="Categorías del menú">
-            <button class="cat active" data-cat="all" data-t="cat.all">Todo</button>
-            <button class="cat" data-cat="antojitos" data-t="cat.antojitos">🌽 Antojitos</button>
-            <button class="cat" data-cat="tacos" data-t="cat.tacos">🌮 Tacos & Burritos</button>
-            <button class="cat" data-cat="rapida" data-t="cat.rapida">🍟 Comida rápida</button>
-            <button class="cat" data-cat="drinks" data-t="cat.drinks">🍹 Bebidas & Cócteles</button>
-            <button class="cat" data-cat="postres" data-t="cat.postres">🍮 Postres</button>
-          </div>
+        <!-- 3. Barra de Navegación (STICKY) para Búsqueda y Filtros -->
+        <section class="sticky top-16 z-40 bg-dark-bg p-4 shadow-2xl border-b border-brand-gold/50">
+            <div class="max-w-4xl mx-auto space-y-4">
+                
+                <!-- Búsqueda General (TEXTO REDUCIDO: text-lg -> text-base, py-3 -> py-2.5) -->
+                <div class="relative">
+                    <input type="text" id="search-input" 
+                           class="w-full py-2.5 pl-12 pr-4 text-base rounded-xl bg-gray-800 text-light-text focus:outline-none"
+                           placeholder="Buscar un plato, bebida o proteína (Tinga, Pastor...)"
+                           data-es-placeholder="Buscar un plato, bebida o proteína (Tinga, Pastor...)"
+                           data-en-placeholder="Search for a dish, drink, or protein (Tinga, Pastor...)">
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-brand-gold text-xl"></i>
+                </div>
+
+                <!-- Filtros de Categoría (SCROLL HORIZONTAL Y TEXTO REDUCIDO: text-sm -> text-xs, py-2 px-4 -> py-1.5 px-3) -->
+                <div id="filter-buttons-container" class="horizontal-scroll flex space-x-3 pb-2">
+                    <!-- Los botones de filtro se renderizan aquí por JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Sección de Resultados de Búsqueda (Oculta al buscar) -->
+        <section id="search-results" class="py-10 px-4 hidden">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold title-font text-brand-red mb-6" data-es="Resultados de Búsqueda" data-en="Search Results">Resultados de Búsqueda</h2>
+                <div id="results-container" class="space-y-4 bg-[#1f1f1f] p-6 rounded-xl">
+                    <!-- Los resultados de la búsqueda se renderizarán aquí -->
+                </div>
+                <p id="no-results" class="text-center text-xl text-gray-400 mt-10 hidden" data-es="¡Oops! No encontramos lo que buscas. Intenta con otra palabra." data-en="Oops! We couldn't find what you're looking for. Try another word.">
+                    ¡Oops! No encontramos lo que buscas. Intenta con otra palabra.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- 5. Sección de Menú Filtrado (Principal) -->
+        <section id="menu" class="py-10 px-4 bg-dark-bg">
+            <div class="max-w-4xl mx-auto menu-container">
+                
+                <h2 class="text-4xl font-black title-font text-brand-green text-center mb-8 border-b-4 border-brand-gold pb-3" data-es="MENÚ - EXPLOSIÓN DE SABOR" data-en="MENU - FLAVOR EXPLOSION">MENÚ - EXPLOSIÓN DE SABOR</h2>
+
+                <!-- Contenedor Único para el Menú Filtrado -->
+                <div id="menu-content" class="space-y-2 bg-[#1f1f1f] p-6 rounded-xl shadow-inner border-t-4 border-brand-red">
+                    <!-- El menú filtrado se renderiza aquí por JS -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. Modal para Visualización de Imagen del Plato -->
+        <div id="image-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4" onclick="closeImageModal()">
+            <!-- Fondo oscuro con alta opacidad para foco -->
+            <div id="image-modal-backdrop" class="absolute inset-0"></div>
+
+            <!-- Contenido del Modal (Mobile-First: ancho completo) -->
+            <div class="modal-content relative w-full max-w-sm md:max-w-md bg-dark-bg rounded-2xl shadow-2xl overflow-hidden border-2 border-brand-gold transform scale-100" onclick="event.stopPropagation()">
+                
+                <!-- Botón de Cierre -->
+                <button onclick="closeImageModal()" class="absolute top-3 right-3 z-10 bg-brand-red p-2 rounded-full text-white hover:bg-red-700 transition duration-200">
+                    <i class="fas fa-times"></i>
+                </button>
+
+                <!-- Imagen del Plato -->
+                <img id="modal-image" src="" alt="Imagen del Plato" class="w-full h-64 object-cover">
+                
+                <!-- Detalles del Plato -->
+                <div class="p-6 text-center">
+                    <h3 id="modal-title" class="text-3xl font-black title-font text-brand-gold mb-2"></h3>
+                    <p id="modal-description" class="text-sm text-gray-400 italic mb-0"></p>
+                    
+                    <!-- 
+                        Sección de PEDIDO ELIMINADA:
+                        <a href="https://wa.me/message/KNZ4SJGC4PUPJ" target="_blank" class="inline-block w-full py-3 bg-brand-green text-white font-bold rounded-lg hover:bg-green-700 transition duration-200">
+                            <i class="fas fa-shopping-cart mr-2"></i> 
+                            <span data-es="PEDIR ESTE PLATO" data-en="ORDER THIS DISH">PEDIR ESTE PLATO</span>
+                        </a>
+                    -->
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="hero-img">
-        <img src="https://raw.githubusercontent.com/Bruma-cafe-y-croffle/bruma-asses/refs/heads/main/tacos%2Cllamatuivos.jpg" alt="Plato destacado Cielito Lindo">
-      </div>
-    </section>
 
-    <!-- MENÚ -->
-    <main id="menu" aria-label="Menú principal">
-      <h3 data-t="menu.title" style="color:var(--lila); margin:16px 0 12px 0; font-size: 1.5rem;">Nuestro Menú</h3>
-      <div id="menuGrid" class="grid menu-grid"></div>
+
+        <!-- 7. Pie de Página con Contacto -->
+        <footer class="bg-dark-bg border-t-4 border-brand-gold mt-10 py-8">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <h3 class="text-2xl font-black title-font text-brand-red mb-4" data-es="¡HAZ TU PEDIDO YA!" data-en="ORDER NOW!">¡HAZ TU PEDIDO YA!</h3>
+                
+                <!-- Botón de WhatsApp centralizado -->
+                <a href="https://wa.me/message/KNZ4SJGC4PUPJ" target="_blank" 
+                   class="inline-flex items-center justify-center space-x-2 bg-brand-green text-white font-extrabold py-3 px-8 rounded-full shadow-lg hover:bg-green-700 cta-button mb-6">
+                    <i class="fab fa-whatsapp text-2xl"></i>
+                    <span data-es="CHATEA CON NOSOTROS" data-en="CHAT WITH US">CHATEA CON NOSOTROS</span>
+                </a>
+
+                <!-- Redes Sociales -->
+                <div class="flex justify-center space-x-8 mb-6">
+                    <a href="https://www.instagram.com/cielito_lindo_sm/" target="_blank" class="text-light-text hover:text-brand-gold transition duration-300 transform hover:scale-125">
+                        <i class="fab fa-instagram text-3xl"></i>
+                    </a>
+                    <a href="#" target="_blank" class="text-light-text hover:text-brand-gold transition duration-300 transform hover:scale-125">
+                        <i class="fab fa-facebook text-3xl"></i>
+                    </a>
+                    <a href="#" target="_blank" class="text-light-text hover:text-brand-gold transition duration-300 transform hover:scale-125">
+                        <i class="fab fa-tiktok text-3xl"></i>
+                    </a>
+                </div>
+                
+                <p class="text-sm text-gray-500 mt-6">&copy; 2024 CIELITO LINDO. Sabor y Fiesta.</p>
+            </div>
+        </footer>
+
     </main>
-
-    <!-- PROMOS -->
-    <section id="promos" class="promos" aria-label="Promociones">
-      <h3 data-t="promo.title" style="color:var(--lila); margin:20px 0 12px 0; font-size: 1.5rem;">Promociones</h3>
-      <div class="promo-hero">
-        <div class="carousel" id="carousel">
-          <div class="carousel-track" id="carouselTrack">
-            <div class="carousel-item">
-              <img src="https://i.pinimg.com/1200x/a7/0c/77/a70c77327e0d4fa0d7cc5ae750a82918.jpg" alt="Promo 1">
-              <div class="text">
-                <h3 style="color:var(--accent-1);margin-top:0" data-t="promo.offer1.title">Margarita Time</h3>
-                <p style="color:var(--muted)" data-t="promo.offer1.desc">Todos los miercoles y jueves de 5 p.m. a 9 p.m.</p>
-                <p style="margin-top:8px"><strong data-t="promo.offer1.limit">2 margaritas al precio de 1.</strong></p>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=1200&auto=format&fit=crop" alt="Promo 2">
-              <div class="text">
-                <h3 style="color:var(--accent-2);margin-top:0" data-t="promo.offer2.title">Combo Taquitos + Margarita</h3>
-                <p style="color:var(--muted)" data-t="promo.offer2.desc">Precio especial de lanzamiento: disfruta lo mejor de México con una margarita fría.</p>
-                <p style="margin-top:8px"><strong data-t="promo.offer2.share">Perfecto para compartir.</strong></p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-controls" id="carouselDots"></div>
-      </div>
-    </section>
-
-    <!-- SOBRE NOSOTROS -->
-    <section id="about" style="margin-top:20px">
-      <h3 data-t="about.title" style="color:var(--lila); margin:0 0 14px 0; font-size: 1.5rem;">Sobre Nosotros</h3>
-      <div class="body card">
-        <p style="margin:0;color:var(--muted);font-size:.95rem;line-height:1.6;padding:0" data-t="about.text">
-          🌸 <strong>Cielito Lindo</strong> nació en Santa Marta como un homenaje a los colores, la música y la tradición de México. 
-          Surge del deseo de traer a la costa caribeña un espacio donde cada detalle —desde la decoración hasta las recetas— cuente una historia. 
-          Aquí celebramos el encuentro de culturas, el calor de nuestra gente y la alegría de compartir alrededor de la mesa. Te invitamos a sentir México con calma y sabor.
-        </p>
-      </div>
-    </section>
-
-    <!-- UBICACIÓN -->
-    <section id="location" style="margin-top:20px">
-      <h3 data-t="location.title" style="color:var(--lila); margin:0 0 14px 0; font-size: 1.5rem;">Ubicación y horarios</h3>
-      <div class="loc">
-        <div class="card">
-          <div style="padding:0">
-            <strong>📍 <span data-t="location.address">Calle 8 #2-71, Rodadero, Santa Marta</span></strong>
-            <p style="margin:8px 0 0 0;color:var(--muted);font-size:.9rem"><span data-t="location.hours">Miércoles a Lunes: 5:00pm - 11:00pm • Martes cerrado</span></p>
-            <p style="margin:8px 0 0 0;color:var(--muted);font-size:.9rem"><span data-t="location.tel">Tel:</span> <a href="tel:+573001234567" style="color:var(--lila)">+57 300 123 4567</a></p>
-            <div style="margin-top:16px">
-              <a class="cta primary" href="https://www.google.com/maps/search/?api=1&query=Calle+8+%232-71+Rodadero+Santa+Marta" target="_blank" data-t="location.map">Abrir en Maps</a>
-            </div>
-          </div>
-        </div>
-        <div class="map"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop" alt="Fachada" style="width:100%;height:100%;object-fit:cover"></div>
-      </div>
-    </section>
-
-    <footer>
-      <div style="display:flex;gap:12px;justify-content:center;align-items:center;margin-bottom:12px;flex-wrap:wrap;font-size:.95rem">
-        <a href="https://www.instagram.com/cielito_lindo_sm" target="_blank" style="color:var(--lila);font-weight:600">@cielito_lindo_sm</a>
-        <span style="color:rgba(255,255,255,.35)">•</span>
-        <div style="color:rgba(255,255,255,.6)" data-t="footer.tagline">Auténtica comida mexicana… y rápida pa' tus antojos</div>
-      </div>
-      <div style="color:rgba(255,255,255,.45);font-size:.85rem">© <span id="year"></span> Cielito Lindo</div>
-    </footer>
-  </div>
-
-  <!-- WHATSAPP floating -->
-  <a id="waBtn" class="wa" href="#" target="_blank" aria-label="Pedir por WhatsApp">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-  </a>
-
-  <script>
-    // TRADUCCIONES
-    const i18n = {
-      es: {
-        'brand.name': 'Cielito Lindo',
-        'brand.tagline': 'Auténtica comida mexicana… y rápida pa\' tus antojos',
-        'hero.title': 'Sabor auténtico, servicio rápido y una vibra elegante',
-        'hero.desc': 'Taquitos, burritos, salchipapas, burgers, alitas y cocteles — todo listo pa\' tus antojos en Rodadero.',
-        'search.placeholder': 'Buscar en el menú...',
-        'cat.all': 'Todo',
-        'cat.antojitos': '🌽 Antojitos',
-        'cat.tacos': '🌮 Tacos & Burritos',
-        'cat.rapida': '🍟 Comida rápida',
-        'cat.drinks': '🍹 Bebidas & Cócteles',
-        'cat.postres': '🍮 Postres',
-        'menu.title': 'Nuestro Menú',
-        'promo.title': 'Promociones',
-        'promo.offer1.title': '2x1 Papas Cielito',
-        'promo.offer1.desc': 'Jueves 6–9pm. Válido en local. ¡Trae a tus amigos y comparte!',
-        'promo.offer1.limit': 'Disponible por tiempo limitado.',
-        'promo.offer2.title': 'Combo Taquitos + Margarita',
-        'promo.offer2.desc': 'Precio especial de lanzamiento: disfruta lo mejor de México con una margarita fría.',
-        'promo.offer2.share': 'Perfecto para compartir.',
-        'about.title': 'Sobre Nosotros',
-        'about.text': '🌸 <strong>Cielito Lindo</strong> nació en Santa Marta como un homenaje a los colores, la música y la tradición de México. Surge del deseo de traer a la costa caribeña un espacio donde cada detalle —desde la decoración hasta las recetas— cuente una historia. Aquí celebramos el encuentro de culturas, el calor de nuestra gente y la alegría de compartir alrededor de la mesa. Te invitamos a sentir México con calma y sabor.',
-        'location.title': 'Ubicación y horarios',
-        'location.address': 'Calle 8 #2-71, Rodadero, Santa Marta',
-        'location.hours': 'Miércoles a Lunes: 5:00pm - 11:00pm • Martes cerrado',
-        'location.tel': 'Tel:',
-        'location.map': 'Abrir en Maps',
-        'footer.tagline': 'Auténtica comida mexicana… y rápida pa\' tus antojos'
-      },
-      en: {
-        'brand.name': 'Cielito Lindo',
-        'brand.tagline': 'Authentic Mexican food... and quick for your cravings',
-        'hero.title': 'Authentic flavor, fast service, and a stylish vibe',
-        'hero.desc': 'Tacos, burritos, salchipapas, burgers, wings, and cocktails — all ready for your cravings in Rodadero.',
-        'search.placeholder': 'Search menu...',
-        'cat.all': 'All',
-        'cat.antojitos': '🌽 Snacks',
-        'cat.tacos': '🌮 Tacos & Burritos',
-        'cat.rapida': '🍟 Fast Food',
-        'cat.drinks': '🍹 Drinks & Cocktails',
-        'cat.postres': '-desserts',
-        'menu.title': 'Our Menu',
-        'promo.title': 'Promotions',
-        'promo.offer1.title': '2x1 Cielito Fries',
-        'promo.offer1.desc': 'Thursdays 6–9pm. In-store only. Bring your friends and share!',
-        'promo.offer1.limit': 'Limited time offer.',
-        'promo.offer2.title': 'Tacos + Margarita Combo',
-        'promo.offer2.desc': 'Launch special price: enjoy the best of Mexico with a cold margarita.',
-        'promo.offer2.share': 'Perfect for sharing.',
-        'about.title': 'About Us',
-        'about.text': '🌸 <strong>Cielito Lindo</strong> was born in Santa Marta as a tribute to the colors, music, and traditions of Mexico. It emerged from the desire to bring a Caribbean coastal space where every detail — from decor to recipes — tells a story. Here we celebrate cultural encounters, the warmth of our people, and the joy of sharing around the table. We invite you to feel Mexico with calm and flavor.',
-        'location.title': 'Location & Hours',
-        'location.address': 'Calle 8 #2-71, Rodadero, Santa Marta',
-        'location.hours': 'Wednesday to Monday: 5:00pm - 11:00pm • Closed on Tuesdays',
-        'location.tel': 'Phone:',
-        'location.map': 'Open in Maps',
-        'footer.tagline': 'Authentic Mexican food... and quick for your cravings'
-      }
-    };
-
-    // CONFIG
-    const PHONE = '573001234567';
-
-    let currentLang = 'es';
-
-    function switchLang(lang) {
-      if (lang === currentLang) return;
-      currentLang = lang;
-      document.documentElement.lang = lang;
-      document.querySelectorAll('[data-t]').forEach(el => {
-        const key = el.dataset.t;
-        if (i18n[lang][key]) {
-          if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
-            el.placeholder = i18n[lang][key];
-          } else {
-            el.innerHTML = i18n[lang][key];
-          }
-        }
-      });
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
-      render(DATA);
-      filterBy(document.querySelector('.cat.active')?.dataset.cat || 'all');
-    }
-
-    // SPLASH
-    const splash = document.getElementById('splash');
-    const app = document.getElementById('app');
-    setTimeout(() => {
-      splash.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      splash.style.opacity = '0';
-      splash.style.transform = 'translateY(-20px)';
-      setTimeout(() => {
-        splash.style.display = 'none';
-        app.style.display = 'block';
-        // Renderizar menú inmediatamente sin esperar cambio de idioma
-        render(DATA);
-        filterBy('all');
-      }, 600);
-    }, 1800);
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-    document.getElementById('waBtn').href = `https://wa.me/${PHONE}?text=${encodeURIComponent('Hola Cielito Lindo! Quisiera hacer un pedido.')}`;
-
-    const grid = document.getElementById('menuGrid');
-    function money(n){ return new Intl.NumberFormat(currentLang === 'es' ? 'es-CO' : 'en-US').format(n); }
-
-    function render(cards){
-      grid.innerHTML = '';
-      cards.forEach(item => {
-        const desc = currentLang === 'es' ? item.desc : (item.cat === 'antojitos' || item.cat === 'tacos') ? 'With protein options.' : item.desc;
-        const proteinList = (item.cat === 'antojitos' || item.cat === 'tacos') ? (currentLang === 'es' ? PROTEINAS.join(', ') : PROTEINAS_EN.join(', ')) : '';
-        const card = document.createElement('article');
-        card.className = 'card';
-        card.dataset.cat = item.cat;
-        card.dataset.name = item.name;
-        card.innerHTML = `
-          <div class="price">$${money(item.price)}</div>
-          <div class="media"><img src="${item.img}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1600891964599-f61ba0e24092';"></div>
-          <div class="body">
-            <h4>${item.name}</h4>
-            <p>${desc}</p>
-            ${proteinList ? `<p style="margin:8px 0 0 0; font-size:.85rem; color:var(--muted)"><strong>${currentLang === 'es' ? 'Proteínas:' : 'Proteins:'}</strong> ${proteinList}</p>` : ''}
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    // TU DATA ORIGINAL - TODOS LOS PLATOS
-    const DATA = [
-      {cat: "antojitos", name: "Elotes", price: 18000, desc: "Cubiertos de mayo, queso y tajín.", img: "https://images.unsplash.com/photo-1610873167786-3c0b64b5897b?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "antojitos", name: "Sopa Mexicana", price: 15000, desc: "Tomate, aguacate, totopo y cilantro.", img: "https://images.unsplash.com/photo-1565299585323-38d6b0867320?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "antojitos", name: "Río de Tacos (3)", price: 23000, desc: "Tortilla de maíz artesanal con cebolla, cilantro y guacamole.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "antojitos", name: "Tortas Ahogadas", price: 20000, desc: "Tortillas de maíz rellenas bañadas en salsa.", img: "https://images.unsplash.com/photo-1597586292340-8c85e763a4f0?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Tacos al Pastor (3)", price: 23000, desc: "Carne al pastor con piña, cebolla y cilantro.", img: "https://images.unsplash.com/photo-1568259418900-f8e55a3884f4?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Burrito Clásico", price: 18000, desc: "Frijoles, carne a elección, guacamole, crema agria.", img: "https://images.unsplash.com/photo-1574928801804-3c492579456f?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Burrito Clásico x2", price: 32000, desc: "Doble porción del clásico.", img: "https://images.unsplash.com/photo-1574928801804-3c492579456f?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Burrito Norteño", price: 18000, desc: "Frijoles refritos, carne a elección y guacamole.", img: "https://images.unsplash.com/photo-1574928801804-3c492579456f?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Quesadilla", price: 18000, desc: "Queso, carne a elección y guacamole.", img: "https://images.unsplash.com/photo-1598295887573-f41ce84d2600?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Chilaquiles", price: 28000, desc: "Totopos con salsa, queso, crema y proteína.", img: "https://images.unsplash.com/photo-1630409352308-4ee3bb2b4f4a?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Chilaquiles Dos Colores", price: 30000, desc: "Salsa roja y verde, cebolla, crema, queso.", img: "https://images.unsplash.com/photo-1533777324565-a040eb52fac1?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Enchiladas Suizas", price: 25000, desc: "Rellenas de pollo, bañadas en salsa verde y queso gratinado.", img: "https://images.unsplash.com/photo-1601050690248-8b7d429f775b?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Nachos", price: 24000, desc: "Totopos con queso, guacamole, crema y proteína.", img: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Fajitas", price: 24000, desc: "Carne/Pollo, pimientos, cebolla, tortillas y guacamole.", img: "https://images.unsplash.com/photo-1617191518000-7b3d1a2b7c1c?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Chinampa", price: 22000, desc: "Champiñones, cebolla, mazor, salsa de soya.", img: "https://images.unsplash.com/photo-1541976076758-347942db1970?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Bowl Mexicano", price: 25000, desc: "Arroz, frijol, lechuga, aguacate, proteína y salsa.", img: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Asados", price: 30000, desc: "Costilla o pollo con papas francesas.", img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "tacos", name: "Cuadrilla de Tacos (12)", price: 70000, desc: "Doce tacos surtidos para compartir.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "rapida", name: "Salchipapa Clásica", price: 20000, desc: "Papas, salchicha, queso, salsas.", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "rapida", name: "Salchipapa Mexicana", price: 24000, desc: "Con maíz, queso, frijol y doritos.", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "rapida", name: "La Chula", price: 30000, desc: "Papas, costilla de cerdo, queso y tocineta.", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "rapida", name: "Picada para 2", price: 35000, desc: "Carne, pollo, chorizo, papas y salsas.", img: "https://images.unsplash.com/photo-1553163147-622ab57be1c7?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "rapida", name: "Perro Americano", price: 20000, desc: "Clásico con papas y salsas.", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "rapida", name: "Perro Mexicano", price: 22000, desc: "Con guacamole, jalapeño, doritos y tocineta.", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "rapida", name: "Hamburguesa Clásica", price: 22000, desc: "Carne 130g, queso, vegetales y salsas.", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Chamoyada de Mango", price: 14000, desc: "Refrescante y picosita.", img: "https://images.unsplash.com/photo-1627663059429-4be5a2fb1d3a?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Aguas Frescas", price: 5000, desc: "Surtidas. Vaso personal.", img: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Jugo Natural (agua)", price: 9000, desc: "Frutas naturales.", img: "https://images.unsplash.com/photo-1516054575922-910ab2f5c2ad?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Jugo Natural (leche)", price: 10000, desc: "Cremoso y delicioso.", img: "https://images.unsplash.com/photo-1497534446932-c925b458314e?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Gaseosa Personal", price: 6000, desc: "Coca-Cola/Quatro/Sprite.", img: "https://images.unsplash.com/photo-1625921839244-8a10b51d1ede?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Limonadas", price: 12000, desc: "Clásica o de coco.", img: "https://images.unsplash.com/photo-1507281646753-7a94b63aee7f?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Mojito", price: 18000, desc: "Menta, ron, limón y soda.", img: "https://images.unsplash.com/photo-1582455983553-7a94b63aee7f?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Piña Colada", price: 20000, desc: "Dulce y cremosa.", img: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Margarita Clásica", price: 18000, desc: "Tequila, triple sec y limón.", img: "https://images.unsplash.com/photo-1582455983553-7a94b63aee7f?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Margaritas Frutales", price: 20000, desc: "Lulo, maracuyá, fresa o tamarindo.", img: "https://images.unsplash.com/photo-1541976076758-347942db1970?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Cuba Libre", price: 13000, desc: "Ron y cola.", img: "https://images.unsplash.com/photo-1627663059429-4be5a2fb1d3a?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Shot de Tequila", price: 10000, desc: "¡Sal y limón!", img: "https://images.unsplash.com/photo-1645732095069-5b9c2a2c0fb1?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Cerveza (Corona)", price: 9000, desc: "Bien fría.", img: "https://images.unsplash.com/photo-1604908554024-7626244d7ee0?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Michelada Limón", price: 20000, desc: "Clásica.", img: "https://images.unsplash.com/photo-1604908554024-7626244d7ee0?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Michelada Tajín", price: 20000, desc: "Con tajín.", img: "https://images.unsplash.com/photo-1604908554024-7626244d7ee0?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Copa de vino (tinto/blanco)", price: 12000, desc: "Copa 150ml.", img: "https://images.unsplash.com/photo-1514361892635-6b07e31e75d9?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "drinks", name: "Café y aromáticas", price: 5000, desc: "Calienticas.", img: "https://images.unsplash.com/photo-1519337265831-281ec6cc8514?q=80&w=1200&auto=format&fit=crop"},
-      {cat: "postres", name: "Churros Mexicanos", price: 9000, desc: "Con azúcar y canela.", img: "https://images.unsplash.com/photo-1601924582975-7c5b7f4c8f1b?q=80&w=1200&auto=format&fit=crop"}
-    ];
-
-    const PROTEINAS = ["Tinga", "Chicharrón", "Pastor", "Lengua", "Camarón", "Cerdo desmechado", "Chorizo vegano", "Champiñón", "Pollo", "Chorizo"];
-    const PROTEINAS_EN = ["Tinga", "Pork crackling", "Al pastor", "Beef tongue", "Shrimp", "Shredded pork", "Vegan sausage", "Mushrooms", "Chicken", "Sausage"];
-
-    // Category filter
-    function filterBy(cat) {
-      document.querySelectorAll('.cat').forEach(b => {
-        b.classList.toggle('active', b.dataset.cat === cat);
-      });
-      Array.from(grid.children).forEach(card => {
-        const ok = (cat === 'all') || (card.dataset.cat === cat);
-        card.style.display = ok ? '' : 'none';
-      });
-    }
-
-    document.querySelectorAll('.cat').forEach(b => {
-      b.addEventListener('click', () => filterBy(b.dataset.cat));
-    });
-
-    // Search
-    const searchInput = document.getElementById('search');
-    searchInput.addEventListener('input', () => {
-      const term = searchInput.value.trim().toLowerCase();
-      Array.from(grid.children).forEach(card => {
-        const name = card.dataset.name.toLowerCase();
-        const desc = card.querySelector('p').textContent.toLowerCase();
-        const match = name.includes(term) || desc.includes(term);
-        card.style.display = match ? '' : 'none';
-      });
-    });
-
-    // Carousel
-    const carouselTrack = document.getElementById('carouselTrack');
-    const dotsContainer = document.getElementById('carouselDots');
-    const items = Array.from(carouselTrack.children);
-    let current = 0;
-    function buildDots(){
-      items.forEach((_,i)=>{
-        const d = document.createElement('div');
-        d.className='dot'+(i===0?' active':'');
-        d.addEventListener('click', ()=> goTo(i));
-        dotsContainer.appendChild(d);
-      });
-    }
-    function goTo(i){
-      current = i;
-      carouselTrack.style.transform = `translateX(-${i*100}%)`;
-      Array.from(dotsContainer.children).forEach((d,idx)=> d.classList.toggle('active', idx===i));
-    }
-    function autoTick(){
-      goTo((current+1)%items.length);
-    }
-    buildDots();
-    setInterval(autoTick, 4500);
-
-    // Initialize
-    render(DATA);
-    filterBy('all');
-  </script>
 </body>
 </html>
-```
