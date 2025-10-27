@@ -72,8 +72,10 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background-color: rgba(28, 28, 28, 0.9);
+            /* CAMBIO 1: Hacemos el fondo transparente para que no cubra el banner */
+            background-color: transparent; 
             height: var(--header-height);
+            transition: background-color 0.3s; /* Para un posible efecto scroll después */
         }
 
         .logo {
@@ -82,7 +84,9 @@
             color: var(--color-secondary);
         }
 
-        .nav-links, .contact-info span { display: none; }
+        /* CAMBIO 2: Ocultamos el número de teléfono en la barra, solo mostramos el ícono de contacto en desktop */
+        .nav-links { display: none; }
+        .contact-info { display: none; } /* Ocultar en móvil por defecto */
         .nav-toggle { font-size: 24px; cursor: pointer; color: var(--color-secondary); }
 
         .nav-links.active {
@@ -101,7 +105,8 @@
 
         /* Contenido Principal (Hero Content) */
         .hero-content {
-            padding-top: var(--header-height);
+            /* Eliminamos el padding superior para que el contenido suba a pesar del navbar transparente */
+            /* padding-top: var(--header-height); */ 
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -240,8 +245,13 @@
         /* ------------------------------------------- */
         @media (min-width: 768px) {
             /* Navbar */
-            .nav-links, .contact-info span { display: flex; }
-            .nav-links { gap: 25px; }
+            .navbar {
+                /* CAMBIO 1: El fondo transparente es más notorio en desktop */
+                background-color: transparent; 
+            }
+            .nav-links { display: flex; gap: 25px; } /* Mostrar enlaces */
+            .contact-info { display: flex; align-items: center; } /* Mostrar icono de contacto */
+            .contact-info span { display: none; } /* Ocultar el número en desktop nav */
             .nav-toggle { display: none; }
             
             /* Hero */
@@ -281,8 +291,10 @@
                 <li><a href="#cocktails">CÓCTELES</a></li>
             </ul>
             <div class="contact-info">
-                <span>+57 310 - XXX - XX XX</span>
-                <i class="fa fa-search"></i>
+                <!-- CAMBIO 2: Elimina el número de teléfono, añade el ícono de WhatsApp que usa la misma función que el botón principal -->
+                <a href="#" id="whatsappIconNav" aria-label="Contactar por WhatsApp" style="color: var(--color-secondary); font-size: 20px;">
+                    <i class="fa fa-whatsapp"></i>
+                </a>
             </div>
         </nav>
 
@@ -499,8 +511,9 @@
             const bookTableBtn = document.getElementById('bookTableBtn');
             const navToggle = document.getElementById('navToggle');
             const navLinks = document.getElementById('navLinks');
+            const whatsappIconNav = document.getElementById('whatsappIconNav'); // Nuevo ícono en el navbar
             
-            // --- 1. Funcionalidad de WhatsApp ---
+            // --- 1. Funcionalidad de WhatsApp (Compartida) ---
             // **IMPORTANTE: Reemplaza '573101234567' con el número real del restaurante**
             const phoneNumber = '573101234567'; 
             const initialMessage = 'Hola, deseo reservar una mesa en UNAGUI SUSHI. ¿Me confirman la disponibilidad para [Fecha] y [Número de personas]?';
@@ -508,12 +521,19 @@
             const encodedMessage = encodeURIComponent(initialMessage);
             const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
+            // Función para abrir WhatsApp
+            const openWhatsApp = (event) => {
+                event.preventDefault(); 
+                window.open(whatsappLink, '_blank');
+            };
+
             if (bookTableBtn) {
-                bookTableBtn.addEventListener('click', function(event) {
-                    event.preventDefault(); 
-                    window.open(whatsappLink, '_blank');
-                });
+                bookTableBtn.addEventListener('click', openWhatsApp);
             }
+            if (whatsappIconNav) {
+                whatsappIconNav.addEventListener('click', openWhatsApp);
+            }
+
 
             // --- 2. Funcionalidad del Menú Hamburguesa (Mobile) ---
             if (navToggle && navLinks) {
