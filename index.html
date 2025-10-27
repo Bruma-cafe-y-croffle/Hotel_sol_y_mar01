@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNAGUI SUSHI | Menú Digital & Reservas</title>
-    <!-- Carga de fuentes: Noto Sans JP para un toque japonés, Playfair Display para títulos elegantes -->
+    <title>UNAGUI SUSHI | Experiencia Japonesa de Lujo</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <style>
         /* Variables de Color y Tipografía - Adaptadas a UNAGUI */
         :root {
@@ -29,6 +29,7 @@
             background-color: var(--color-primary);
             color: var(--color-text-light);
             line-height: 1.6;
+            scroll-behavior: smooth; 
         }
 
         /* UTILERÍAS Y TIPOGRAFÍA */
@@ -47,6 +48,65 @@
             margin-bottom: 30px;
             text-align: center;
         }
+        /* CLASES DE IDIOMA */
+        .es { display: inline; }
+        .en { display: none; }
+        body[data-lang="en"] .es { display: none; }
+        body[data-lang="en"] .en { display: inline; }
+
+
+        /* ------------------------------------------- */
+        /* SPLASH SCREEN (PANTALLA DE BIENVENIDA) */
+        /* ------------------------------------------- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; 
+            opacity: 1;
+            transition: opacity 1s ease-out;
+            overflow: hidden; 
+        }
+
+        #splash-screen.fade-out {
+            opacity: 0;
+            visibility: hidden; 
+            pointer-events: none; 
+        }
+
+        .splash-content {
+            text-align: center;
+            position: relative;
+            opacity: 0;
+            animation: fadeInAndGlowText 2.5s ease-out forwards; 
+        }
+
+        .splash-content .logo-text {
+            font-family: var(--font-heading);
+            font-size: 60px;
+            color: var(--color-secondary);
+            font-weight: 900;
+            text-shadow: 0 0 15px rgba(232, 198, 124, 0.8);
+        }
+        
+        @media (max-width: 600px) {
+            .splash-content .logo-text {
+                font-size: 45px;
+            }
+        }
+
+        @keyframes fadeInAndGlowText {
+            0% { opacity: 0; transform: scale(0.95); text-shadow: 0 0 0 rgba(232, 198, 124, 0); }
+            50% { opacity: 1; transform: scale(1.02); text-shadow: 0 0 25px rgba(232, 198, 124, 1); }
+            100% { opacity: 1; transform: scale(1); text-shadow: 0 0 10px rgba(232, 198, 124, 0.8); }
+        }
+
 
         /* ------------------------------------------- */
         /* 1. CABECERA Y NAVEGACIÓN (NAVBAR) */
@@ -54,9 +114,8 @@
 
         .hero-section {
             position: relative;
-            height: 85vh; /* Un poco menos alto para móviles */
-            /* Imagen genérica de sushi o anguila unagi */
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://raw.githubusercontent.com/Bruma-cafe-y-croffle/bruma-asses/refs/heads/main/sushi.jfif') no-repeat center center/cover;
+            height: 85vh; 
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://placehold.co/1920x800/222222/e8c67c?text=UNAGUI+Sushi+Bar') no-repeat center center/cover;
             display: flex;
             flex-direction: column;
             text-align: center;
@@ -81,12 +140,53 @@
             font-size: 28px;
             font-weight: 900;
             color: var(--color-secondary);
+            flex-shrink: 0; 
         }
 
-        .nav-links { display: none; }
-        .contact-info { display: none; } 
-        .nav-toggle { font-size: 24px; cursor: pointer; color: var(--color-secondary); }
+        .nav-links { 
+            display: none; 
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links li a {
+            padding: 5px 0;
+            transition: color 0.3s;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .nav-links li a:hover {
+            color: var(--color-secondary);
+        }
 
+        .nav-toggle { 
+            font-size: 24px; 
+            cursor: pointer; 
+            color: var(--color-secondary); 
+        }
+        
+        .language-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: var(--color-text-light);
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s;
+            position: absolute;
+            right: 5%;
+            top: 25px;
+            padding: 5px 10px;
+            border: 1px solid var(--color-secondary);
+            border-radius: 5px;
+        }
+        .language-toggle:hover {
+            background-color: rgba(232, 198, 124, 0.1);
+        }
+
+        /* Menú Hamburguesa Activo (Móvil) */
         .nav-links.active {
             display: flex;
             flex-direction: column;
@@ -123,7 +223,6 @@
             margin: 10px 0 40px 0;
             color: var(--color-text-light);
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            /* Cambio para centrar mejor en la caja (aunque ya estaba centrado) */
             text-align: center;
             width: 100%; 
         }
@@ -169,7 +268,7 @@
             flex-direction: column;
             padding: 60px 5%;
             text-align: center;
-            background-color: #2a2a2a; /* Fondo para contrastar */
+            background-color: #2a2a2a; 
             gap: 30px;
         }
 
@@ -227,7 +326,6 @@
             font-weight: 600;
             color: var(--color-text-light);
             margin-bottom: 5px;
-            /* Estilo para que parezca un enlace clickeable */
             cursor: pointer; 
             transition: color 0.2s;
         }
@@ -303,6 +401,7 @@
             box-shadow: 0 0 20px rgba(232, 198, 124, 0.5);
             text-align: center;
             padding: 20px;
+            position: relative; /* Necesario para posicionar el botón de cierre */
         }
 
         .modal-content img {
@@ -345,9 +444,16 @@
         /* MEDIA QUERY: TABLET Y ESCRITORIO (>= 768px) */
         /* ------------------------------------------- */
         @media (min-width: 768px) {
-            /* Navbar */
-            .nav-links { display: flex; gap: 25px; } 
-            .contact-info { display: flex; align-items: center; } 
+            /* NAVBAR DESKTOP CENTRADO */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .nav-links { 
+                display: flex; 
+                gap: 25px; 
+            } 
             .nav-toggle { display: none; }
             
             /* Hero */
@@ -360,7 +466,7 @@
 
             /* Menu Grid */
             .menu-grid {
-                grid-template-columns: 1fr 1fr; /* Dos columnas en desktop */
+                grid-template-columns: 1fr 1fr; 
                 gap: 60px;
                 text-align: left;
             }
@@ -373,219 +479,606 @@
                 grid-template-columns: 1fr 1fr 1fr;
                 text-align: left;
             }
+            
+            /* Idioma Desktop */
+            .language-toggle {
+                position: static;
+                margin-left: 20px; 
+            }
+            
+            .navbar {
+                 /* Ajuste para que el botón de idioma encaje bien en el flujo flex */
+                padding-right: 5%; 
+                padding-left: 5%;
+            }
+            
         }
     </style>
 </head>
-<body>
+<!-- El atributo data-lang se usa para controlar el idioma con CSS y JS -->
+<body data-lang="es"> 
 
-    <!-- 1. Sección de Cabecera y Banner Principal (Hero) -->
-    <header class="hero-section">
-        <nav class="navbar">
-            <div class="logo">UNAGUI</div>
+    <!-- TRADUCCIONES Y LÓGICA DE IDIOMA -->
+    <script>
+        // Objeto de traducciones (Data-Binding manual para el texto)
+        const translations = {
+            // NAV LINKS
+            'home': {'es': 'HOME', 'en': 'HOME'},
+            'entradas': {'es': 'ENTRADAS', 'en': 'APPETIZERS'},
+            'rolls': {'es': 'ROLLS', 'en': 'ROLLS'},
+            'bebidas': {'es': 'BEBIDAS', 'en': 'DRINKS'},
             
-            <!-- Botón de Hamburguesa para móvil -->
-            <i class="fas fa-bars nav-toggle" id="navToggle"></i>
+            // Hero Section
+            'hero-title': {'es': 'EXPERIENCIA JAPONESA DE LUJO', 'en': 'LUXURY JAPANESE EXPERIENCE'},
+            'btn-discover': {'es': 'VER MENÚ SUSHI', 'en': 'VIEW SUSHI MENU'},
+            'btn-book': {'es': 'RESERVAR MESA', 'en': 'BOOK A TABLE'},
+            'whatsapp-msg': {
+                'es': 'Hola, deseo reservar una mesa en UNAGUI SUSHI. ¿Me confirman la disponibilidad para [Fecha] y [Número de personas]?',
+                'en': 'Hello, I would like to book a table at UNAGUI SUSHI. Can you confirm the availability for [Date] and [Number of people]?'
+            },
 
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">HOME</a></li>
-                <li><a href="#entradas">ENTRADAS</a></li>
-                <li><a href="#rolls">ROLLS</a></li>
-                <!-- NUEVO ENLACE: Bebidas -->
-                <li><a href="#bebidas">BEBIDAS</a></li> 
-            </ul>
-            <div class="contact-info">
-                <!-- Ícono de WhatsApp que dirige a la reserva -->
-                <a href="#" id="whatsappIconNav" aria-label="Contactar por WhatsApp" style="color: var(--color-secondary); font-size: 20px;">
-                    <i class="fa fa-whatsapp"></i>
-                </a>
-            </div>
-        </nav>
+            // Features Section
+            'feat-title-1': {'es': 'FRESH FISH', 'en': 'FRESH FISH'},
+            'feat-desc-1': {'es': 'Salmón, atún y pescado de aleta amarilla con cortes frescos y calidad premium.', 'en': 'Salmon, tuna, and yellowfin fish with fresh cuts and premium quality.'},
+            'feat-title-2': {'es': 'CÓCTELES DE AUTOR', 'en': 'SIGNATURE COCKTAILS'},
+            'feat-desc-2': {'es': 'Mezclas únicas con sake, mezcal y licores, inspiradas en la cultura japonesa.', 'en': 'Unique blends with sake, mezcal, and spirits, inspired by Japanese culture.'},
+            'feat-title-3': {'es': 'ETIQUETA & PROTOCOLO', 'en': 'ETIQUETTE & PROTOCOL'},
+            'feat-desc-3': {'es': 'Un ambiente exclusivo para cenas de negocios y celebraciones formales.', 'en': 'An exclusive setting for business dinners and formal celebrations.'},
 
-        <div class="hero-content">
-            <p class="welcome">うなぎ SUSHI</p>
-            <h1>EXPERIENCIA JAPONESA DE LUJO</h1>
-            <div class="hero-actions">
-                <a href="#rolls" class="btn btn-discover">VER MENÚ SUSHI <i class="fa fa-chevron-down"></i></a>
-                <!-- Este botón activará la función de WhatsApp -->
-                <a href="#" id="bookTableBtn" class="btn btn-book">RESERVAR MESA <i class="fa fa-whatsapp"></i></a>
-            </div>
-        </div>
-    </header>
+            // Menu Section Titles
+            'menu-subtitle': {'es': '• Nuestro Arte Culinario •', 'en': '• Our Culinary Art •'},
+            'menu-title': {'es': 'EL MENÚ UNAGUI', 'en': 'THE UNAGUI MENU'},
+            'cat-entradas': {'es': 'ENTRADAS', 'en': 'APPETIZERS'},
+            'cat-nigiris': {'es': 'NIGIRIS Y SASHIMI', 'en': 'NIGIRIS AND SASHIMI'},
+            'cat-rolls': {'es': 'ROLLS ESPECIALES (Selección)', 'en': 'SPECIALTY ROLLS (Selection)'},
+            'cat-bebidas': {'es': 'BEBIDAS', 'en': 'DRINKS'},
+            'subcat-cocktails': {'es': 'CÓCTELES DE AUTOR', 'en': 'SIGNATURE COCKTAILS'},
+            'subcat-other': {'es': 'CERVEZAS Y JUGOS', 'en': 'BEERS AND JUICES'},
 
-    <!-- 2. Sección de Propuesta de Valor (Los 3 Iconos) -->
-    <section class="features-section">
-        <div class="feature-item">
-            <i class="fas fa-fish-cooked"></i> 
-            <h3>FRESH FISH</h3>
-            <p>Salmón, atún y pescado de aleta amarilla con cortes frescos y calidad premium.</p>
-        </div>
-        <div class="feature-item">
-            <i class="fas fa-cocktail"></i> 
-            <h3>CÓCTELES DE AUTOR</h3>
-            <p>Mezclas únicas con sake, mezcal y licores, inspiradas en la cultura japonesa.</p>
-        </div>
-        <div class="feature-item">
-            <i class="fas fa-certificate"></i> 
-            <h3>ETIQUETA & PROTOCOLO</h3>
-            <p>Un ambiente exclusivo para cenas de negocios y celebraciones formales.</p>
-        </div>
-    </section>
-
-    <!-- 3. SECCIÓN DEL MENÚ DIGITAL (CONTENIDO DEL PDF) -->
-    <section class="menu-section">
-        <p class="subtitle">• Nuestro Arte Culinario •</p>
-        <h2 class="section-title">EL MENÚ UNAGUI</h2>
-
-        <div class="menu-grid">
+            // --- DESCRIPCIONES DE PLATOS (MENU ITEMS) ---
+            'desc-chuneit': {
+                'es': 'Langostinos tempura en salsa cremosa al estilo Chuneit (agridulces).', 
+                'en': 'Tempura prawns in creamy Chuneit-style sauce (sweet and sour).'
+            },
+            'desc-primavera': {
+                'es': 'Langostino y cangrejo al vapor, pepino, zanahoria, cilantro y maní. Envueltos en hoja de papel de arroz.', 
+                'en': 'Steamed shrimp and crab, cucumber, carrot, cilantro, and peanuts. Wrapped in rice paper.'
+            },
+            'desc-negui-crunch': {
+                'es': 'Bocados de salmón natural, arroz de sushi mezclado con crunch de tempura y ensalada de cangrejo.', 
+                'en': 'Natural salmon bites, sushi rice mixed with tempura crunch and crab salad.'
+            },
+            'desc-tuna-crispy': {
+                'es': 'Bocaditos de arroz crujiente, en una cama de mousse de aguacate y tartar de atún.', 
+                'en': 'Crispy rice bites, on a bed of avocado mousse and tuna tartare.'
+            },
+            'desc-kushiyaki': {
+                'es': 'Pinchos de lomo fino de res marinados y caramelizados en salsa Teriyaki.', 
+                'en': 'Skewers of thin beef tenderloin marinated and caramelized in Teriyaki sauce.'
+            },
+            'desc-nigiri-unagui': {
+                'es': 'Anguila ahumada y arroz de sushi.', 
+                'en': 'Smoked eel and sushi rice.'
+            },
+            'desc-nigiri-hamachi': {
+                'es': 'Atún de aleta amarilla y arroz de sushi.', 
+                'en': 'Yellowfin tuna and sushi rice.'
+            },
+            'desc-sashimi-tuna': {
+                'es': 'Los mejores y más frescos cortes de atún.', 
+                'en': 'The best and freshest cuts of tuna.'
+            },
+            'desc-sashimi-salmon': {
+                'es': 'Los mejores y más frescos cortes de salmón.', 
+                'en': 'The best and freshest cuts of salmon.'
+            },
+            'desc-nigiri-ikura': {
+                'es': 'Huevas de salmón y arroz de sushi.', 
+                'en': 'Salmon roe (Ikura) and sushi rice.'
+            },
+            'desc-unagui-roll': {
+                'es': 'Cangrejo, salmón, queso crema, topping de anguila flambeada.', 
+                'en': 'Crab, salmon, cream cheese, topped with flambéed eel.'
+            },
+            'desc-dipsalmon': {
+                'es': 'Langostino tempurizado, pasta de cangrejo, queso crema, aguacate, topping de salmón y pasta de cangrejo.', 
+                'en': 'Tempura shrimp, crab paste, cream cheese, avocado, topped with salmon and crab paste.'
+            },
+            'desc-explosion': {
+                'es': 'Langostino tempura, cangrejo, queso crema, pepino, topping de atún, aguacate y masago.', 
+                'en': 'Tempura shrimp, crab, cream cheese, cucumber, topped with tuna, avocado, and masago.'
+            },
+            'desc-rainbow': {
+                'es': 'Atún, salmón, tilapia, aguacate, topping de atún, salmón, tilapia y aguacate.', 
+                'en': 'Tuna, salmon, tilapia, avocado, topped with tuna, salmon, tilapia, and avocado.'
+            },
+            'desc-tuna-spice': {
+                'es': 'Atún, crunch, aguacate, sriracha, cebollín y masago.', 
+                'en': 'Tuna, crunch, avocado, sriracha, chives, and masago.'
+            },
+            'desc-tokyo-smoke': {
+                'es': 'Mezcal Ojo de Tigre, zumo de limón, miel y té verde.', 
+                'en': 'Ojo de Tigre Mezcal, lime juice, honey, and green tea.'
+            },
+            'desc-midori-basil': {
+                'es': 'Gin Beefeater, licor de melón, zumo de limón, albahaca y sirope de canela.', 
+                'en': 'Beefeater Gin, melon liqueur, lime juice, basil, and cinnamon syrup.'
+            },
+            'desc-isabella-mojito': {
+                'es': 'Vodka Absolut, agraz, uvas isabellas, limón tahití, hierbabuena y azúcar.', 
+                'en': 'Absolut Vodka, cranberry, Isabella grapes, Tahitian lime, mint, and sugar.'
+            },
+            'desc-corona': {
+                'es': 'Cerveza Lager importada, 330ml.', 
+                'en': 'Imported Lager beer, 330ml.'
+            },
+            'desc-lychee-juice': {
+                'es': 'Jugo natural de Lychee.', 
+                'en': 'Natural Lychee juice.'
+            },
+            'desc-sparkling-water': {
+                'es': 'Agua mineral con gas, 300ml.', 
+                'en': 'Sparkling mineral water, 300ml.'
+            },
             
-            <!-- CATEGORÍA 1: ENTRADAS -->
-            <div class="menu-category" id="entradas">
-                <h3>ENTRADAS</h3>
-                <!-- NOTA: Añadimos data-image y data-description a cada plato para el modal -->
-                <div class="menu-item" onclick="openModal('LANGOSTINOS CHUNEIT', 'Langostinos tempura en salsa cremosa al estilo Chuneit (agridulces).', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Langostinos+Chuneit')">
-                    <div class="item-info">
-                        <div class="item-name">LANGOSTINOS CHUNEIT</div>
-                        <div class="item-description">Langostinos tempura en salsa cremosa al estilo Chuneit (agridulces).</div>
-                    </div>
-                    <div class="item-price">$40.000</div>
-                </div>
-                <div class="menu-item" onclick="openModal('ROLLOS PRIMAVERA', 'Langostino y cangrejo al vapor, pepino, zanahoria, cilantro y maní. Envueltos en hoja de papel de arroz.', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Rollos+Primavera')">
-                    <div class="item-info">
-                        <div class="item-name">ROLLOS PRIMAVERA</div>
-                        <div class="item-description">Langostino y cangrejo al vapor, pepino, zanahoria, cilantro y maní. Envueltos en hoja de papel de arroz.</div>
-                    </div>
-                    <div class="item-price">$30.000</div>
-                </div>
-                <div class="menu-item" onclick="openModal('NEGUI CRUNCH', 'Bocados de salmón natural, arroz de sushi mezclado con crunch de tempura y ensalada de cangrejo.', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Negui+Crunch')">
-                    <div class="item-info">
-                        <div class="item-name">NEGUI CRUNCH</div>
-                        <div class="item-description">Bocados de salmón natural, arroz de sushi mezclado con crunch de tempura y ensalada de cangrejo.</div>
-                    </div>
-                    <div class="item-price">$30.000</div>
-                </div>
-                <!-- Aquí continuarían los demás platos con el evento onclick -->
-            </div>
-
-            <!-- CATEGORÍA 2: NIGIRIS Y SASHIMI -->
-            <div class="menu-category">
-                <h3>NIGIRIS Y SASHIMI</h3>
-                <div class="menu-item" onclick="openModal('NIGUIRI UNAGUI', 'Anguila ahumada y arroz de sushi.', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Niguiri+Unagui')">
-                    <div class="item-info">
-                        <div class="item-name">NIGUIRI UNAGUI</div>
-                        <div class="item-description">Anguila ahumada y arroz de sushi.</div>
-                    </div>
-                    <div class="item-price">$25.000</div>
-                </div>
-                <div class="menu-item" onclick="openModal('SASHIMI ATÚN', 'Los mejores y más frescos cortes de atún (4 Piezas).', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Sashimi+Atún')">
-                    <div class="item-info">
-                        <div class="item-name">SASHIMI ATÚN (4 Piezas)</div>
-                        <div class="item-description">Los mejores y más frescos cortes de atún.</div>
-                    </div>
-                    <div class="item-price">$30.000</div>
-                </div>
-                <!-- Aquí continuarían los demás platos con el evento onclick -->
-            </div>
+            // Footer
+            'foot-title-1': {'es': 'REDES SOCIALES', 'en': 'SOCIAL MEDIA'},
+            'foot-title-2': {'es': 'HORARIO Y UBICACIÓN', 'en': 'HOURS AND LOCATION'},
+            'foot-addr': {'es': '📍 Dirección: Calle 12 # 34-56, Zona G, Bogotá', 'en': '📍 Address: 12th Street # 34-56, Zona G, Bogotá'},
+            'foot-hours-1': {'es': '⌚ Lunes a Sábado: 12:00 PM - 10:00 PM', 'en': '⌚ Monday to Saturday: 12:00 PM - 10:00 PM'},
+            'foot-hours-2': {'es': '⌚ Domingos y Festivos: 12:00 PM - 5:00 PM', 'en': '⌚ Sundays and Holidays: 12:00 PM - 5:00 PM'},
+            'foot-title-3': {'es': 'CONTACTO', 'en': 'CONTACT'},
+            'foot-phone-label': {'es': 'Teléfono de Reservas:', 'en': 'Reservation Phone:'},
+            'foot-copy': {'es': 'UNAGUI SUSHI | Alta Cocina Japonesa. Todos los derechos reservados.', 'en': 'UNAGUI SUSHI | High Japanese Cuisine. All rights reserved.'},
+        };
+        
+        // Estructura de menú para traducción dinámica de nombres y descripciones
+        const menuItems = [
+            // Entradas
+            { id: 'chuneit', name: 'LANGOSTINOS CHUNEIT', descKey: 'desc-chuneit', price: '$40.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Langostinos+Chuneit' },
+            { id: 'primavera', name: 'ROLLOS PRIMAVERA', descKey: 'desc-primavera', price: '$30.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Rollos+Primavera' },
+            { id: 'negui', name: 'NEGUI CRUNCH', descKey: 'desc-negui-crunch', price: '$30.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Negui+Crunch' },
+            { id: 'tuna-crispy', name: 'TUNA CRISPY RICE', descKey: 'desc-tuna-crispy', price: '$30.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Tuna+Crispy+Rice' },
+            { id: 'kushiyaki', name: 'KUSHIYAKI (Pincho Res)', descKey: 'desc-kushiyaki', price: '$28.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Kushiyaki' },
             
-            <!-- CATEGORÍA 3: ROLLS ESPECIALES (Parte 1) -->
-            <div class="menu-category" id="rolls">
-                <h3>ROLLS ESPECIALES (Selección)</h3>
-                <div class="menu-item" onclick="openModal('UNAGUI ESPECIAL ROLL', 'Cangrejo, salmón, queso crema, topping de anguila flambeada.', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Unagui+Roll')">
-                    <div class="item-info">
-                        <div class="item-name">UNAGUI ESPECIAL ROLL</div>
-                        <div class="item-description">Cangrejo, salmón, queso crema, topping de anguila flambeada.</div>
-                    </div>
-                    <div class="item-price">$60.000</div>
+            // Nigiris y Sashimi
+            { id: 'nigiri-unagui', name: 'NIGUIRI UNAGUI', descKey: 'desc-nigiri-unagui', price: '$25.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Niguiri+Unagui', category: 'nigiris' },
+            { id: 'nigiri-hamachi', name: 'NIGUIRI HAMACHI', descKey: 'desc-nigiri-hamachi', price: '$30.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Niguiri+Hamachi', category: 'nigiris' },
+            { id: 'sashimi-tuna', name: 'SASHIMI ATÚN (4 Piezas)', descKey: 'desc-sashimi-tuna', price: '$30.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Sashimi+Atún', category: 'nigiris' },
+            { id: 'sashimi-salmon', name: 'SASHIMI SALMÓN (4 Piezas)', descKey: 'desc-sashimi-salmon', price: '$30.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Sashimi+Salmón', category: 'nigiris' },
+            { id: 'nigiri-ikura', name: 'NIGUIRI IKURA', descKey: 'desc-nigiri-ikura', price: '$45.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Niguiri+Ikura', category: 'nigiris' },
+
+            // Rolls Especiales
+            { id: 'unagui-roll', name: 'UNAGUI ESPECIAL ROLL', descKey: 'desc-unagui-roll', price: '$60.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Unagui+Roll', category: 'rolls' },
+            { id: 'dipsalmon', name: 'DIPSALMON', descKey: 'desc-dipsalmon', price: '$60.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Dipsalmon', category: 'rolls' },
+            { id: 'explosion', name: 'EXPLOSIÓN', descKey: 'desc-explosion', price: '$50.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Explosión', category: 'rolls' },
+            { id: 'rainbow', name: 'RAINBOW (NATURAL)', descKey: 'desc-rainbow', price: '$45.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Rainbow+Roll', category: 'rolls' },
+            { id: 'tuna-spice', name: 'TUNA SPICE MAKI (NATURAL)', descKey: 'desc-tuna-spice', price: '$40.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Tuna+Spice+Maki', category: 'rolls' },
+
+            // Bebidas (Cocktails)
+            { id: 'tokyo-smoke', name: 'TOKYO SMOKE', descKey: 'desc-tokyo-smoke', price: '$40.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Tokyo+Smoke', category: 'cocktails' },
+            { id: 'midori-basil', name: 'MIDORI BASIL', descKey: 'desc-midori-basil', price: '$40.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Midori+Basil', category: 'cocktails' },
+            { id: 'isabella-mojito', name: 'ISABELLA MOJITO', descKey: 'desc-isabella-mojito', price: '$28.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Isabella+Mojito', category: 'cocktails' },
+            
+            // Bebidas (Other)
+            { id: 'corona', name: 'CERVEZA CORONA', descKey: 'desc-corona', price: '$15.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Cerveza+Corona', category: 'otherdrinks' },
+            { id: 'lychee-juice', name: 'JUGO DE LYCHEE', descKey: 'desc-lychee-juice', price: '$12.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Jugo+Lychee', category: 'otherdrinks' },
+            { id: 'sparkling-water', name: 'AGUA CON GAS', descKey: 'desc-sparkling-water', price: '$8.000', imageUrl: 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Agua+con+Gas', category: 'otherdrinks' },
+        ];
+
+
+        // Función principal para cambiar el idioma
+        function switchLanguage(lang) {
+            document.body.setAttribute('data-lang', lang);
+            
+            // 1. Traducir elementos de la interfaz (Navbar, Hero, Footer, etc.)
+            const elementsToTranslate = [
+                // Navbar
+                { selector: '.nav-links a[href="#home"]', key: 'home'},
+                { selector: '.nav-links a[href="#entradas"]', key: 'entradas'},
+                { selector: '.nav-links a[href="#rolls"]', key: 'rolls'},
+                { selector: '.nav-links a[href="#bebidas"]', key: 'bebidas'},
+                
+                // Hero
+                { selector: '.hero-content h1', key: 'hero-title'},
+
+                // Features
+                { selector: '.features-section .feature-item:nth-child(1) h3', key: 'feat-title-1'},
+                { selector: '.features-section .feature-item:nth-child(1) p', key: 'feat-desc-1'},
+                { selector: '.features-section .feature-item:nth-child(2) h3', key: 'feat-title-2'},
+                { selector: '.features-section .feature-item:nth-child(2) p', key: 'feat-desc-2'},
+                { selector: '.features-section .feature-item:nth-child(3) h3', key: 'feat-title-3'},
+                { selector: '.features-section .feature-item:nth-child(3) p', key: 'feat-desc-3'},
+
+                // Menu Titles
+                { selector: '.menu-section .subtitle', key: 'menu-subtitle'},
+                { selector: '.menu-section .section-title', key: 'menu-title'},
+                { selector: '#entradas h3', key: 'cat-entradas'},
+                { selector: '#bebidas .category-subtitle.cocktails', key: 'subcat-cocktails'},
+                { selector: '#bebidas .category-subtitle.other', key: 'subcat-other'},
+                { selector: '#rolls h3', key: 'cat-rolls'},
+                { selector: '#nigiris h3', key: 'cat-nigiris'},
+                
+                // Footer
+                { selector: '.footer-content .footer-col:nth-child(1) h4', key: 'foot-title-1'},
+                { selector: '.footer-content .footer-col:nth-child(2) h4', key: 'foot-title-2'},
+                { selector: '.footer-content .footer-col:nth-child(2) p:nth-child(2)', key: 'foot-addr'},
+                { selector: '.footer-content .footer-col:nth-child(2) p:nth-child(3)', key: 'foot-hours-1'},
+                { selector: '.footer-content .footer-col:nth-child(2) p:nth-child(4)', key: 'foot-hours-2'},
+                { selector: '.footer-content .footer-col:nth-child(3) h4', key: 'foot-title-3'},
+                { selector: '.footer-content .footer-col:nth-child(3) p:first-of-type', key: 'foot-phone-label'},
+                { selector: 'footer div:last-child', key: 'foot-copy'},
+            ];
+
+            elementsToTranslate.forEach(item => {
+                const element = document.querySelector(item.selector);
+                if (element && translations[item.key]) {
+                    element.textContent = translations[item.key][lang];
+                }
+            });
+            
+            // 2. Traducir textos dentro de botones que usan spans (Hero)
+            const discoverBtn = document.getElementById('discoverBtn');
+            const bookBtn = document.getElementById('bookTableBtn');
+            if(discoverBtn) discoverBtn.querySelector('.es').textContent = translations['btn-discover']['es'];
+            if(discoverBtn) discoverBtn.querySelector('.en').textContent = translations['btn-discover']['en'];
+            if(bookBtn) bookBtn.querySelector('.es').textContent = translations['btn-book']['es'];
+            if(bookBtn) bookBtn.querySelector('.en').textContent = translations['btn-book']['en'];
+
+            // 3. Traducir todas las descripciones de los platos
+            menuItems.forEach(item => {
+                const descElement = document.getElementById(`desc-${item.id}`);
+                if (descElement) {
+                    descElement.textContent = translations[item.descKey][lang];
+                }
+            });
+
+            // 4. Actualizar el texto del botón de idioma
+            const langButton = document.getElementById('langToggleText');
+            if (langButton) {
+                langButton.textContent = lang.toUpperCase();
+            }
+
+            // 5. Actualizar el título de la página
+            document.title = (lang === 'en' ? 'UNAGUI SUSHI | Luxury Japanese Experience' : 'UNAGUI SUSHI | Experiencia Japonesa de Lujo');
+        }
+
+        // --- Lógica del MODAL ---
+        const itemModal = document.getElementById('itemModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+
+        // Función para abrir el modal (Ahora usa el ID del plato para la traducción)
+        function openModal(itemId) {
+            const currentLang = document.body.getAttribute('data-lang');
+            const item = menuItems.find(i => i.id === itemId);
+
+            if (item) {
+                modalTitle.textContent = item.name; // Los nombres de plato son mayúsculas, no necesitan traducción aquí
+                modalDescription.textContent = translations[item.descKey][currentLang];
+                modalImage.src = item.imageUrl; 
+                itemModal.style.display = 'block';
+            }
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            itemModal.style.display = 'none';
+        }
+
+        // Cierra el modal si se hace clic fuera de él
+        window.onclick = function(event) {
+            if (event.target == itemModal) {
+                closeModal();
+            }
+        }
+        
+        // --- Lógica del Idioma ---
+        
+        // Alterna entre 'es' y 'en'
+        window.toggleLanguage = function() {
+            const currentLang = document.body.getAttribute('data-lang');
+            const newLang = currentLang === 'es' ? 'en' : 'es';
+            switchLanguage(newLang);
+        }
+
+        // Función para detectar el idioma del navegador y establecerlo como predeterminado
+        function detectAndSetInitialLanguage() {
+            const lang = (navigator.language || navigator.userLanguage).substring(0, 2);
+            // Default a español si no es inglés
+            const initialLang = (lang === 'en') ? 'en' : 'es'; 
+            switchLanguage(initialLang);
+        }
+
+    </script>
+
+    <!-- SPLASH SCREEN (PANTALLA DE BIENVENIDA) -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="logo-text">UNAGUI SUSHI</div>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL DEL SITIO WEB -->
+    <div id="main-content" style="opacity: 0; transition: opacity 1s ease-in-out;">
+        
+        <!-- CABECERA Y SECCIÓN HERO -->
+        <header class="hero-section" id="home">
+            <nav class="navbar">
+                <div class="logo">UNAGUI</div>
+                
+                <i class="fas fa-bars nav-toggle" id="navToggle"></i>
+
+                <!-- Enlaces de Navegación -->
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home">HOME</a></li>
+                    <li><a href="#entradas">ENTRADAS</a></li>
+                    <li><a href="#rolls">ROLLS</a></li>
+                    <li><a href="#bebidas">BEBIDAS</a></li> 
+                </ul>
+                
+                <!-- Selector de Idioma -->
+                <button class="language-toggle" id="langToggleBtn" onclick="toggleLanguage()">
+                    <i class="fas fa-language"></i> 
+                    <span id="langToggleText">ES</span>
+                </button>
+            </nav>
+
+            <div class="hero-content">
+                <p class="welcome">うなぎ SUSHI</p>
+                <h1>EXPERIENCIA JAPONESA DE LUJO</h1>
+                <div class="hero-actions">
+                    <a href="#rolls" class="btn btn-discover" id="discoverBtn">
+                        <span class="es">VER MENÚ SUSHI</span><span class="en">VIEW SUSHI MENU</span> 
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <a href="#" id="bookTableBtn" class="btn btn-book">
+                        <span class="es">RESERVAR MESA</span><span class="en">BOOK A TABLE</span> 
+                        <i class="fa fa-whatsapp"></i>
+                    </a>
                 </div>
-                <div class="menu-item" onclick="openModal('DIPSALMON', 'Langostino tempurizado, pasta de cangrejo, queso crema, aguacate, topping de salmón y pasta de cangrejo.', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Dipsalmon')">
-                    <div class="item-info">
-                        <div class="item-name">DIPSALMON</div>
-                        <div class="item-description">Langostino tempurizado, pasta de cangrejo, queso crema, aguacate, topping de salmón y pasta de cangrejo.</div>
-                    </div>
-                    <div class="item-price">$60.000</div>
-                </div>
-                <!-- Aquí continuarían los demás platos con el evento onclick -->
             </div>
+        </header>
 
-            <!-- NUEVA CATEGORÍA: BEBIDAS (Incluye Cocteles de Autor) -->
-            <div class="menu-category" id="bebidas">
-                <h3>BEBIDAS</h3>
+        <!-- SECCIÓN DE CARACTERÍSTICAS -->
+        <section class="features-section">
+            <div class="feature-item">
+                <i class="fas fa-fish-cooked"></i> 
+                <h3>FRESH FISH</h3>
+                <p>Salmón, atún y pescado de aleta amarilla con cortes frescos y calidad premium.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-cocktail"></i> 
+                <h3>CÓCTELES DE AUTOR</h3>
+                <p>Mezclas únicas con sake, mezcal y licores, inspiradas en la cultura japonesa.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-certificate"></i> 
+                <h3>ETIQUETA & PROTOCOLO</h3>
+                <p>Un ambiente exclusivo para cenas de negocios y celebraciones formales.</p>
+            </div>
+        </section>
 
-                <!-- Subsección Cócteles de Autor -->
-                <h4 style="color: var(--color-text-light); font-weight: 500; margin-top: 25px; margin-bottom: 10px; font-family: var(--font-body);">CÓCTELES DE AUTOR</h4>
-                <div class="menu-item" onclick="openModal('TOKYO SMOKE', 'Mezcal Ojo de Tigre, zumo de limón, miel y té verde.', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Tokyo+Smoke')">
-                    <div class="item-info">
-                        <div class="item-name">TOKYO SMOKE</div>
-                        <div class="item-description">Mezcal Ojo de Tigre, zumo de limón, miel y té verde.</div>
+        <!-- SECCIÓN DEL MENÚ -->
+        <section class="menu-section">
+            <p class="subtitle">• Nuestro Arte Culinario •</p>
+            <h2 class="section-title">EL MENÚ UNAGUI</h2>
+
+            <div class="menu-grid">
+                
+                <!-- CATEGORÍA: ENTRADAS -->
+                <div class="menu-category" id="entradas">
+                    <h3>ENTRADAS</h3>
+                    <div class="menu-item" onclick="openModal('chuneit')">
+                        <div class="item-info">
+                            <div class="item-name">LANGOSTINOS CHUNEIT</div>
+                            <div class="item-description" id="desc-chuneit"></div>
+                        </div>
+                        <div class="item-price">$40.000</div>
                     </div>
-                    <div class="item-price">$40.000</div>
+                    <div class="menu-item" onclick="openModal('primavera')">
+                        <div class="item-info">
+                            <div class="item-name">ROLLOS PRIMAVERA</div>
+                            <div class="item-description" id="desc-primavera"></div>
+                        </div>
+                        <div class="item-price">$30.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('negui')">
+                        <div class="item-info">
+                            <div class="item-name">NEGUI CRUNCH</div>
+                            <div class="item-description" id="desc-negui-crunch"></div>
+                        </div>
+                        <div class="item-price">$30.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('tuna-crispy')">
+                        <div class="item-info">
+                            <div class="item-name">TUNA CRISPY RICE</div>
+                            <div class="item-description" id="desc-tuna-crispy"></div>
+                        </div>
+                        <div class="item-price">$30.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('kushiyaki')">
+                        <div class="item-info">
+                            <div class="item-name">KUSHIYAKI (Pincho Res)</div>
+                            <div class="item-description" id="desc-kushiyaki"></div>
+                        </div>
+                        <div class="item-price">$28.000</div>
+                    </div>
                 </div>
-                <div class="menu-item" onclick="openModal('ISABELLA MOJITO', 'Vodka Absolut, agraz, uvas isabellas, limón tahití, hierbabuena y azúcar.', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Isabella+Mojito')">
-                    <div class="item-info">
-                        <div class="item-name">ISABELLA MOJITO</div>
-                        <div class="item-description">Vodka Absolut, agraz, uvas isabellas, limón tahití, hierbabuena y azúcar.</div>
+
+                <!-- CATEGORÍA: NIGIRIS Y SASHIMI -->
+                <div class="menu-category" id="nigiris">
+                    <h3>NIGIRIS Y SASHIMI</h3>
+                    <div class="menu-item" onclick="openModal('nigiri-unagui')">
+                        <div class="item-info">
+                            <div class="item-name">NIGUIRI UNAGUI</div>
+                            <div class="item-description" id="desc-nigiri-unagui"></div>
+                        </div>
+                        <div class="item-price">$25.000</div>
                     </div>
-                    <div class="item-price">$28.000</div>
+                    <div class="menu-item" onclick="openModal('nigiri-hamachi')">
+                        <div class="item-info">
+                            <div class="item-name">NIGUIRI HAMACHI</div>
+                            <div class="item-description" id="desc-nigiri-hamachi"></div>
+                        </div>
+                        <div class="item-price">$30.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('sashimi-tuna')">
+                        <div class="item-info">
+                            <div class="item-name">SASHIMI ATÚN (4 Piezas)</div>
+                            <div class="item-description" id="desc-sashimi-tuna"></div>
+                        </div>
+                        <div class="item-price">$30.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('sashimi-salmon')">
+                        <div class="item-info">
+                            <div class="item-name">SASHIMI SALMÓN (4 Piezas)</div>
+                            <div class="item-description" id="desc-sashimi-salmon"></div>
+                        </div>
+                        <div class="item-price">$30.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('nigiri-ikura')">
+                        <div class="item-info">
+                            <div class="item-name">NIGUIRI IKURA</div>
+                            <div class="item-description" id="desc-nigiri-ikura"></div>
+                        </div>
+                        <div class="item-price">$45.000</div>
+                    </div>
                 </div>
                 
-                <!-- Subsección Cervezas/Aguas -->
-                <h4 style="color: var(--color-text-light); font-weight: 500; margin-top: 25px; margin-bottom: 10px; font-family: var(--font-body);">CERVEZAS Y JUGOS</h4>
-                 <div class="menu-item" onclick="openModal('CERVEZA CORONA', 'Cerveza Lager importada, 330ml.', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Cerveza+Corona')">
-                    <div class="item-info">
-                        <div class="item-name">CERVEZA CORONA</div>
-                        <div class="item-description">Cerveza Lager importada, 330ml.</div>
+                <!-- CATEGORÍA: ROLLS ESPECIALES -->
+                <div class="menu-category" id="rolls">
+                    <h3>ROLLS ESPECIALES (Selección)</h3>
+                    <div class="menu-item" onclick="openModal('unagui-roll')">
+                        <div class="item-info">
+                            <div class="item-name">UNAGUI ESPECIAL ROLL</div>
+                            <div class="item-description" id="desc-unagui-roll"></div>
+                        </div>
+                        <div class="item-price">$60.000</div>
                     </div>
-                    <div class="item-price">$15.000</div>
-                </div>
-                 <div class="menu-item" onclick="openModal('AGUA CON GAS', 'Agua mineral con gas, 300ml.', 'https://placehold.co/600x400/1c1c1c/e8c67c?text=Foto+Agua+con+Gas')">
-                    <div class="item-info">
-                        <div class="item-name">AGUA CON GAS</div>
-                        <div class="item-description">Agua mineral con gas, 300ml.</div>
+                    <div class="menu-item" onclick="openModal('dipsalmon')">
+                        <div class="item-info">
+                            <div class="item-name">DIPSALMON</div>
+                            <div class="item-description" id="desc-dipsalmon"></div>
+                        </div>
+                        <div class="item-price">$60.000</div>
                     </div>
-                    <div class="item-price">$8.000</div>
+                    <div class="menu-item" onclick="openModal('explosion')">
+                        <div class="item-info">
+                            <div class="item-name">EXPLOSIÓN</div>
+                            <div class="item-description" id="desc-explosion"></div>
+                        </div>
+                        <div class="item-price">$50.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('rainbow')">
+                        <div class="item-info">
+                            <div class="item-name">RAINBOW (NATURAL)</div>
+                            <div class="item-description" id="desc-rainbow"></div>
+                        </div>
+                        <div class="item-price">$45.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('tuna-spice')">
+                        <div class="item-info">
+                            <div class="item-name">TUNA SPICE MAKI (NATURAL)</div>
+                            <div class="item-description" id="desc-tuna-spice"></div>
+                        </div>
+                        <div class="item-price">$40.000</div>
+                    </div>
                 </div>
-            </div>
 
-        </div>
-    </section>
-    
-    <!-- Pie de página (Footer) con Redes, Horarios y Dirección -->
-    <footer>
-        <div class="footer-content">
-            
-            <div class="footer-col">
-                <h4>REDES SOCIALES</h4>
-                <div class="social-icons">
-                    <!-- Enlace de Instagram -->
-                    <a href="https://www.instagram.com/unaguisushi" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <!-- Enlace de WhatsApp (mismo que el principal) -->
-                    <a href="#" id="whatsappFooter" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    <!-- Enlace de Facebook (ejemplo) -->
-                    <a href="https://www.facebook.com/unaguisushi" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <!-- CATEGORÍA: BEBIDAS -->
+                <div class="menu-category" id="bebidas">
+                    <h3>BEBIDAS</h3>
+
+                    <!-- Subcategoría: CÓCTELES DE AUTOR -->
+                    <h4 class="category-subtitle cocktails" style="color: var(--color-text-light); font-weight: 500; margin-top: 25px; margin-bottom: 10px; font-family: var(--font-body);">CÓCTELES DE AUTOR</h4>
+                    <div class="menu-item" onclick="openModal('tokyo-smoke')">
+                        <div class="item-info">
+                            <div class="item-name">TOKYO SMOKE</div>
+                            <div class="item-description" id="desc-tokyo-smoke"></div>
+                        </div>
+                        <div class="item-price">$40.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('midori-basil')">
+                        <div class="item-info">
+                            <div class="item-name">MIDORI BASIL</div>
+                            <div class="item-description" id="desc-midori-basil"></div>
+                        </div>
+                        <div class="item-price">$40.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('isabella-mojito')">
+                        <div class="item-info">
+                            <div class="item-name">ISABELLA MOJITO</div>
+                            <div class="item-description" id="desc-isabella-mojito"></div>
+                        </div>
+                        <div class="item-price">$28.000</div>
+                    </div>
+                    
+                    <!-- Subcategoría: CERVEZAS Y JUGOS -->
+                    <h4 class="category-subtitle other" style="color: var(--color-text-light); font-weight: 500; margin-top: 25px; margin-bottom: 10px; font-family: var(--font-body);">CERVEZAS Y JUGOS</h4>
+                    <div class="menu-item" onclick="openModal('corona')">
+                        <div class="item-info">
+                            <div class="item-name">CERVEZA CORONA</div>
+                            <div class="item-description" id="desc-corona"></div>
+                        </div>
+                        <div class="item-price">$15.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('lychee-juice')">
+                        <div class="item-info">
+                            <div class="item-name">JUGO DE LYCHEE</div>
+                            <div class="item-description" id="desc-lychee-juice"></div>
+                        </div>
+                        <div class="item-price">$12.000</div>
+                    </div>
+                    <div class="menu-item" onclick="openModal('sparkling-water')">
+                        <div class="item-info">
+                            <div class="item-name">AGUA CON GAS</div>
+                            <div class="item-description" id="desc-sparkling-water"></div>
+                        </div>
+                        <div class="item-price">$8.000</div>
+                    </div>
                 </div>
+
             </div>
+        </section>
+        
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                
+                <div class="footer-col">
+                    <h4>REDES SOCIALES</h4>
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com/unaguisushi" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" id="whatsappFooter" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/unaguisushi" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
 
-            <div class="footer-col footer-info">
-                <h4>HORARIO Y UBICACIÓN</h4>
-                <p>📍 Dirección: Calle 12 # 34-56, Zona G, Bogotá</p>
-                <p>⌚ Lunes a Sábado: 12:00 PM - 10:00 PM</p>
-                <p>⌚ Domingos y Festivos: 12:00 PM - 5:00 PM</p>
+                <div class="footer-col footer-info">
+                    <h4>HORARIO Y UBICACIÓN</h4>
+                    <p>📍 Dirección: Calle 12 # 34-56, Zona G, Bogotá</p>
+                    <p>⌚ Lunes a Sábado: 12:00 PM - 10:00 PM</p>
+                    <p>⌚ Domingos y Festivos: 12:00 PM - 5:00 PM</p>
+                </div>
+
+                <div class="footer-col footer-info">
+                    <h4>CONTACTO</h4>
+                    <p>Teléfono de Reservas:</p>
+                    <p style="color: var(--color-secondary); font-weight: bold;">+57 310 - XXX - XX XX</p>
+                    <p>Email: info@unaguisushi.com</p>
+                </div>
+
             </div>
-
-            <div class="footer-col footer-info">
-                <h4>CONTACTO</h4>
-                <p>Teléfono de Reservas:</p>
-                <p style="color: var(--color-secondary); font-weight: bold;">+57 310 - XXX - XX XX</p>
-                <p>Email: info@unaguisushi.com</p>
+            <div style="background-color: #0b1526; padding: 15px; font-size: 12px; text-align: center;">
+                UNAGUI SUSHI | Alta Cocina Japonesa. Todos los derechos reservados.
             </div>
-
-        </div>
-        <div style="background-color: #0b1526; padding: 15px; font-size: 12px; text-align: center;">
-            UNAGUI SUSHI | Alta Cocina Japonesa. Todos los derechos reservados.
-        </div>
-    </footer>
+        </footer>
+    </div>
 
 
-    <!-- MODAL - Ventana emergente para la imagen del plato -->
+    <!-- MODAL (Ventana Emergente para Detalles de Plato) -->
     <div id="itemModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -601,56 +1094,47 @@
         
         // **IMPORTANTE: Reemplaza '573101234567' con el número real del restaurante**
         const phoneNumber = '573101234567'; 
-        const initialMessage = 'Hola, deseo reservar una mesa en UNAGUI SUSHI. ¿Me confirman la disponibilidad para [Fecha] y [Número de personas]?';
-        const encodedMessage = encodeURIComponent(initialMessage);
-        const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
+        
+        // Función para generar el mensaje de WhatsApp según el idioma
+        const getWhatsappMessage = (lang) => {
+            return translations['whatsapp-msg'][lang];
+        };
+        
         // Función para abrir WhatsApp (Reutilizada por 3 botones/iconos)
         const openWhatsApp = (event) => {
             event.preventDefault(); 
+            const currentLang = document.body.getAttribute('data-lang');
+            const initialMessage = getWhatsappMessage(currentLang);
+            const encodedMessage = encodeURIComponent(initialMessage);
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
             window.open(whatsappLink, '_blank');
         };
 
-        // --- Lógica del MODAL ---
-        const itemModal = document.getElementById('itemModal');
-        const modalImage = document.getElementById('modalImage');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalDescription = document.getElementById('modalDescription');
-
-        // Función para abrir el modal con la información del plato
-        function openModal(name, description, imageUrl) {
-            modalTitle.textContent = name;
-            modalDescription.textContent = description;
-            
-            // Reemplaza la URL del placeholder con la imagen real de tu plato
-            modalImage.src = imageUrl; 
-            
-            itemModal.style.display = 'block';
-        }
-
-        // Función para cerrar el modal
-        function closeModal() {
-            itemModal.style.display = 'none';
-        }
-
-        // Cierra el modal si se hace clic fuera de él
-        window.onclick = function(event) {
-            if (event.target == itemModal) {
-                closeModal();
-            }
-        }
-        
-        // --- Inicialización y Event Listeners ---
+        // --- Lógica del Splash Screen y Inicialización ---
         document.addEventListener('DOMContentLoaded', function() {
+            // Establecer idioma inicial antes de mostrar el contenido
+            detectAndSetInitialLanguage(); 
+            
+            const splashScreen = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            // Retraso para el splash screen (3.5 segundos en total)
+            setTimeout(() => {
+                splashScreen.classList.add('fade-out'); // Inicia el desvanecimiento
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    mainContent.style.opacity = '1'; // Muestra el contenido principal
+                }, 1000); // Duración de la transición fade-out
+            }, 3500); // Tiempo total que se muestra el splash screen
+
+            // --- Inicialización y Event Listeners del Contenido Principal ---
             const bookTableBtn = document.getElementById('bookTableBtn');
             const navToggle = document.getElementById('navToggle');
             const navLinks = document.getElementById('navLinks');
-            const whatsappIconNav = document.getElementById('whatsappIconNav'); 
             const whatsappFooter = document.getElementById('whatsappFooter');
             
             // 1. Asignar la función de WhatsApp a todos los elementos
             if (bookTableBtn) { bookTableBtn.addEventListener('click', openWhatsApp); }
-            if (whatsappIconNav) { whatsappIconNav.addEventListener('click', openWhatsApp); }
             if (whatsappFooter) { whatsappFooter.addEventListener('click', openWhatsApp); }
 
 
@@ -669,6 +1153,12 @@
                     });
                 });
             }
+        });
+        
+        // Se llama a switchLanguage al inicio y también aquí para asegurar la traducción inicial del menú.
+        document.addEventListener('DOMContentLoaded', () => {
+             const currentLang = document.body.getAttribute('data-lang');
+             switchLanguage(currentLang);
         });
     </script>
 </body>
